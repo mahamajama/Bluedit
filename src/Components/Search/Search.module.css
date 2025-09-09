@@ -1,0 +1,14 @@
+
+
+.searchBar {
+    position: absolute;
+    top: 120px;
+    border-radius: 30px;
+    height: 60px;
+    width: 100%;
+    max-width: 300px;
+    transform: translateX(-50%);
+    border: none;
+    background-color: rgb(38, 28, 65);
+}
+

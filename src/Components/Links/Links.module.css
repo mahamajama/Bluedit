@@ -1,0 +1,32 @@
+
+.link {
+    display: flex;
+    margin-bottom: 10px;
+    padding: 8px;
+    border: 1px solid rgb(155, 155, 207);
+    background-color: rgb(60, 34, 131);
+    color:rgb(192, 212, 255)
+}
+
+.linksContainer {
+    margin: 0 auto;
+    max-width: 800px;
+    text-align: left;
+}
+
+.title {
+    flex-grow: 1;
+}
+
+.commentsButton {
+    border-radius: 0;
+    width: 90px;
+    flex: none;
+}
+
+.commentsIcon {
+    float: top;
+    top: 0;
+    width: 100%;
+    image-rendering: pixelated;
+}

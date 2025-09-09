@@ -1,22 +1,18 @@
 import { useState } from 'react';
+import { Route, BrowserRouter, Routes } from "react-router";
+
 import './App.css';
+import AppLayout from './AppLayout';
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
-    <>
-      <h1>Bluedit</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          This will eventually be a reddit app.
-        </p>
-      </div>
-    </>
-  );
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<AppLayout/>}>
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  )
 }
 
 export default App;
