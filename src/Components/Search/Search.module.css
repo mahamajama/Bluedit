@@ -2,12 +2,13 @@
 
 .searchBar {
     position: absolute;
-    top: 120px;
+    top: 100px;
     border-radius: 30px;
-    height: 60px;
+    height: 50px;
     width: 100%;
-    max-width: 300px;
+    max-width: 500px;
     transform: translateX(-50%);
+    padding: 20px;
     border: none;
     background-color: rgb(38, 28, 65);
 }

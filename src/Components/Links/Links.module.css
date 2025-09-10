@@ -1,11 +1,13 @@
 
 .link {
     display: flex;
+    width: 100%;
     margin-bottom: 10px;
     padding: 8px;
     border: 1px solid rgb(155, 155, 207);
     background-color: rgb(60, 34, 131);
-    color:rgb(192, 212, 255)
+    color:rgb(192, 212, 255);
+    text-align: left;
 }
 
 .linksContainer {

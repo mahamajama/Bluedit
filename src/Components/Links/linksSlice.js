@@ -8,19 +8,10 @@ export const loadPopularLinks = createAsyncThunk(
             const json = await response.json();
             return json;
         } catch(error) { // if you run out of requests, use archived data as a placeholder
-            const response = await fetch('../../../reddit_popular_2025-09-09.json');
+            const response = await fetch('../../../SampleData/reddit_popular_2025-09-09.json');
             const json = await response.json();
             return json;
         }
-        
-    }
-);
-export const loadBackupLinks = createAsyncThunk(
-    'links/loadBackupLinks',
-    async (arg, thunkAPI) => {
-        const response = await fetch('../../../reddit_popular_2025-09-09.json');
-        const json = await response.json();
-        return json;
     }
 );
 
@@ -47,22 +38,10 @@ export const linksSlice = createSlice({
                 state.isLoading = false;
                 state.hasError = true;
             })
-            .addCase(loadBackupLinks.pending, (state, action) => {
-                state.isLoading = true;
-                state.hasError = false;
-            })
-            .addCase(loadBackupLinks.fulfilled, (state, action) => {
-                state.links = action.payload.data.children;
-                state.isLoading = false;
-                state.hasError = false;
-            })
-            .addCase(loadBackupLinks.rejected, (state, action) => {
-                state.isLoading = false;
-                state.hasError = true;
-            })
             .addDefaultCase((state, action) => {})
     },
 });
 
 export const selectLinks = (state) => state.links.links;
+export const linksLoading = (state) => state.links.isLoading;
 export default linksSlice.reducer;
