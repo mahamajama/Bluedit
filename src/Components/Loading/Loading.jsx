@@ -1,10 +1,11 @@
-
+import loadingTicker from '../../assets/loading_light.gif';
 
 export default function Loading() {
     return (
-        <div>
-            <img src='src/assets/loading_light.gif' style={{width: '150px', imageRendering: 'pixelated'}} />
-        </div>
+        <img 
+            src={loadingTicker} 
+            style={{width: '150px', imageRendering: 'pixelated'}} 
+        />
     );
 }
 

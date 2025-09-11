@@ -11,7 +11,9 @@ function App() {
       <Routes>
         <Route path="/" element={<AppLayout/>}>
           <Route index element={<Links/>}/>
+          <Route path="r/:subreddit" element={<Links/>}/>
           <Route path="r/:subreddit/comments/:id" element={<Comments/>}/>
+          <Route path="/search" element={<Links/>}/>
         </Route>
       </Routes>
     </BrowserRouter>
