@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { getRandomCommentsSample } from '../../utils/sampleData';
 
 export const loadComments = createAsyncThunk(
     'comments/loadComments',
@@ -8,22 +9,12 @@ export const loadComments = createAsyncThunk(
             const json = await response.json();
             return json;
         } catch(error) { // if you run out of requests, use archived data as a placeholder
-            const response = await fetch(getRandomSampleData());
+            const response = await fetch(`../../../SampleData/${getRandomCommentsSample()}`);
             const json = await response.json();
             return json;
         }
     }
 );
-
-const getRandomSampleData = () => {
-    const x = Math.floor(Math.random() * 2);
-    if (x > 0) {
-        return '../../../SampleData/commentsSample_external.json';
-    }
-    else {
-        return '../../../SampleData/commentsSample_self.json';
-    }
-}
 
 export const commentsSlice = createSlice({
     name: 'comments',

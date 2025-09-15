@@ -8,13 +8,11 @@ export default function SearchBar() {
     const dispatch = useDispatch();
     const query = useSelector(selectQuery);
     return (
-        <div>
-            <input 
-                type="text"
-                value={query}
-                onChange={(e) => dispatch(setQuery(e.target.value))}
-                className="searchBar"
-            />
-        </div>
+        <input 
+            type="text"
+            value={query}
+            onChange={(e) => dispatch(setQuery(e.target.value))}
+            className="searchBar"
+        />
     );
 }

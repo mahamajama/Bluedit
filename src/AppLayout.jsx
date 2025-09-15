@@ -1,20 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { Outlet, NavLink } from "react-router";
+import { Outlet, Link } from "react-router";
 
 import Search from './Components/Search/Search';
 
 export default function AppLayout() {
     return (
-        <div>
-            <header>
-                <h1>BLUEDIT</h1>
+        <main>
+            <header className="header">
+                <Link to="/" id="logo">BLUEDIT</Link>
+                <Search />
             </header>
-            <main>
-                <div className="searchContainer">
-                    <Search />
-                </div>
+            <div className="contentContainer">
                 <Outlet />
-            </main>
-        </div>
+            </div>
+        </main>
     );
 }

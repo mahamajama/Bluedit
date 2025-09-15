@@ -15,15 +15,30 @@
   }
 }
 
-.searchContainer {
+main {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+header {
     position: sticky;
+    width: 100%;
+    top: 40px;
+    z-index: 2;
+}
+
+#logo {
+  font-weight: 900;
+}
+
+.contentContainer {
+    position: relative;
     top: 60px;
-    margin: 0 auto;
+    z-index: 1;
 }
 
 .listContainer {
-    margin: 0 auto;
-    max-width: 800px;
     text-align: left;
 }
 
@@ -36,4 +51,18 @@
     color:rgb(192, 212, 255);
     text-align: left;
     margin-bottom: 10px;
+}
+
+.linkDetails {
+  display: flex;
+  margin: 0 0 20px;
+  text-align: left;
+}
+
+.subredditName {
+  margin: 0 30px 0 0;
+}
+
+.subredditTab {
+  margin-right: 14px;
 }

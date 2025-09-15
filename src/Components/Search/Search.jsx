@@ -1,25 +1,41 @@
 import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router';
 
-import { search, searchSubreddits, setQuery, selectQuery } from '../Search/searchSlice';
+import { selectQuery, selectOptions } from '../Search/searchSlice';
 import './Search.css';
 import SearchBar from './SearchBar';
 import SearchOptions from './SearchOptions';
 
 export default function Search() {
-    const dispatch = useDispatch();
+    const navigate = useNavigate();
     
     const query = useSelector(selectQuery);
+    const options = useSelector(selectOptions);
     const [optionsOpen, setOptionsOpen] = useState(false);
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        if (options.type === 'subreddits') {
-            dispatch(searchSubreddits(query));
-        } else {
-            dispatch(search(queryObject));
+        function getSearchParams() {
+            const params = new URLSearchParams();
+            params.append("q", encodeURIComponent(query));
+            params.append("sort", options.sort);
+            params.append("t", options.t);
+            if (!options.safeSearch) {
+                params.append("include_over_18", 'on');
+            }
+            return params;
         }
+        const params = getSearchParams();
+        let path = '';
+        if (options.subredditSearch) {
+            path = `/subreddits/search?${params.toString()}`;
+        } else {
+            path = `/search?${params.toString()}`;
+        }
+
+        navigate(path);
     }
 
     const toggleSearchOptions = () => {

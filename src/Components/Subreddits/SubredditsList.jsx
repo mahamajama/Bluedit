@@ -1,16 +1,7 @@
-import { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 
 import SubredditListing from './SubredditListing';
-import { selectSubreddits, loadSubreddits } from './subredditsSlice';
 
-
-export default function SubredditsList() {
-    const dispatch = useDispatch();
-    useEffect(() => {
-        dispatch(loadSubreddits());
-    }, []);
-    const subreddits = useSelector(selectSubreddits);
+export default function SubredditsList({ subreddits }) {
     return (
         <div className="listContainer">
             {subreddits.map(sub => {

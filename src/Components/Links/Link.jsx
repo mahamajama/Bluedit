@@ -1,19 +1,25 @@
-import { Link, redirect, useParams } from 'react-router';
+import { useNavigate } from 'react-router';
 
 import styles from './Links.module.css';
 import commentIcon from '../../assets/icon_comment_light.png';
 
 export default function RLink({ link }) {
+    const navigate = useNavigate();
     const data = link.data;
-    const path = `r/${data.subreddit}/comments/${data.id}`;
+    const path = `/r/${data.subreddit}/comments/${data.id}`;
 
     const handleClick = (e) => {
         e.preventDefault();
         if (data.is_self) {
-            redirect(path);
+            navigate(path);
         } else {
             window.location.href = data.url;
         }
+    }
+
+    const handleClickComments = (e) => {
+        e.preventDefault();
+        navigate(path);
     }
 
     return (
@@ -29,6 +35,7 @@ export default function RLink({ link }) {
                 </div>
             </button>
             <button 
+                onClick={handleClickComments}
                 className={styles.commentsButton}
             >
                 <img className={styles.commentsIcon} src={commentIcon} />

@@ -4,7 +4,7 @@ import './App.css';
 import AppLayout from './AppLayout';
 import Links from './Components/Links/Links';
 import Comments from './Components/Comments/Comments';
-import SubredditsList from './Components/Subreddits/SubredditsList';
+import SubredditSearchResults from './Components/Search/SubredditSearchResults';
 import SearchResults from './Components/Search/SearchResults';
 
 function App() {
@@ -14,9 +14,10 @@ function App() {
         <Route path="/" element={<AppLayout/>}>
           <Route index element={<Links/>}/>
           <Route path="r/:subreddit" element={<Links/>}/>
+          <Route path="r/:subreddit/:tab" element={<Links/>}/>
           <Route path="r/:subreddit/comments/:id" element={<Comments/>}/>
           <Route path="search*" element={<SearchResults/>}/>
-          <Route path="subreddits/search*" element={<SubredditsList/>}/>
+          <Route path="subreddits/search*" element={<SubredditSearchResults/>}/>
         </Route>
       </Routes>
     </BrowserRouter>

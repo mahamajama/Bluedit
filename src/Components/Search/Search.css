@@ -6,19 +6,20 @@
     justify-content: center;
     height: 50px;
     width: 100%;
-    max-width: 500px;
-    margin: 0 auto;
 }
 
 .searchBar {
     border-radius: 30px;
+    width: 100%;
     padding: 20px;
     border: none;
     background-color: rgb(38, 28, 65);
     font-size: 1.2em;
+    text-align: center;
+    flex-grow: 1;
 }
 
-.serachButton {
+.searchButton {
 
 }
 
