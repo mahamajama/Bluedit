@@ -4,8 +4,6 @@
 .searchBarContainer {
     display: flex;
     justify-content: center;
-    position: sticky;
-    top: 60px;
     height: 50px;
     width: 100%;
     max-width: 500px;
@@ -29,7 +27,11 @@
 }
 
 .searchOptionsContainer {
+    position: absolute;
+    width: 100%;
     height: 0;
+    margin: 0 auto;
+    overflow: hidden;
     transition: height 0.2s ease-out;
 
     &.optionsOpen {
@@ -37,8 +39,19 @@
     }
 }
 
-.optionsOpen {
-    
+.searchTypeButton {
+    opacity: 0.5;
+    transition: opacity 0.5s ease-out;
+
+    &.active {
+        opacity: 1;
+    }
+}
+.postsTypeButton {
+    background-color: rgb(19, 74, 146);
+}
+.subredditsTypeButton {
+    background-color: rgb(136, 69, 14);
 }
 
 

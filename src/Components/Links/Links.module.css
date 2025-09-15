@@ -1,10 +1,4 @@
 
-.linkContainer {
-    display: grid;
-    grid-template-columns: 1fr 100px;
-    width: 100%;
-    margin-bottom: 10px;
-}
 
 .link {
     grid-area: 1 / 1 / 1 / -1;
@@ -13,12 +7,6 @@
     border: 1px solid rgb(155, 155, 207);
     background-color: rgb(60, 34, 131);
     color:rgb(192, 212, 255);
-    text-align: left;
-}
-
-.linksContainer {
-    margin: 0 auto;
-    max-width: 800px;
     text-align: left;
 }
 
@@ -43,4 +31,8 @@
 
 .numComments {
     margin: 2px auto 0;
+}
+
+.linkContainer {
+    grid-template-columns: 1fr 100px;
 }

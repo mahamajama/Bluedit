@@ -1,4 +1,5 @@
 #root {
+  width: 100%;
   max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
@@ -12,4 +13,27 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.searchContainer {
+    position: sticky;
+    top: 60px;
+    margin: 0 auto;
+}
+
+.listContainer {
+    margin: 0 auto;
+    max-width: 800px;
+    text-align: left;
+}
+
+.listingContainer {
+    display: grid;
+    width: 100%;
+    padding: 8px;
+    border: 1px solid rgb(155, 155, 207);
+    background-color: rgb(60, 34, 131);
+    color:rgb(192, 212, 255);
+    text-align: left;
+    margin-bottom: 10px;
 }

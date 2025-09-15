@@ -1,37 +1,44 @@
+import { useSelector, useDispatch } from 'react-redux';
 
+import { selectOptions, setSafeSearch, setSubredditSearch, setSortMode, setTime } from './searchSlice';
 
-export default function SearchOptions({ options, onChangeOptions }) {
-    const types = ['posts', 'communities', 'comments', 'media', 'people'];
+export default function SearchOptions() {
+    const dispatch = useDispatch();
+    const options = useSelector(selectOptions);
     function capitalizeFirstLetter(string) {
         return String(string).charAt(0).toUpperCase() + String(string).slice(1);
     }
 
+    const handlePostsTypeClicked = (e) => {
+        e.preventDefault();
+        dispatch(setSubredditSearch(false));
+    }
+    const handleSubredditsTypeClicked = (e) => {
+        e.preventDefault();
+        dispatch(setSubredditSearch(true));
+    }
+
     return (
         <div>
-            <p>
+            <div>
                 Type:
-                {types.map(typeName => {
-                    return (
-                        <label key={typeName}>
-                            <input 
-                                type="radio"
-                                name="searchType"
-                                value={typeName}
-                                checked={options.type === typeName}
-                                className="searchTypeRadio"
-                                onChange={(e) => onChangeOptions({...options, type: e.target.value})}
-                            />
-                            {capitalizeFirstLetter(typeName)}
-                        </label>
-                    );
-                })}
-            </p>
+                <div>
+                    <button
+                        onClick={handlePostsTypeClicked}
+                        className={`searchTypeButton postsTypeButton ${!options.subredditSearch ? 'active' : ''}`}
+                    >Posts</button>
+                    <button
+                        onClick={handleSubredditsTypeClicked}
+                        className={`searchTypeButton subredditsTypeButton  ${options.subredditSearch ? 'active' : ''}`}
+                    >Subreddits</button>
+                </div>
+            </div>
             <label>
                 Sort by:
                 <select
                     name="sortBy"
                     value={options.sort}
-                    onChange={(e) => onChangeOptions({...options, sort: e.target.value})}
+                    onChange={(e) => dispatch(setSortMode(e.target.value))}
                 >
                     <option value="relevance">Relevance</option>
                     <option value="top">Top</option>
@@ -44,7 +51,7 @@ export default function SearchOptions({ options, onChangeOptions }) {
                 <select 
                     name="linksFrom"
                     value={options.t}
-                    onChange={(e) => onChangeOptions({...options, t: e.target.value})}
+                    onChange={(e) => dispatch(setTime(e.target.value))}
                 >
                     <option value="all">All time</option>
                     <option value="day">24 hours</option>
@@ -58,8 +65,8 @@ export default function SearchOptions({ options, onChangeOptions }) {
                 <input 
                     type="checkbox" 
                     name="safeSearch"
-                    value={!options.includeOver18}
-                    onChange={(e) => onChangeOptions({...options, includeOver18: !e.target.value})}
+                    value={options.safeSearch}
+                    onChange={(e) => dispatch(setSafeSearch(e.target.value))}
                     className="safeSearch"
                 />
             </label>

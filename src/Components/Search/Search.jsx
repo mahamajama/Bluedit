@@ -1,34 +1,25 @@
-import { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { search } from '../Links/linksSlice';
+import { search, searchSubreddits, setQuery, selectQuery } from '../Search/searchSlice';
 import './Search.css';
-import styles from './Search.module.css';
+import SearchBar from './SearchBar';
 import SearchOptions from './SearchOptions';
 
 export default function Search() {
     const dispatch = useDispatch();
     
-    const [query, setQuery] = useState('');
-    const [options, setOptions] = useState({
-        type: 'posts',
-        sort: 'relevance',
-        t: 'all',
-        includeOver18: true,
-    });
+    const query = useSelector(selectQuery);
     const [optionsOpen, setOptionsOpen] = useState(false);
-
-    const handleChangeOptions = (options) => {
-        setOptions(options);
-    }
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const queryObject = {
-            query: query,
-            ...options
+
+        if (options.type === 'subreddits') {
+            dispatch(searchSubreddits(query));
+        } else {
+            dispatch(search(queryObject));
         }
-        dispatch(search(queryObject));
     }
 
     const toggleSearchOptions = () => {
@@ -44,16 +35,11 @@ export default function Search() {
             <form onSubmit={handleSubmit}>
                 <div className="searchBarContainer">
                     <button className="searchOptionsButton" type="button" onClick={toggleSearchOptions}>O</button>
-                    <input 
-                        type="text"
-                        value={query}
-                        onChange={(e) => setQuery(e.target.value)}
-                        className="searchBar"
-                    />
-                    <button type="submit" className={styles.searchButton}>S</button>
+                    <SearchBar/>
+                    <button type="submit" className="searchButton">S</button>
                 </div>
                 <div className={`searchOptionsContainer ${optionsOpen ? 'optionsOpen' : ''}`}>
-                    <SearchOptions options={options} onChangeOptions={handleChangeOptions} />
+                    <SearchOptions/>
                 </div>
             </form>
         </div>

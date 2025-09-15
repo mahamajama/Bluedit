@@ -8,9 +8,13 @@ export default function AppLayout() {
         <div>
             <header>
                 <h1>BLUEDIT</h1>
-                <Search />
             </header>
-            <Outlet />
+            <main>
+                <div className="searchContainer">
+                    <Search />
+                </div>
+                <Outlet />
+            </main>
         </div>
     );
 }

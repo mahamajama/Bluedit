@@ -17,7 +17,7 @@ export default function RLink({ link }) {
     }
 
     return (
-        <div className={styles.linkContainer}>
+        <div className="listingContainer">
             <button 
                 onClick={(e) => handleClick(e)} 
                 className={styles.link}
