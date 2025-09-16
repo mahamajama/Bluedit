@@ -1,11 +1,13 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import { Link } from 'react-router';
 
 import CommentsList from './CommentsList';
-import styles from './Comments.module.css';
+import { expandSection, collapseSection } from '../../utils/effects';
 
 export default function Comment({ comment }) {
     const { body, author, score } = comment.data;
     const [showReplies, setShowReplies] = useState(false);
+    const repliesContainer = useRef(null);
 
     let replies = [];
     if (comment.data.replies) {
@@ -18,17 +20,27 @@ export default function Comment({ comment }) {
         if (showReplies) setShowReplies(false);
         else setShowReplies(true);
     }
+    useEffect(() => {
+        if (showReplies) {
+            expandSection(repliesContainer.current)
+        } else {
+            collapseSection(repliesContainer.current)
+        }
+    }, [showReplies])
 
     return (
-        <div className={styles.commentContainer}>
-            <h4 className={styles.commentAuthor}>{author}</h4>
+        <div className="commentContainer">
+            <Link to={`/user/${author}`} className="commentAuthor">{author}</Link>
             <p>{body}</p>
-            <p className={styles.commentScore}>{score}</p>
-            <button onClick={(e) => toggleReplies(e)}>
-                {replies.length} replies
+            <p className="commentScore">{score}</p>
+            <button
+                onClick={toggleReplies}
+                className="toggleRepliesButton"
+            >
+                {replies.length} {replies.length === 1 ? 'reply' : 'replies'}
             </button>
-            <div className={styles.repliesContainer}>
-                {showReplies && <CommentsList comments={replies} />}
+            <div ref={repliesContainer} className={`repliesContainer`}>
+                {<CommentsList comments={replies}/>}
             </div>
         </div>
     );

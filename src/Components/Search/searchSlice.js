@@ -45,6 +45,8 @@ export const searchSlice = createSlice({
         },
         results: [],
         subredditResults: [],
+        isLoading: false,
+        hasError: false,
     },
     reducers: {
         setQuery: (state, action) => {
