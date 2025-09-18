@@ -1,8 +1,8 @@
 
-// collapsible height via: https://css-tricks.com/using-css-transitions-auto-dimensions/
+// === Collapsible Height via: https://css-tricks.com/using-css-transitions-auto-dimensions/
 
 export function collapseSection(element) {
-  element.removeEventListener('transitionend', onEnd);
+  element.removeEventListener('transitionend', onExpandEnd);
   //var sectionHeight = element.scrollHeight;
   const currentHeight = element.offsetHeight;
 
@@ -21,11 +21,11 @@ export function collapseSection(element) {
 export function expandSection(element) {
   var sectionHeight = element.scrollHeight;
   element.style.height = sectionHeight + 'px';
-  element.addEventListener('transitionend', onEnd);
+  element.addEventListener('transitionend', onExpandEnd);
 }
 
-function onEnd(e) {
+function onExpandEnd(e) {
   var element = e.target;
-  element.removeEventListener('transitionend', onEnd);
+  element.removeEventListener('transitionend', onExpandEnd);
   element.style.height = 'auto';
 }

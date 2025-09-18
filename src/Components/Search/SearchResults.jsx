@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { search, selectResults, resultsLoading } from './searchSlice';
 import Loading from '../Loading/Loading';
 import LinksList from '../Links/LinksList';
+import Details from "../Details/Details";
 
 export default function SearchResults() {
     const dispatch = useDispatch();
@@ -14,12 +15,30 @@ export default function SearchResults() {
 
     useEffect(() => {
         dispatch(search(params));
-    }, []);
+    }, [params]);
 
-    if (loading) return <Loading/>;
+    const tabs = [
+        ['/search', 'Posts'],
+        ['/subreddits/search', 'Subreddits'],
+    ]
+
+    const sort = {
+        relevance: 'Relevance',
+        top: 'Top',
+        new: 'New',
+        comments: 'Comments',
+    }
+
     return (
-        <div>
-            <LinksList links={links} />
-        </div>
+        <>
+            <Details
+                title={`Search: ${params.get("q")}`} 
+                tabs={tabs}
+                sort={sort}
+                time={true}
+                safeSearch={true}
+            />
+            {loading ? <Loading/> : <LinksList links={links} />}
+        </>
     );
 }

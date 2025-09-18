@@ -4,8 +4,8 @@ import { Link } from 'react-router';
 import CommentsList from './CommentsList';
 import { expandSection, collapseSection } from '../../utils/effects';
 
-export default function Comment({ comment }) {
-    const { body, author, score } = comment.data;
+export default function Comment({ comment, showLinkTitle }) {
+    const { body, author, score, link_title } = comment.data;
     const [showReplies, setShowReplies] = useState(false);
     const repliesContainer = useRef(null);
 
@@ -30,6 +30,7 @@ export default function Comment({ comment }) {
 
     return (
         <div className="commentContainer">
+            {showLinkTitle && <Link to={`/user/${author}`} className="linkTitle">{link_title}</Link>}
             <Link to={`/user/${author}`} className="commentAuthor">{author}</Link>
             <p>{body}</p>
             <p className="commentScore">{score}</p>

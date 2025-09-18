@@ -1,33 +1,72 @@
-import { useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router';
+import { useEffect, useState } from 'react';
+import { useParams, useNavigate, useSearchParams } from 'react-router';
 import { useSelector, useDispatch } from 'react-redux';
 
 import UserActivityList from './UserActivityList';
-import { selectUser, selectActivity, activityLoading, loadUserActivity, loadUserComments, loadUserSubmitted } from './userSlice';
+import { selectActivity, activityLoading, loadUserActivity, loadUserComments, loadUserSubmitted } from './userSlice';
 import Loading from '../Loading/Loading';
+import Details from '../Details/Details';
 
 export default function User() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    //const user = useSelector(selectUser);
+    const [params] = useSearchParams();
     const activity = useSelector(selectActivity);
     const loading = useSelector(activityLoading);
     const { user, tab } = useParams();
+
+    const defaultSort = {
+        new: 'New',
+        hot: 'Hot',
+        top: 'Top',
+        controversial: 'Controversial',
+    }
+    const submittedSort = {
+        hot: 'Hot',
+        new: 'New',
+        top: 'Top',
+        controversial: 'Controversial',
+    }
+    const [sort, setSort] = useState(defaultSort);
+    const [showTime, setShowTime] = useState(false);
+    
     useEffect(() => {
         if (tab === 'comments') {
-            dispatch(loadUserComments(user));
+            setSort(defaultSort);
+            dispatch(loadUserComments({user: user, params: params}));
         } else if (tab === 'submitted') {
-            dispatch(loadUserSubmitted(user));
+            setSort(submittedSort);
+            dispatch(loadUserSubmitted({user: user, params: params}));
         } else {
-            dispatch(loadUserActivity(user));
+            setSort(defaultSort);
+            dispatch(loadUserActivity({user: user, params: params}));
         }
-    }, [user, tab]);
+    }, [user, tab, params]);
 
-    if (loading) return <Loading/>;
+    useEffect(() => {
+        const currentSort = params.get("sort");
+        if (currentSort === 'controversial' || currentSort === 'top') {
+            setShowTime(true);
+        } else {
+            setShowTime(false);
+        }
+    }, [params]);
+
+    const tabs = [
+        [`/user/${user}`, 'Overview'],
+        [`/user/${user}/comments`, 'Comments'],
+        [`/user/${user}/submitted`, 'Submitted'],
+    ];
+
     return (
-        <div>
-            <h1>{user}</h1>
-            <UserActivityList activity={activity}/>
-        </div>
+        <>
+            <Details
+                title={user} 
+                tabs={tabs}
+                sort={sort}
+                time={showTime}
+            />
+            {loading ? <Loading/> : <UserActivityList activity={activity}/>}
+        </>
     );
 }

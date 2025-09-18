@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router';
+import { useNavigate, useSearchParams, useLocation } from 'react-router';
 
 import { selectQuery, selectOptions } from '../Search/searchSlice';
 import './Search.css';
@@ -9,14 +9,32 @@ import SearchOptions from './SearchOptions';
 
 export default function Search() {
     const navigate = useNavigate();
+    const [params, setParams] = useSearchParams();
+    let location = useLocation();
     
     const query = useSelector(selectQuery);
     const options = useSelector(selectOptions);
     const [optionsOpen, setOptionsOpen] = useState(false);
+    const searchOptionsButton = useRef(null);
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
+    const [searchPageOpen, setSearchPageOpen] = useState(false);
+    useEffect(() => {
+        const currentPath = location.pathname;
+        setSearchPageOpen(currentPath.slice(-7, currentPath.length) === '/search');
 
+        if (searchPageOpen && optionsOpen) {
+            setOptionsOpen(false);
+        }
+    }, [location]);
+
+    useEffect(() => {
+        searchOptionsButton.current.disabled = searchPageOpen;
+        if (searchPageOpen && optionsOpen){
+            setOptionsOpen(false);
+        }
+    }, [searchPageOpen])
+
+    function navigateToSearch() {
         function getSearchParams() {
             const params = new URLSearchParams();
             params.append("q", encodeURIComponent(query));
@@ -38,10 +56,23 @@ export default function Search() {
         navigate(path);
     }
 
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        if (searchPageOpen) {
+            setParams((params) => {
+                params.set("q", encodeURIComponent(query));
+                return params;
+            })
+        } else {
+            navigateToSearch();
+        }
+    }
+
     const toggleSearchOptions = () => {
         if (optionsOpen) {
             setOptionsOpen(false);
-        } else {
+        } else if (!searchPageOpen) {
             setOptionsOpen(true);
         }
     }
@@ -50,7 +81,12 @@ export default function Search() {
         <div>
             <form onSubmit={handleSubmit}>
                 <div className="searchBarContainer">
-                    <button className="searchOptionsButton" type="button" onClick={toggleSearchOptions}>O</button>
+                    <button 
+                        className={`searchOptionsButton`} 
+                        type="button" 
+                        onClick={toggleSearchOptions}
+                        ref={searchOptionsButton}
+                    >O</button>
                     <SearchBar/>
                     <button type="submit" className="searchButton">S</button>
                 </div>

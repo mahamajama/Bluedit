@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 
 import RLink from '../Links/Link';
-import UserActivityComment from './UserActivityComment';
 import Comment from '../Comments/Comment';
 
 export default function UserActivityList({ activity }) {
@@ -13,7 +12,11 @@ export default function UserActivityList({ activity }) {
             if (item.kind === 't3') {
                 arr.push(<RLink link={item} key={item.data.id}/>);
             } else if (item.kind === 't1') {
-                arr.push(<Comment comment={item} key={item.data.id} />);
+                arr.push(<Comment 
+                            comment={item} 
+                            key={item.data.id} 
+                            showLinkTitle={true}
+                        />);
             }
         }
         return arr;

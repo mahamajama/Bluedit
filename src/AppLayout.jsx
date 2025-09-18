@@ -6,7 +6,7 @@ import Search from './Components/Search/Search';
 export default function AppLayout() {
     return (
         <main>
-            <header className="header">
+            <header id="header">
                 <Link to="/" id="logo">BLUEDIT</Link>
                 <Search />
             </header>

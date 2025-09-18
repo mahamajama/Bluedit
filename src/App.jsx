@@ -17,8 +17,8 @@ function App() {
           <Route path="r/:subreddit" element={<Links/>}/>
           <Route path="r/:subreddit/:tab" element={<Links/>}/>
           <Route path="r/:subreddit/comments/:id" element={<Comments/>}/>
-          <Route path="search*" element={<SearchResults/>}/>
-          <Route path="subreddits/search*" element={<SubredditSearchResults/>}/>
+          <Route path="search" element={<SearchResults/>}/>
+          <Route path="subreddits/search" element={<SubredditSearchResults/>}/>
           <Route path="user/:user" element={<User/>}/>
           <Route path="user/:user/:tab" element={<User/>}/>
         </Route>

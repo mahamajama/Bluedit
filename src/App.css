@@ -22,9 +22,10 @@ main {
 }
 
 header {
-    position: sticky;
+    position: fixed;
     width: 100%;
-    top: 40px;
+    max-width: 800px;
+    top: 36px;
     z-index: 2;
 }
 
@@ -32,9 +33,16 @@ header {
   font-weight: 900;
 }
 
+.loadingTicker {
+  position: fixed;
+  width: 150px;
+  margin: auto;
+  image-rendering: pixelated;
+}
+
 .contentContainer {
     position: relative;
-    top: 60px;
+    top: 142px;
     z-index: 1;
 }
 
@@ -43,7 +51,7 @@ header {
 }
 
 .listingContainer {
-    display: grid;
+    display: flex;
     width: 100%;
     padding: 8px;
     border: 1px solid rgb(155, 155, 207);
@@ -53,18 +61,63 @@ header {
     margin-bottom: 10px;
 }
 
-.linkDetails {
+.detailsContainer {
   display: flex;
-  margin: 0 0 20px;
+  margin: 10px 0 20px;
   text-align: left;
 }
 
-.subredditName {
+.detailsTitle {
   margin: 0 30px 0 0;
 }
 
-.subredditTab {
+.detailsTab {
   margin-right: 14px;
+}
+
+.linkContainer {
+  width: 100%;
+  margin-right: 10px;
+}
+
+.linkTitleContainer {
+  margin-bottom: 10px;
+}
+
+.linkTitle {
+  color: rgb(186, 233, 255);
+  font-size: 1.2em;
+  font-weight: 600;
+}
+
+.linkTitle:hover {
+  color: rgb(120, 174, 255);
+}
+
+.linkFlair {
+  display: inline;
+  margin-left: 10px;
+  padding: 2px 4px;
+  font-size: 0.55em;
+  background-color: rgb(33, 23, 51);
+  color: rgb(174, 160, 255);
+  border: 1px solid rgb(145, 130, 229);
+}
+
+.linkByLine {
+  margin-top: 4px;
+  font-size: 0.82em;
+}
+
+.linkDetailsContainer {
+
+}
+
+.linkScoreContainer {
+  float: right;
+}
+.linkScoreContainer p {
+  display: inline;
 }
 
 .commentsContainer {

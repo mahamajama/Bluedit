@@ -1,17 +1,18 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams, NavLink } from 'react-router';
 import { useSelector, useDispatch } from 'react-redux';
 
 import Loading from '../Loading/Loading';
 import LinksList from './LinksList';
+import Details from '../Details/Details';
 import { selectLinks, getLinks, linksLoading } from './linksSlice';
-
-import styles from './Links.module.css';
 
 export default function Links() {
     const dispatch = useDispatch();
     const links = useSelector(selectLinks);
     const { subreddit, tab } = useParams();
+    const [showTime, setShowTime] = useState(false);
+
     let subredditName = subreddit ? subreddit : 'popular';
     let tabName = tab ? tab : 'hot';
     let loading = useSelector(linksLoading);
@@ -19,27 +20,38 @@ export default function Links() {
     useEffect(() => {
         subredditName = subreddit ? subreddit : 'popular';
         tabName = tab ? tab : 'hot';
+        setTabOptions(tabName);
         dispatch(getLinks({
             subreddit: subredditName, 
             tab: tabName,
         }));
     }, [subreddit, tab]);
 
-    if (loading) return <Loading/>;
+    function setTabOptions(currentTab) {
+        if (tab === 'controversial' || tab === 'top') {
+            setShowTime(true);
+        } else {
+            setShowTime(false);
+        }
+    }
+
+    const tabs = [
+        [`/r/${subredditName}`, 'Hot'],
+        [`/r/${subredditName}/new`, 'New'],
+        [`/r/${subredditName}/rising`, 'Rising'],
+        [`/r/${subredditName}/controversial`, 'Controversial'],
+        [`/r/${subredditName}/top`, 'Top'],
+    ];
 
     return (
-        <div>
-            <div className="linkDetails">
-                <p className="subredditName">{`r/${subredditName}`}</p>
-                <div>
-                    <NavLink to={`/r/${subredditName}`} className="subredditTab">Hot</NavLink>
-                    <NavLink to={`/r/${subredditName}/new`} className="subredditTab">New</NavLink>
-                    <NavLink to={`/r/${subredditName}/rising`} className="subredditTab">Rising</NavLink>
-                    <NavLink to={`/r/${subredditName}/controversial`} className="subredditTab">Controversial</NavLink>
-                    <NavLink to={`/r/${subredditName}/top`} className="subredditTab">Top</NavLink>
-                </div>
-            </div>
-            <LinksList links={links} />
-        </div>
+        <>
+            <Details
+                title={`r/${subredditName}`} 
+                tabs={tabs}
+                sort={null}
+                time={showTime}
+            />
+            {loading ? <Loading/> : <LinksList links={links}/>}
+        </>
     );
 }

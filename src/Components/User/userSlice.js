@@ -3,9 +3,10 @@ import { getRandomSearchSample, getRandomCommentsSample } from '../../utils/samp
 
 export const loadUserActivity = createAsyncThunk(
     'user/loadUserActivity',
-    async (user) => {
+    async ({ user, params }) => {
         try {
-            const response = await fetch(`https://www.reddit.com/user/${user}.json`);
+            const paramString = params.size > 0 ? `?${params.toString()}` : '';
+            const response = await fetch(`https://www.reddit.com/user/${user}.json${paramString}`);
             const json = await response.json();
             return json;
         } catch(error) { // if you run out of requests, use archived data as a placeholder
@@ -18,9 +19,10 @@ export const loadUserActivity = createAsyncThunk(
 );
 export const loadUserComments = createAsyncThunk(
     'user/loadUserComments',
-    async (user) => {
+    async ({ user, params }) => {
         try {
-            const response = await fetch(`https://www.reddit.com/user/${user}/comments.json`);
+            const paramString = params.size > 0 ? `?${params.toString()}` : '';
+            const response = await fetch(`https://www.reddit.com/user/${user}/comments.json${paramString}`);
             const json = await response.json();
             return json;
         } catch(error) { // if you run out of requests, use archived data as a placeholder
@@ -33,9 +35,10 @@ export const loadUserComments = createAsyncThunk(
 );
 export const loadUserSubmitted = createAsyncThunk(
     'user/loadUserSubmitted',
-    async (user) => {
+    async ({ user, params }) => {
         try {
-            const response = await fetch(`https://www.reddit.com/user/${user}/submitted.json`);
+            const paramString = params.size > 0 ? `?${params.toString()}` : '';
+            const response = await fetch(`https://www.reddit.com/user/${user}/submitted.json${paramString}`);
             const json = await response.json();
             return json;
         } catch(error) { // if you run out of requests, use archived data as a placeholder

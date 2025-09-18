@@ -24,7 +24,12 @@
 }
 
 .searchOptionsButton {
+    opacity: 1;
+    transition: opacity 0.7s ease-out;
+}
 
+.searchOptionsButton:disabled {
+    opacity: 0.25;
 }
 
 .searchOptionsContainer {

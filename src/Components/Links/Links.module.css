@@ -1,19 +1,5 @@
 
 
-.link {
-    grid-area: 1 / 1 / 1 / -1;
-    width: 100%;
-    padding: 8px;
-    border: 1px solid rgb(155, 155, 207);
-    background-color: rgb(60, 34, 131);
-    color:rgb(192, 212, 255);
-    text-align: left;
-}
-
-.title {
-    flex-grow: 1;
-}
-
 .commentsButton {
     grid-area: 1 / 2 / 1 / -1;
     justify-self: end;
@@ -31,8 +17,4 @@
 
 .numComments {
     margin: 2px auto 0;
-}
-
-.linkContainer {
-    grid-template-columns: 1fr 100px;
 }
