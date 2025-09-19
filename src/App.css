@@ -51,7 +51,6 @@ header {
 }
 
 .listingContainer {
-    display: flex;
     width: 100%;
     padding: 8px;
     border: 1px solid rgb(155, 155, 207);
@@ -75,6 +74,10 @@ header {
   margin-right: 14px;
 }
 
+.linkContainerContainer {
+  display: flex;
+}
+
 .linkContainer {
   width: 100%;
   margin-right: 10px;
@@ -84,10 +87,23 @@ header {
   margin-bottom: 10px;
 }
 
+.thumbnailContainer {
+  width: 100px;
+  margin-right: 10px;
+}
+.thumbnail {
+  max-width: 100%;
+  max-height: 100%;
+}
+
 .linkTitle {
   color: rgb(186, 233, 255);
   font-size: 1.2em;
   font-weight: 600;
+
+  &.stickied {
+    color: rgb(237, 205, 255);
+  }
 }
 
 .linkTitle:hover {
@@ -109,15 +125,62 @@ header {
   font-size: 0.82em;
 }
 
-.linkDetailsContainer {
+.linkDomain {
+  display: inline;
+  font-size: 0.9em;
+}
 
+.nsfwTag {
+  display: inline;
+  padding: 2px 4px;
+  background-color: rgb(199, 77, 108);
+  color: white;
+  font-size: 0.7em;
+}
+
+.linkDetailsContainer {
+  font-size: 0.8em;
+}
+
+.linkDetailsContainer p {
+  margin: 0 6px 0 0;
+}
+
+.linkBottomContainer {
+  display: flex;
+  justify-content: end;
 }
 
 .linkScoreContainer {
-  float: right;
+  margin-left: 10px;
 }
 .linkScoreContainer p {
   display: inline;
+}
+.linkScoreLabel {
+  margin-right: 2px;
+  font-size: 0.6em;
+  font-weight: 800;
+  font-style: italic;
+  letter-spacing: 0.3em;
+}
+.linkScore {
+  font-size: 0.9em;
+}
+
+.linkPreviewButton {
+  font-size: 12px;
+  width: 100%;
+  padding: 0 8px;
+  text-align: left;
+}
+
+.linkPreviewContainer {
+  width: 100%;
+  height: 0;
+  margin-top: 0;
+  overflow: hidden;
+  transition: height 0.25s ease-out, margin-top 0.17s ease-out;
 }
 
 .commentsContainer {

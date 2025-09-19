@@ -15,24 +15,24 @@ export default function Search() {
     const query = useSelector(selectQuery);
     const options = useSelector(selectOptions);
     const [optionsOpen, setOptionsOpen] = useState(false);
-    const searchOptionsButton = useRef(null);
+    const [searchBarFocused, setSearchBarFocused] = useState(false);
 
     const [searchPageOpen, setSearchPageOpen] = useState(false);
     useEffect(() => {
         const currentPath = location.pathname;
-        setSearchPageOpen(currentPath.slice(-7, currentPath.length) === '/search');
+        const isOpen = currentPath.slice(-7, currentPath.length) === '/search';
+        setSearchPageOpen(isOpen);
 
-        if (searchPageOpen && optionsOpen) {
+        if (isOpen && optionsOpen) {
             setOptionsOpen(false);
         }
     }, [location]);
 
     useEffect(() => {
-        searchOptionsButton.current.disabled = searchPageOpen;
         if (searchPageOpen && optionsOpen){
             setOptionsOpen(false);
         }
-    }, [searchPageOpen])
+    }, [searchPageOpen]);
 
     function navigateToSearch() {
         function getSearchParams() {
@@ -69,25 +69,28 @@ export default function Search() {
         }
     }
 
-    const toggleSearchOptions = () => {
-        if (optionsOpen) {
-            setOptionsOpen(false);
-        } else if (!searchPageOpen) {
+    const handleFocus = (e) => {
+        setSearchBarFocused(true);
+    }
+    const handleBlur = (e) => {
+        setSearchBarFocused(false);
+        setOptionsOpen(false);
+    }
+
+    useEffect(() => {
+        if (!searchPageOpen && searchBarFocused) {
             setOptionsOpen(true);
         }
-    }
+    }, [searchBarFocused]);
 
     return (
         <div>
             <form onSubmit={handleSubmit}>
                 <div className="searchBarContainer">
-                    <button 
-                        className={`searchOptionsButton`} 
-                        type="button" 
-                        onClick={toggleSearchOptions}
-                        ref={searchOptionsButton}
-                    >O</button>
-                    <SearchBar/>
+                    <SearchBar
+                        onFocus={handleFocus}
+                        onBlur={handleBlur}
+                    />
                     <button type="submit" className="searchButton">S</button>
                 </div>
                 <div className={`searchOptionsContainer ${optionsOpen ? 'optionsOpen' : ''}`}>

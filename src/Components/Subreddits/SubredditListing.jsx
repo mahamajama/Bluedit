@@ -10,7 +10,7 @@ export default function SubredditListing({ data }) {
                 {data.public_description}
             </div>
             <div>
-                {data.subscribers.toLocaleString()}
+                {data.subscribers && data.subscribers.toLocaleString()}
             </div>
         </div>
     );

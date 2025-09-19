@@ -5,6 +5,7 @@ import { useParams } from 'react-router';
 import CommentsList from './CommentsList';
 import Loading from '../Loading/Loading';
 import { selectComments, selectLinkData, loadComments, commentsLoading } from './commentsSlice';
+import { decodeHtml } from '../../utils/helpers';
 
 export default function Comments() {
     const dispatch = useDispatch();
@@ -18,12 +19,6 @@ export default function Comments() {
         const path = `https://www.reddit.com/r/${subreddit}/comments/${id}.json`;
         dispatch(loadComments(path));
     }, []);
-
-    function decodeHtml(html) {
-        var txt = document.createElement("textarea");
-        txt.innerHTML = html;
-        return txt.value;
-    }
     
     if (loading) return <Loading/>;
 
