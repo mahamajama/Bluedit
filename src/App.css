@@ -2,7 +2,6 @@
   width: 100%;
   max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
   text-align: center;
 }
 
@@ -19,18 +18,28 @@ main {
   width: 100%;
   max-width: 800px;
   margin: 0 auto;
+  padding-top: 26px;
 }
 
 header {
-    position: fixed;
-    width: 100%;
-    max-width: 800px;
-    top: 36px;
-    z-index: 2;
+  position: sticky;
+  top: 0;
+  width: 100%;
+  max-width: 800px;
+  padding: 10px 0;
+  z-index: 2;
+  background-color: #080a2b;
 }
 
 #logo {
+  font-size: 2.3em;
   font-weight: 900;
+  margin-bottom: 10px;
+  transition: font-size 0.25s ease-in-out;
+
+  &.collapsed {
+    font-size: 1em;
+  }
 }
 
 .loadingTicker {
@@ -42,7 +51,6 @@ header {
 
 .contentContainer {
     position: relative;
-    top: 142px;
     z-index: 1;
 }
 
@@ -62,7 +70,7 @@ header {
 
 .detailsContainer {
   display: flex;
-  margin: 10px 0 20px;
+  margin: 10px 0 0;
   text-align: left;
 }
 
@@ -84,11 +92,11 @@ header {
 }
 
 .linkTitleContainer {
-  margin-bottom: 10px;
+  margin: 10px 0;
 }
 
 .thumbnailContainer {
-  width: 100px;
+  width: 72px;
   margin-right: 10px;
 }
 .thumbnail {
@@ -124,26 +132,49 @@ header {
   margin-top: 4px;
   font-size: 0.82em;
 }
+.linkByLine a {
+  font-weight: 600;
+}
 
 .linkDomain {
-  display: inline;
   font-size: 0.9em;
 }
 
-.nsfwTag {
-  display: inline;
-  padding: 2px 4px;
-  background-color: rgb(199, 77, 108);
+.linkTag {
+  padding: 2px 6px 3px;
   color: white;
   font-size: 0.7em;
 }
-
-.linkDetailsContainer {
-  font-size: 0.8em;
+.nsfwTag {
+  background-color: rgb(199, 77, 108);
+}
+.stickiedTag {
+  background-color: rgb(136, 122, 62);
 }
 
+.linkDetailsContainer {
+  margin: 0;
+  list-style: none;
+  padding-inline-start: 0;
+  font-size: 0.8em;
+}
+.linkDetailsContainer li {
+  display: inline-block;
+  margin: 0;
+}
+.linkDetailsContainer li + li::before {
+  content: '';
+  display: inline-block;
+  vertical-align: middle;
+  margin: 0 9px;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background-color: currentColor;
+}
 .linkDetailsContainer p {
-  margin: 0 6px 0 0;
+  display: inline;
+  margin: 0;
 }
 
 .linkBottomContainer {

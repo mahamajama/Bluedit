@@ -7,6 +7,7 @@ import Comments from './Components/Comments/Comments';
 import SubredditSearchResults from './Components/Search/SubredditSearchResults';
 import SearchResults from './Components/Search/SearchResults';
 import User from './Components/User/User';
+import Loading from "./Components/Loading/Loading";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path="subreddits/search" element={<SubredditSearchResults/>}/>
           <Route path="user/:user" element={<User/>}/>
           <Route path="user/:user/:tab" element={<User/>}/>
+          <Route path="loading" element={<Loading/>}/>
         </Route>
       </Routes>
     </BrowserRouter>

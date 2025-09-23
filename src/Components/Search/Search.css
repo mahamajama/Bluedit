@@ -2,25 +2,55 @@
 
 
 .searchBarContainer {
-    display: flex;
-    justify-content: center;
+    position: relative;
     height: 50px;
     width: 100%;
+    transition: height 0.25s ease-in-out;
+
+    &.collapsed {
+        height: 10px;
+    }
 }
 
 .searchBar {
     border-radius: 30px;
     width: 100%;
-    padding: 20px;
+    height: 100%;
+    padding: 0 20px;
     border: none;
-    background-color: rgb(38, 28, 65);
+    background-color: #261c41;
     font-size: 1.2em;
     text-align: center;
+    vertical-align: top;
     flex-grow: 1;
+
+    &.pulse {
+        animation: pulse 0.5s forwards cubic-bezier(0.075, 0.82, 0.165, 1);
+    }
+}
+
+@keyframes pulse{
+  from {
+    background-color: #9f9dff;
+  }
+  to {
+    background-color: #261c41;
+  }
 }
 
 .searchButton {
-
+    position: absolute;
+    right: 0;
+    width: 50px;
+    height: 100%;
+    padding: 0;
+    border-radius: 30px;
+    background: radial-gradient(transparent, #4a29a3);
+    background-color: #4a29a3;
+    transition: background-color 0.3s cubic-bezier(.04,.52,.25,.97)
+}
+.searchButton:hover {
+    background-color: #9f9dff;
 }
 
 .searchOptionsButton {

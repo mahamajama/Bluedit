@@ -7,10 +7,13 @@ import './Search.css';
 import SearchBar from './SearchBar';
 import SearchOptions from './SearchOptions';
 
-export default function Search() {
+export default function Search({ collapsed }) {
     const navigate = useNavigate();
     const [params, setParams] = useSearchParams();
     let location = useLocation();
+
+    const searchBar = useRef(null);
+    const searchButton = useRef(null);
     
     const query = useSelector(selectQuery);
     const options = useSelector(selectOptions);
@@ -83,20 +86,30 @@ export default function Search() {
         }
     }, [searchBarFocused]);
 
+    useEffect(() => {
+        if (searchButton.current) {
+            if (collapsed) {
+                searchButton.active = false;
+            } else {
+                searchButton.active = true;
+            }
+        }
+    }, [collapsed])
+
     return (
-        <div>
+        <>
             <form onSubmit={handleSubmit}>
-                <div className="searchBarContainer">
+                <div className={`searchBarContainer ${collapsed ? 'collapsed' : ''}`}>
                     <SearchBar
                         onFocus={handleFocus}
                         onBlur={handleBlur}
                     />
-                    <button type="submit" className="searchButton">S</button>
+                    <button type="submit" className="searchButton"></button>
                 </div>
-                <div className={`searchOptionsContainer ${optionsOpen ? 'optionsOpen' : ''}`}>
+                <div className={`searchOptionsContainer ${optionsOpen ? 'optionsOpen' : ''}`} ref={searchButton}>
                     <SearchOptions/>
                 </div>
             </form>
-        </div>
+        </>
     );
 }

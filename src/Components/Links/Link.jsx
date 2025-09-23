@@ -52,21 +52,22 @@ export default function RLink({ link }) {
         <div className="listingContainer">
             <div className="linkContainerContainer">
                 <div className="thumbnailContainer">
-                    <img src={data.thumbnail} className="thumbnail"/>
+                    {data.thumbnail && <img src={data.thumbnail} className="thumbnail"/>}
                 </div>
                 <div className='linkContainer'>
-                    <div className='linkDetailsContainer'>
-                        {data.over_18 && <p className="nsfwTag">NSFW</p>}
-                        <p className="linkDomain">{data.domain}</p>
-                        {fromOtherSubreddit && <Link to={`/r/${data.subreddit}`} className="linkSubreddit">{data.subreddit_name_prefixed}</Link>}
-                    </div>
+                    <ul className='linkDetailsContainer'>
+                        {data.over_18 && <li><p className="nsfwTag linkTag">NSFW</p></li>}
+                        {data.stickied && <li><p className="stickiedTag linkTag">Pinned</p></li>}
+                        <li><p className="linkDomain">{data.domain}</p></li>
+                        {fromOtherSubreddit && <li><Link to={`/r/${data.subreddit}`} className="linkSubreddit">{data.subreddit_name_prefixed}</Link></li>}
+                    </ul>
                     <div className="linkTitleContainer">
                         {linkToSelf ?
                             <Link to={commentsPath} className={`linkTitle ${data.stickied ? 'stickied' : ''}`}>{data.title}</Link> 
                             : <a href={data.url} target="_blank" rel="noopener noreferrer" className="linkTitle">{data.title}</a>
                         }
                         {data.link_flair_text && <p className="linkFlair">{data.link_flair_text}</p>}
-                        <p className="linkByLine">Submitted by <Link to={`/user/${data.author}`}>{data.author}</Link> {timestamp}</p>
+                        <p className="linkByLine">by <Link to={`/user/${data.author}`}>{data.author}</Link>   |   {timestamp}</p>
                     </div>
                     <div className="linkBottomContainer">
                         {isImage && <button className="linkPreviewButton" onClick={handleClickPreview}>PREVIEW</button>}
