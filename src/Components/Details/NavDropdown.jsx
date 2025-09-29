@@ -26,8 +26,8 @@ export default function NavDropdown({ title, tabs }) {
         navigate(`${e.target.value}${currentParams}`);
     }
     return (
-        <label>
-            {title ? title : 'Type'}:
+        <label className="detailsTab">
+            {title ? title : 'Type'}:&nbsp;
             <select
                 name="tab"
                 value={location.pathname}

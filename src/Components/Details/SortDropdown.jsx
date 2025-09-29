@@ -35,8 +35,8 @@ export default function SortDropdown({ name, param, options }) {
         });
     }
     return (
-        <label>
-            {name ? name : 'Sort'}:
+        <label className="detailsTab">
+            {name ? name : 'Sort'}:&nbsp;
             <select
                 name={param}
                 value={value}

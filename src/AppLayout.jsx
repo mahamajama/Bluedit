@@ -26,7 +26,9 @@ export default function AppLayout() {
     return (
         <main>
             <header id="header">
-                <Link to="/" id="logo" className={headerCollapsed ? 'collapsed' : ''}>BLUEDIT</Link>
+                <div className={`logoContainer ${headerCollapsed ? 'collapsed' : ''}`}>
+                    <Link to="/" id="logo" className={headerCollapsed ? 'collapsed' : ''}>BLUEDIT</Link>
+                </div>
                 <Search collapsed={headerCollapsed} />
             </header>
             <div className="contentContainer">

@@ -20,7 +20,7 @@ export const getTimestamp = (postTime) => {
         if (remainder > 0) {
             remainderT = `, ${remainder} month${remainder === 1 ? '' : 's'}`;
         }
-    } else if (t > 2628000) { // months
+    } else if (t > 2628000) { // months (yes, i know months have different lengths, its close enough)
         t /= 2628000;
         unit = 'months';
         const remainder = Math.floor((t % 1) * 30);
@@ -30,12 +30,24 @@ export const getTimestamp = (postTime) => {
     } else if (t > 86400) { // days
         t /= 86400;
         unit = 'days';
+        const remainder = Math.floor((t % 1) * 24);
+        if (remainder > 0) {
+            remainderT = `, ${remainder} hour${remainder === 1 ? '' : 's'}`;
+        }
     } else if (t > 3600) { // hours
         t /= 3600;
         unit = 'hours';
+        const remainder = Math.floor((t % 1) * 60);
+        if (remainder > 0) {
+            remainderT = `, ${remainder} minute${remainder === 1 ? '' : 's'}`;
+        }
     } else if (t > 60) { // minutes
         t /= 60;
         unit = 'minutes';
+        const remainder = Math.floor((t % 1) * 60);
+        if (remainder > 0) {
+            remainderT = `, ${remainder} second${remainder === 1 ? '' : 's'}`;
+        }
     }
 
     const time = Math.floor(t);
@@ -44,3 +56,6 @@ export const getTimestamp = (postTime) => {
     }
     return `${time} ${unit}${remainderT} ago`;
 }
+
+
+

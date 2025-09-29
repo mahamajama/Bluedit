@@ -62,7 +62,9 @@ export default function Search({ collapsed }) {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        if (searchPageOpen) {
+        if (query === '') {
+            pulseSearchBar();
+        } else if (searchPageOpen) {
             setParams((params) => {
                 params.set("q", encodeURIComponent(query));
                 return params;
@@ -71,7 +73,6 @@ export default function Search({ collapsed }) {
             navigateToSearch();
         }
     }
-
     const handleFocus = (e) => {
         setSearchBarFocused(true);
     }
@@ -79,6 +80,20 @@ export default function Search({ collapsed }) {
         setSearchBarFocused(false);
         setOptionsOpen(false);
     }
+
+    useEffect(() => {
+        if (searchBar.current) {
+            searchBar.current.addEventListener("focus", handleFocus);
+            searchBar.current.addEventListener("blur", handleBlur);
+        }
+
+        return () => {
+            if (searchBar.current) {
+                searchBar.current.removeEventListener("focus", handleFocus);
+                searchBar.current.removeEventListener("blur", handleBlur);
+            }
+        }
+    }, [searchBar]);
 
     useEffect(() => {
         if (!searchPageOpen && searchBarFocused) {
@@ -96,13 +111,30 @@ export default function Search({ collapsed }) {
         }
     }, [collapsed])
 
+    const pulseSearchBar = () => {
+        if (searchBar.current) {
+            searchBar.current.removeEventListener("animationend", resetAnimation);
+            searchBar.current.addEventListener("animationend", resetAnimation);
+            searchBar.current.style.animation = 'pulse 0.7s forwards cubic-bezier(0.075, 0.82, 0.165, 1)';
+        }
+    }
+    function resetAnimation() {
+        if (searchBar.current) {
+            searchBar.current.style.animation = '';
+            searchBar.current.removeEventListener("animationend", resetAnimation);
+        }
+    }
+
     return (
         <>
             <form onSubmit={handleSubmit}>
                 <div className={`searchBarContainer ${collapsed ? 'collapsed' : ''}`}>
-                    <SearchBar
-                        onFocus={handleFocus}
-                        onBlur={handleBlur}
+                    <input 
+                        type="text"
+                        value={query}
+                        onChange={(e) => dispatch(setQuery(e.target.value))}
+                        className="searchBar"
+                        ref={searchBar}
                     />
                     <button type="submit" className="searchButton"></button>
                 </div>

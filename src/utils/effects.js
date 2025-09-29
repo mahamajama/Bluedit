@@ -3,7 +3,6 @@
 
 export function collapseSection(element) {
   element.removeEventListener('transitionend', onExpandEnd);
-  //var sectionHeight = element.scrollHeight;
   const currentHeight = element.offsetHeight;
 
   var elementTransition = element.style.transition;

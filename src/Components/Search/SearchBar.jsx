@@ -21,12 +21,7 @@ export default function SearchBar({ onFocus, onBlur }) {
     }, [searchBar]);
 
     return (
-        <input 
-            type="text"
-            value={query}
-            onChange={(e) => dispatch(setQuery(e.target.value))}
-            className="searchBar"
-            ref={searchBar}
-        />
+        <>
+        </>
     );
 }

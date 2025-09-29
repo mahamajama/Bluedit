@@ -6,12 +6,13 @@ export const loadUserActivity = createAsyncThunk(
     async ({ user, params }) => {
         try {
             const paramString = params.size > 0 ? `?${params.toString()}` : '';
-            const response = await fetch(`https://www.reddit.com/user/${user}.json${paramString}`);
+            const path = `https://www.reddit.com/user/${user}.json${paramString}`;
+            const response = await fetch(path);
             const json = await response.json();
             return json;
         } catch(error) { // if you run out of requests, use archived data as a placeholder
-            console.log("Out of requests. Loading backup search data.");
-            const response = await fetch(`../../../SampleData/userSample_Polnareffpose.json`);
+            console.log("Out of requests. Loading backup user data.");
+            const response = await fetch(`/SampleData/userSample_Polnareffpose.json`);
             const json = await response.json();
             return json;
         }
@@ -26,8 +27,8 @@ export const loadUserComments = createAsyncThunk(
             const json = await response.json();
             return json;
         } catch(error) { // if you run out of requests, use archived data as a placeholder
-            console.log("Out of requests. Loading backup search data.");
-            const response = await fetch(`../../../SampleData/userSample_Polnareffpose.json`);
+            console.log("Out of requests. Loading backup user comment data.");
+            const response = await fetch(`/SampleData/userSample_Polnareffpose.json`);
             const json = await response.json();
             return json;
         }
@@ -42,8 +43,8 @@ export const loadUserSubmitted = createAsyncThunk(
             const json = await response.json();
             return json;
         } catch(error) { // if you run out of requests, use archived data as a placeholder
-            console.log("Out of requests. Loading backup search data.");
-            const response = await fetch(`../../../SampleData/userSample_Polnareffpose.json`);
+            console.log("Out of requests. Loading backup user submitted data.");
+            const response = await fetch(`/SampleData/userSample_Polnareffpose.json`);
             const json = await response.json();
             return json;
         }

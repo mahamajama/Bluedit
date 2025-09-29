@@ -17,13 +17,11 @@ export default function Details({ title, tabs, sort, time, safeSearch }) {
             {domReady && createPortal(
                 <>
                     <div className="detailsContainer">
-                        <p className="detailsTitle">{`${title}`}</p>
-                        <div className="sortContainer">
-                            {tabs && <NavDropdown tabs={tabs} />}
-                            {sort && <SortDropdown param="sort" options={sort}/>}
-                            {time && <TimeDropdown />}
-                            {safeSearch && <SafeSearchToggle />}
-                        </div>
+                        {title && <p className="detailsTitle">{`${title}`}</p>}
+                        {tabs && <NavDropdown tabs={tabs} />}
+                        {sort && <SortDropdown param="sort" options={sort}/>}
+                        {time && <TimeDropdown />}
+                        {safeSearch && <SafeSearchToggle />}
                     </div>
                     
                 </>

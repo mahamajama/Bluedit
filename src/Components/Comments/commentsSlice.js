@@ -9,7 +9,7 @@ export const loadComments = createAsyncThunk(
             const json = await response.json();
             return json;
         } catch(error) { // if you run out of requests, use archived data as a placeholder
-            const response = await fetch(`../../../SampleData/${getRandomCommentsSample()}`);
+            const response = await fetch(`/SampleData/${getRandomCommentsSample()}`);
             const json = await response.json();
             return json;
         }

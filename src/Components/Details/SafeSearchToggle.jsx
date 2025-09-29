@@ -24,8 +24,8 @@ export default function SafeSearchToggle() {
 
     return (
         <>
-            <label>
-                SafeSearch:
+            <label className="detailsTab">
+                SafeSearch:&nbsp;
                 <input 
                     type="checkbox" 
                     name="safeSearch"

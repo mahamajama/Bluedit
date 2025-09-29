@@ -18,20 +18,17 @@
     height: 100%;
     padding: 0 20px;
     border: none;
+    background: radial-gradient(120% 72% at right, transparent, #261c41);
     background-color: #261c41;
     font-size: 1.2em;
     text-align: center;
     vertical-align: top;
     flex-grow: 1;
-
-    &.pulse {
-        animation: pulse 0.5s forwards cubic-bezier(0.075, 0.82, 0.165, 1);
-    }
 }
 
 @keyframes pulse{
   from {
-    background-color: #9f9dff;
+    background-color: #5a58c5;
   }
   to {
     background-color: #261c41;
@@ -45,12 +42,14 @@
     height: 100%;
     padding: 0;
     border-radius: 30px;
-    background: radial-gradient(transparent, #4a29a3);
+    background: radial-gradient(transparent 0%, #4a29a3 80%);
     background-color: #4a29a3;
     transition: background-color 0.3s cubic-bezier(.04,.52,.25,.97)
 }
 .searchButton:hover {
-    background-color: #9f9dff;
+    background-color: #ffffff;
+    border-color: #744dff;
+    border-width: 2px;
 }
 
 .searchOptionsButton {

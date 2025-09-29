@@ -10,7 +10,7 @@ export const search = createAsyncThunk(
             return json;
         } catch(error) { // if you run out of requests, use archived data as a placeholder
             console.log("Out of requests. Loading backup search data.");
-            const response = await fetch(`../../../SampleData/${getRandomSearchSample()}`);
+            const response = await fetch(`/SampleData/${getRandomSearchSample()}`);
             const json = await response.json();
             return json;
         }
@@ -26,7 +26,7 @@ export const searchSubreddits = createAsyncThunk(
             return json;
         } catch(error) { // if you run out of requests, use archived data as a placeholder
             console.log("Out of requests. Loading backup sub search data.");
-            const response = await fetch(`../../../SampleData/${getRandomSubredditSearchSample()}`);
+            const response = await fetch(`/SampleData/${getRandomSubredditSearchSample()}`);
             const json = await response.json();
             return json;
         }

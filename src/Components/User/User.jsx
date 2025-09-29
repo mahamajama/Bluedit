@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useParams, useNavigate, useSearchParams } from 'react-router';
+import { useParams, useSearchParams } from 'react-router';
 import { useSelector, useDispatch } from 'react-redux';
 
 import UserActivityList from './UserActivityList';
@@ -9,7 +9,6 @@ import Details from '../Details/Details';
 
 export default function User() {
     const dispatch = useDispatch();
-    const navigate = useNavigate();
     const [params] = useSearchParams();
     const activity = useSelector(selectActivity);
     const loading = useSelector(activityLoading);

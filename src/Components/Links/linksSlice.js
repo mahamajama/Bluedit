@@ -11,7 +11,7 @@ export const getLinks = createAsyncThunk(
         } catch(error) { // if you run out of requests, use archived data as a placeholder
             const sampleData = getRandomSubredditSample();
             console.log(`Out of requests. Loading backup subreddit data: ${sampleData}`);
-            const response = await fetch(`../../../SampleData/${sampleData}`);
+            const response = await fetch(`/SampleData/${sampleData}`);
             const json = await response.json();
             return json;
         }
