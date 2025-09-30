@@ -3,7 +3,6 @@ import { Link, useParams } from 'react-router';
 
 import { decodeHtml, getTimestamp } from '../../utils/helpers';
 import { expandSection, collapseSection } from '../../utils/effects';
-import styles from './Links.module.css';
 import commentIcon from '../../assets/icon_comment_light.png';
 
 export default function RLink({ link }) {

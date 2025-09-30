@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Outlet, Link } from "react-router";
 
 import Search from './Components/Search/Search';
+import Background from "./Components/Background/Background";
 
 export default function AppLayout() {
     const [headerCollapsed, setHeaderCollapsed] = useState(false);
@@ -33,6 +34,7 @@ export default function AppLayout() {
             </header>
             <div className="contentContainer">
                 <Outlet />
+                <Background/>
             </div>
         </main>
     );

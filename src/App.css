@@ -52,6 +52,13 @@ header {
   }
 }
 
+.backgroundContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}
+
 .loadingContainer {
   position: absolute;
   display: flex;

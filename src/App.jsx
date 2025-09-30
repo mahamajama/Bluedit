@@ -8,6 +8,7 @@ import SubredditSearchResults from './Components/Search/SubredditSearchResults';
 import SearchResults from './Components/Search/SearchResults';
 import User from './Components/User/User';
 import Loading from "./Components/Loading/Loading";
+import Background from "./Components/Background/Background";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           <Route path="user/:user" element={<User/>}/>
           <Route path="user/:user/:tab" element={<User/>}/>
           <Route path="loading" element={<Loading/>}/>
+          <Route path="three" element={<Background/>}/>
         </Route>
       </Routes>
     </BrowserRouter>
