@@ -6,6 +6,8 @@ import TimeDropdown from "./TimeDropdown";
 import NavDropdown from "./NavDropdown";
 import SafeSearchToggle from "./SafeSearchToggle";
 
+const headerContent = document.getElementById("headerContent");
+
 export default function Details({ title, tabs, sort, time, safeSearch }) {
     const [domReady, setDomReady] = useState(false);
     useEffect(() => {
@@ -23,7 +25,6 @@ export default function Details({ title, tabs, sort, time, safeSearch }) {
                         {time && <TimeDropdown />}
                         {safeSearch && <SafeSearchToggle />}
                     </div>
-                    
                 </>
                 , header
             )}

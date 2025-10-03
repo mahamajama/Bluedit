@@ -3,23 +3,26 @@
 }
 
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: "Fredoka",  Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
+  font-variation-settings:
+    "wdth" 100;
+  color: #06004a;
 
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #080a2b;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  --max-content-width: 840px;
 }
 
 a {
   font-weight: 500;
-  color: #7bc1ff;
+  color: #6837d5;
   text-decoration: inherit;
 }
 a:hover {
@@ -28,13 +31,16 @@ a:hover {
 
 body {
   margin: 0;
-  overflow-y: scroll;
-  overflow-x: hidden;
+  overflow: hidden;
 }
 
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
+}
+
+input {
+  outline: none;
 }
 
 button {

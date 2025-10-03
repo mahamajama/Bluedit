@@ -1,41 +1,37 @@
 import { useEffect, useState, useRef } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate, useSearchParams, useLocation } from 'react-router';
 
-import { selectQuery, selectOptions } from '../Search/searchSlice';
+import { selectQuery, selectOptions, setQuery } from '../Search/searchSlice';
 import './Search.css';
-import SearchBar from './SearchBar';
 import SearchOptions from './SearchOptions';
 
-export default function Search({ collapsed }) {
+export default function Search({ collapsed, onFocus, onBlur }) {
+    const dispatch = useDispatch();
     const navigate = useNavigate();
     const [params, setParams] = useSearchParams();
     let location = useLocation();
 
+    const searchContainer = useRef(null);
     const searchBar = useRef(null);
-    const searchButton = useRef(null);
     
     const query = useSelector(selectQuery);
     const options = useSelector(selectOptions);
     const [optionsOpen, setOptionsOpen] = useState(false);
     const [searchBarFocused, setSearchBarFocused] = useState(false);
 
-    const [searchPageOpen, setSearchPageOpen] = useState(false);
     useEffect(() => {
-        const currentPath = location.pathname;
-        const isOpen = currentPath.slice(-7, currentPath.length) === '/search';
-        setSearchPageOpen(isOpen);
-
-        if (isOpen && optionsOpen) {
-            setOptionsOpen(false);
-        }
+        setOptionsOpen(false);
+        setSearchBarFocused(false);
     }, [location]);
 
     useEffect(() => {
-        if (searchPageOpen && optionsOpen){
-            setOptionsOpen(false);
+        if (searchBarFocused) {
+            onFocus();
+        } else {
+            onBlur();
         }
-    }, [searchPageOpen]);
+    }, [searchBarFocused])
 
     function navigateToSearch() {
         function getSearchParams() {
@@ -64,58 +60,41 @@ export default function Search({ collapsed }) {
 
         if (query === '') {
             pulseSearchBar();
-        } else if (searchPageOpen) {
-            setParams((params) => {
-                params.set("q", encodeURIComponent(query));
-                return params;
-            })
         } else {
             navigateToSearch();
         }
     }
+
     const handleFocus = (e) => {
         setSearchBarFocused(true);
+        setOptionsOpen(true);
+        window.addEventListener('click', handleBlur);
     }
     const handleBlur = (e) => {
-        setSearchBarFocused(false);
-        setOptionsOpen(false);
+        if (!searchContainer.current.contains(e.target)) {
+            window.removeEventListener('click', handleBlur);
+            setSearchBarFocused(false);
+            setOptionsOpen(false);
+        }
     }
 
     useEffect(() => {
         if (searchBar.current) {
             searchBar.current.addEventListener("focus", handleFocus);
-            searchBar.current.addEventListener("blur", handleBlur);
         }
 
         return () => {
             if (searchBar.current) {
                 searchBar.current.removeEventListener("focus", handleFocus);
-                searchBar.current.removeEventListener("blur", handleBlur);
             }
         }
     }, [searchBar]);
-
-    useEffect(() => {
-        if (!searchPageOpen && searchBarFocused) {
-            setOptionsOpen(true);
-        }
-    }, [searchBarFocused]);
-
-    useEffect(() => {
-        if (searchButton.current) {
-            if (collapsed) {
-                searchButton.active = false;
-            } else {
-                searchButton.active = true;
-            }
-        }
-    }, [collapsed])
 
     const pulseSearchBar = () => {
         if (searchBar.current) {
             searchBar.current.removeEventListener("animationend", resetAnimation);
             searchBar.current.addEventListener("animationend", resetAnimation);
-            searchBar.current.style.animation = 'pulse 0.7s forwards cubic-bezier(0.075, 0.82, 0.165, 1)';
+            searchBar.current.style.animation = 'pulse 0.6s forwards ease-out';
         }
     }
     function resetAnimation() {
@@ -127,7 +106,7 @@ export default function Search({ collapsed }) {
 
     return (
         <>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} ref={searchContainer}>
                 <div className={`searchBarContainer ${collapsed ? 'collapsed' : ''}`}>
                     <input 
                         type="text"
@@ -138,7 +117,7 @@ export default function Search({ collapsed }) {
                     />
                     <button type="submit" className="searchButton"></button>
                 </div>
-                <div className={`searchOptionsContainer ${optionsOpen ? 'optionsOpen' : ''}`} ref={searchButton}>
+                <div id="searchOptionsContainer" className={`${optionsOpen ? 'optionsOpen' : ''} ${options.subredditSearch ? 'subredditsType' : ''}`}>
                     <SearchOptions/>
                 </div>
             </form>

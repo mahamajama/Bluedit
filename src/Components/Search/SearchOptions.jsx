@@ -5,9 +5,6 @@ import { selectOptions, setSafeSearch, setSubredditSearch, setSortMode, setTime 
 export default function SearchOptions() {
     const dispatch = useDispatch();
     const options = useSelector(selectOptions);
-    function capitalizeFirstLetter(string) {
-        return String(string).charAt(0).toUpperCase() + String(string).slice(1);
-    }
 
     const handlePostsTypeClicked = (e) => {
         e.preventDefault();
@@ -19,10 +16,10 @@ export default function SearchOptions() {
     }
 
     return (
-        <div>
-            <div>
-                Type:
-                <div>
+        <>
+            <div className="detailsTab">
+                Type:&nbsp;
+                <div className="searchTypeSwitch">
                     <button
                         onClick={handlePostsTypeClicked}
                         className={`searchTypeButton postsTypeButton ${!options.subredditSearch ? 'active' : ''}`}
@@ -33,8 +30,8 @@ export default function SearchOptions() {
                     >Subreddits</button>
                 </div>
             </div>
-            <label>
-                Sort by:
+            <label className="detailsTab">
+                Sort:&nbsp;
                 <select
                     name="sortBy"
                     value={options.sort}
@@ -46,8 +43,8 @@ export default function SearchOptions() {
                     <option value="comments">Comments</option>
                 </select>
             </label>
-            <label>
-                Links from:
+            <label className="detailsTab">
+                Time:&nbsp;
                 <select 
                     name="linksFrom"
                     value={options.t}
@@ -60,8 +57,8 @@ export default function SearchOptions() {
                     <option value="year">Past year</option>
                 </select>
             </label>
-            <label>
-                SafeSearch:
+            <label className="detailsTab">
+                Safe Search:&nbsp;
                 <input 
                     type="checkbox" 
                     name="safeSearch"
@@ -70,6 +67,6 @@ export default function SearchOptions() {
                     className="safeSearch"
                 />
             </label>
-        </div>
+        </>
     );
 }
