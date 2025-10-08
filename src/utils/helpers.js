@@ -1,5 +1,17 @@
 
+// MATHS
 
+export function clamp(n, min, max) {
+    return Math.min(Math.max(n, min), max);
+}
+
+export function getRandomInt(min, max) {
+  return Math.floor(Math.random() * (max - min) + min);
+}
+
+export function getRandomNumber(min, max) {
+  return Math.random() * (max - min) + min;
+}
 
 
 export function decodeHtml(html) {
@@ -81,4 +93,7 @@ export const inerpolators = {
         return (range - Math.sin(range*t)/t)/(range - 1);
     }
 }
+
+
+
 

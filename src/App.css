@@ -33,7 +33,7 @@ header::after {
   font-weight: 500;
   font-variation-settings: "wdth" 112;
   letter-spacing: 0.4em;
-  color: #7b6ef1;
+  color: #7c78f0;
   transition: font-size 0.23s ease-in-out, font-variation-settings 0.23s ease-in-out, font-weight 0.23s ease-in-out, letter-spacing 0.23s ease-in-out;
 
   &.collapsed {
@@ -84,10 +84,10 @@ header::after {
   position: absolute;
   width: 100%;
   height: 100%;
-  padding: 0 10px;
+  padding: 200px 10px 100px;
   z-index: 1;
-  --clip-top: 190px;
-  --clip-top-collapsed: 91px;
+  --clip-top: 183px;
+  --clip-top-collapsed: 87px;
   --clip-right: calc(100% - 20px);
   clip-path: polygon(100% 0, 100% 100%, 0 100%, 0 var(--clip-top), var(--clip-right) var(--clip-top), var(--clip-right) 0);
   overflow-y: auto;
@@ -100,32 +100,33 @@ header::after {
 
 .listContainer {
   position: relative;
-  padding: 200px 0 100px;
   text-align: left;
 }
 
 .listingContainer {
   width: 100%;
   max-width: var(--max-content-width);
-  margin: 0 auto 30px;
-  padding: 24px 12px;
-  border-radius: 15px;
-  background-color: #f1efffd6;
+  margin: 0 auto 24px;
+  padding: 24px;
+  border-radius: 40px;
+  background-color: #f1efffbb;
   color: #001135;
+  box-shadow: inset 0 0 100px -10px white;
   text-align: left;
 }
 
 .detailsContainer {
   display: flex;
   width: 100%;
+  height: 36px;
   max-width: var(--max-content-width);
   margin: 6px auto;
   text-align: left;
-  align-items: first baseline;
+  align-items: center;
 }
 
 .detailsTitle {
-  margin: 0 30px 0 0;
+  margin: -2px 30px 0 0;
   font-size: 1.5em;
   font-weight: 320;
   font-variation-settings: "wdth" 106;
@@ -147,6 +148,7 @@ header::after {
 
 .linkTitleContainer {
   margin: 10px 0;
+  padding: 0 20px 0 0;
 }
 
 .thumbnailContainer {
@@ -159,7 +161,7 @@ header::after {
 }
 
 .linkTitle {
-  color: #007eca;
+  color: #5892dd;;
   font-size: 1.3em;
   font-weight: 600;
 
@@ -191,7 +193,7 @@ header::after {
 
 .byLine {
   margin: 4px 0;
-  font-size: 0.75em;
+  font-size: 0.82em;
 }
 .byLine a {
   font-weight: 600;
@@ -206,6 +208,7 @@ header::after {
 
 .linkTag {
   padding: 2px 6px 3px;
+  border-radius: 20px;
   color: white;
   font-size: 0.7em;
 }
@@ -279,26 +282,44 @@ header::after {
 }
 
 .commentsButtonContainer {
-  width: 90px;
-  margin: 5px;
+  width: 78px;
+  margin: -5px -5px 0 8px;
+  flex-shrink: 0;
 }
 .commentsButtonContainer a {
   display: block;
-  padding: 8px;
+  padding: 10px;
+  border-radius: 36px;
   text-align: center;
-  color: white;
-  box-shadow: 2px 2px #060820a6;
+  box-shadow: 2px 2px 0 #0608203b, inset -4px -6px 10px -5px var(--light-blue);
+  transform: translate(0) scale(1);
+  transition: transform 0.2s cubic-bezier(.19,1,.22,1), box-shadow 0.6s cubic-bezier(.08,.82,.17,1);
+}
+
+.commentsButtonContainer a:hover {
+  transform: translate(-3px, -3px) scale(1.1);
 }
 
 .commentsButton {
   min-height: 62px;
-  background-color: #201f2e;
   margin-bottom: 8px;
+  background-color: var(--blue);
+  color: white;
 }
+.commentsButton:hover {
+  box-shadow: 4px 4px 4px #06082021, inset -3px -5px 20px -1px var(--aqua);
+  color: white;
+}
+
 .redditCommentsButton {
   padding: 14px;
-  font-size: 10px;
-  background-color: #3e526e;
+  background-color: var(--light-blue);
+  font-size: 11px;
+  color: var(--purple);
+}
+.redditCommentsButton:hover {
+  box-shadow: 4px 4px 4px #06082021, inset -4px -3px 16px -2px #d4fff9;
+  color: var(--purple);
 }
 
 .commentsIcon {
@@ -308,9 +329,15 @@ header::after {
   margin: auto;
   image-rendering: pixelated;
 }
+.commentsIcon path {
+  fill: white;
+}
 
-.commentsContainer {
-    text-align: left;
+.commentsPostInfo {
+  width: 100%;
+  max-width: var(--max-content-width);
+  margin: 0 auto;
+  text-align: left;
 }
 
 .commentContentContainer .bottomContainer {
@@ -322,20 +349,16 @@ header::after {
 }
 
 .commentContainer {
-    padding: 10px 2px 14px 14px;
-    background-color: rgb(49, 38, 83);
+    padding: 36px 2px 36px 36px;
 }
 
 .commentContentContainer {
-  padding: 0 12px 0 0;
+  padding: 0 34px 0 0;
 }
 
 .commentBody {
-  margin: 8px 0 18px;
-  font-size: 1em;
-}
-.commentBody p {
-  margin: 0 0 10px;
+  margin: 0 0 18px;
+  font-size: 1.2em;
 }
 
 .commentScore {
@@ -360,8 +383,28 @@ header::after {
 }
 
 .repliesContainer {
-    padding-left: 10px;
-    border-left: 1px solid #6565a7;
+  overflow: hidden;
+}
+
+.repliesContainer .listContainer {
+  border-radius: 40px;
+  background-color: #f1efffd6;
+  padding: 24px 2px 10px 24px;
+  box-shadow: inset 0 0 100px -10px white, inset 1px 0 1px #5780bfab;
+}
+
+.repliesContainer .listingContainer {
+  background-color: transparent;
+  padding: 0;
+  box-shadow: none;
+}
+
+.repliesContainer .listingContainer + .listingContainer::before {
+  content: linear-gradient(transparent);
+  display: block;
+  height: 1px;
+  margin: 0 0 20px;
+  background-color: rgba(131, 141, 172, 0.5);
 }
 
 .selfText {

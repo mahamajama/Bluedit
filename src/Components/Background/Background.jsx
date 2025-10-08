@@ -2,14 +2,16 @@ import * as THREE from 'three';
 import { useRef, useEffect, useState } from 'react';
 import { useLocation } from 'react-router';
 
+import { getRandomInt, getRandomNumber, clamp } from '../../utils/helpers';
+
 let scene, camera, renderer;
 let waterPlane, waterMaterial, groundPlane, light;
-let positionAttribute, originalPosition, positionMatrix, originalCamRotation, width, height;
+let positionAttribute, originalPosition, positionMatrix, originalCamRotation, waterWidth, waterHeight;
 let queue = [];
 let pointerHits = [];
 let targetScroll = 0;
 
-const initIntensity = 1;
+const clickIntensity = 1;
 const rippleSpeed = 7;
 const rippleRadius = 16;
 
@@ -44,8 +46,8 @@ function initThree() {
 
     const xScale = 80;  
     const yScale = 45;
-    width = 128;  
-    height = 72;
+    waterWidth = 128;  
+    waterHeight = 72;
 
     // FOG
     scene.fog = new THREE.Fog(daytimeColor, 16, 33);
@@ -53,11 +55,11 @@ function initThree() {
     // WATER
     const waterGeometry = new THREE.PlaneGeometry(
         xScale, yScale,
-        width - 1, height - 1);
+        waterWidth - 1, waterHeight - 1);
     positionAttribute = waterGeometry.getAttribute('position');
     positionAttribute.setUsage( THREE.DynamicDrawUsage );
     originalPosition = copyPosition(positionAttribute);
-    positionMatrix = get2DArray(positionAttribute, width);
+    positionMatrix = get2DArray(positionAttribute, waterWidth);
 
     const waterPhysicalMaterial = new THREE.MeshPhysicalMaterial({ 
         color: waterColor, 
@@ -162,18 +164,20 @@ function onClickBackground( event ) {
     raycaster.setFromCamera( pointer, camera );
     pointerHits = raycaster.intersectObject( waterPlane, true );
     if (pointerHits.length > 0) {
-        setRipple(pointerHits[0].face.a)
+        setRipple(pointerHits[0].face.a, clickIntensity);
     }
 }
 
-function setRipple(originIndex) {
-    let oX = originIndex % width;
-    let oY = Math.floor(originIndex / width);
+function setRipple(originIndex, strength) {
+    const radius = Math.floor(strength * rippleRadius);
 
-    const top =  Math.ceil(oY - rippleRadius);
-    const bottom = Math.floor(oY + rippleRadius);
-    const left =  Math.ceil(oX - rippleRadius);
-    const right = Math.floor(oX + rippleRadius);
+    let oX = originIndex % waterWidth;
+    let oY = Math.floor(originIndex / waterWidth);
+
+    const top =  Math.ceil(oY - radius);
+    const bottom = Math.floor(oY + radius);
+    const left =  Math.ceil(oX - radius);
+    const right = Math.floor(oX + radius);
 
     function getCircleDistance(currentX, currentY) {
         const dx = oX - currentX;
@@ -186,11 +190,11 @@ function setRipple(originIndex) {
         for (let x = left; x <= right; x++) {
             if (positionMatrix[y] && positionMatrix[y][x]) {
                 const dist = getCircleDistance(x, y);
-                if (dist < rippleRadius) {
-                    let distFactor = dist / rippleRadius;
+                if (dist < radius) {
+                    let distFactor = dist / radius;
                     distFactor *= distFactor;
                     const intensityModifier = 1 - distFactor;
-                    const intensity = initIntensity * intensityModifier;
+                    const intensity = strength * intensityModifier;
                     const delay = distFactor * 3;
                     
                     setTimeout(() => {
@@ -257,13 +261,28 @@ function ripple(time) {
     }
 }
 
+function setRippleTrail(x, y, width, height) {
+    const n = 6;
+    const delay = 0.15 * 1000;
+    const xMax = clamp(x + width, x, waterWidth);
+    const yMax = clamp(y + height, y, waterHeight);
+    for (let i = 0; i < n; i++) {
+        setTimeout(() => {
+            const index = positionMatrix[getRandomInt(y, yMax)][getRandomInt(x, xMax)];
+            const intensity = getRandomNumber(0.1, 0.5);
+            console.log(`${index}, ${intensity}`);
+            setRipple(index, intensity);
+        }, delay * i);
+    }
+}
+
 function handleScroll(e) {
     const position = e.target.scrollTop;
     targetScroll = originalCamRotation + position * 0.00015;
 }
 
 function lerpScroll() {
-    camera.rotation.x = THREE.MathUtils.lerp(camera.rotation.x, targetScroll, 0.1);
+    camera.rotation.x = THREE.MathUtils.lerp(camera.rotation.x, targetScroll, 0.075);
 }
 
 function copyPosition(positionAttribute) {
@@ -294,17 +313,8 @@ function get2DArray(positions, width) {
     return arr;
 }
 
-function handleResetScroll(time) {
-    const currentRotation = camera.rotation.x;
-    //const t = interpolators[cubic](elapsed / duration);
-    if (currentRotation === originalCamRotation) {
-        scrollResetting = false;
-    } else {
-        camera.rotation.x = THREE.MathUtils.lerp(currentRotation, originalCamRotation, 0.0001);
-    }
-}
-
 export default function Background() {
+    let location = useLocation();
     const container = useRef(null);
     const [canvasMounted, setCanvasMounted] = useState(false);
 
@@ -316,6 +326,12 @@ export default function Background() {
             document.getElementById("contentContainer").addEventListener('scroll', handleScroll, { passive: true });
         }
     }, [container]);
+
+    useEffect(() => {
+        if (canvasMounted) {
+            setRippleTrail(40, 30, 40, 40);
+        }
+    }, [location])
 
     return (
         <div className="backgroundContainer" ref={container}></div>

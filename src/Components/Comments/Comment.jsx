@@ -47,7 +47,7 @@ export default function Comment({ comment, isUserPage }) {
     useEffect(() => {
         if (showReplies) {
             expandSection(repliesContainer.current);
-            repliesContainer.current.style.marginTop = '14px';
+            repliesContainer.current.style.marginTop = '10px';
         } else {
             collapseSection(repliesContainer.current);
             repliesContainer.current.style.marginTop = '0';

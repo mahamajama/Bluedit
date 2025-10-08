@@ -6,6 +6,8 @@ import { selectQuery, selectOptions, setQuery } from '../Search/searchSlice';
 import './Search.css';
 import SearchOptions from './SearchOptions';
 
+import searchIcon from '../../assets/icon_search.svg';
+
 export default function Search({ collapsed, onFocus, onBlur }) {
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -115,7 +117,7 @@ export default function Search({ collapsed, onFocus, onBlur }) {
                         className="searchBar"
                         ref={searchBar}
                     />
-                    <button type="submit" className="searchButton"></button>
+                    <button type="submit" className="searchButton"><img className="searchIcon" src={searchIcon}/></button>
                 </div>
                 <div id="searchOptionsContainer" className={`${optionsOpen ? 'optionsOpen' : ''} ${options.subredditSearch ? 'subredditsType' : ''}`}>
                     <SearchOptions/>

@@ -36,14 +36,16 @@ export default function Comments() {
             <Details
                 sort={sort}
             />
-            {loading ? <Loading/> : <div className="commentsContainer">
-                <h1 className="commentsTitle">{linkData.title}</h1>
-                <div
-                    className="selfText"
-                    dangerouslySetInnerHTML={{__html: decodeHtml(linkData.selftext_html)}}
-                />
+            {loading ? <Loading/> : <>
+                <div className="commentsPostInfo">
+                    <h1 className="commentsTitle">{linkData.title}</h1>
+                    <div
+                        className="selfText"
+                        dangerouslySetInnerHTML={{__html: decodeHtml(linkData.selftext_html)}}
+                    />
+                </div>
                 <CommentsList comments={comments} />
-            </div>}
+            </>}
         </>
     );
 }

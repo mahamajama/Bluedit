@@ -4,7 +4,7 @@ const commentLimit = 25;
 
 export default function CommentsList({ comments }) {
     return (
-        <div>
+        <div className="listContainer">
             {comments.filter(comment => comment.kind === "t1").slice(0, commentLimit).map(comment => {
                 return (
                     <Comment 

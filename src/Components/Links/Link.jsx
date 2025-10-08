@@ -3,7 +3,7 @@ import { Link, useParams } from 'react-router';
 
 import { decodeHtml, getTimestamp } from '../../utils/helpers';
 import { expandSection, collapseSection } from '../../utils/effects';
-import commentIcon from '../../assets/icon_comment_light.png';
+import commentsIcon from '../../assets/icon_comments.svg';
 
 export default function RLink({ link }) {
     const data = link.data;
@@ -89,7 +89,9 @@ export default function RLink({ link }) {
                         to={data.permalink}
                         className="commentsButton"
                     >
-                        <img className="commentsIcon" src={commentIcon} />
+                        <svg className='commentsIcon' viewBox="0 0 90 81">
+                                <path d="M81,18v-9h-18V0H27v9H9v9H0v27h9v9h18v9h27v18h9v-9h9v-18h9v-9h9v-27h-9ZM27,36h-9v-9h9v9ZM45,36h-9v-9h9v9ZM63,36h-9v-9h9v9Z"/>
+                        </svg>
                         {data.num_comments}
                     </Link>
                     <a 

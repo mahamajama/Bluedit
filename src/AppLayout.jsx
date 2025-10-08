@@ -1,21 +1,20 @@
 import { useState, useEffect, useRef } from "react";
-import { Outlet, Link } from "react-router";
+import { Outlet, Link, useLocation } from "react-router";
 
 import Search from './Components/Search/Search';
 import Background from "./Components/Background/Background";
 
 let searchFocusedBool = false;
 let lastScrollPosition = 0;
-let transitioning = false;
-let scrolling = false;
 
 export default function AppLayout() {
     const [headerCollapsed, setHeaderCollapsed] = useState(false);
     const [searchFocused, setSearchFocused] = useState(false);
+
+    let location = useLocation();
     
     const contentContainer = useRef(null);
     const header = useRef(null);
-    const spacer = useRef(null);
 
     const minHeaderScrollHeight = 20;
 
@@ -30,18 +29,6 @@ export default function AppLayout() {
     }, [contentContainer, header]);
 
     useEffect(() => {
-        if (header.current) {
-            header.current.addEventListener('transitionend', onTransitionComplete);
-        }
-        return () => {
-            if (header.current) {
-                transitioning = false;
-                header.current.removeEventListener('transitionend', onTransitionComplete);
-            }
-        }
-    }, [header]);
-
-    useEffect(() => {
         if (searchFocused) {
             searchFocusedBool = true;
             setHeaderCollapsed(false);
@@ -49,6 +36,12 @@ export default function AppLayout() {
             searchFocusedBool = false;
         }
     }, [searchFocused]);
+
+    useEffect(() => {
+        if (contentContainer.current && (!location.pathname || location.pathname === '/')) {
+            contentContainer.current.scrollTo(0, 0);
+        }
+    }, [location])
 
     const handleScrollWithinHeader = (e) => {
         if (contentContainer.current) {
@@ -62,38 +55,12 @@ export default function AppLayout() {
             if (!searchFocusedBool) {
                 if (position < lastScrollPosition || position < minHeaderScrollHeight) {
                     setHeaderCollapsed(false);
-                    transitioning = true;
-                    //updateClipPathContinuous();
                 } else if (position > lastScrollPosition || position > minHeaderScrollHeight) {
                     setHeaderCollapsed(true);
-                    transitioning = true;
-                    //updateClipPathContinuous();
                 }
             }
             lastScrollPosition = position;
-
-            if (!transitioning) {
-                let yPos = position + header.current.offsetHeight - 180;
-                //contentContainer.current.style.clipPath = `inset(${yPos.toString()}px 0 0)`;
-            }
         }
-    }
-
-    const updateClipPath = () => {
-        let yPos = window.pageYOffset + header.current.offsetHeight - 180;
-        contentContainer.current.style.clipPath = `inset(${yPos.toString()}px 0 0)`;
-    }
-
-    const updateClipPathContinuous = () => {
-        updateClipPath();
-        if (transitioning) {
-            requestAnimationFrame(updateClipPathContinuous);
-        }
-    }
-
-    function onTransitionComplete() {
-        header.current.removeEventListener('transitionend', onTransitionComplete);
-        transitioning = false;
     }
 
     function handleSearchFocused() {
@@ -110,7 +77,7 @@ export default function AppLayout() {
             <header id="header" ref={header}>
                 <div id="headerContent">
                     <div className={`logoContainer ${headerCollapsed ? 'collapsed' : ''}`}>
-                        <Link to="/" id="logo" className={headerCollapsed ? 'collapsed' : ''}>BLUEDIT</Link>
+                        <Link to='/' id="logo" className={headerCollapsed ? 'collapsed' : ''}>BLUEDIT</Link>
                     </div>
                     <Search collapsed={headerCollapsed} onFocus={handleSearchFocused} onBlur={handleSearchBlurred} />
                 </div>

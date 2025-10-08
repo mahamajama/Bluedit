@@ -3,12 +3,11 @@
 }
 
 :root {
-  font-family: "Fredoka",  Helvetica, Arial, sans-serif;
-  line-height: 1.5;
+  font-family: "Fredoka", system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.3;
   font-weight: 400;
   font-variation-settings:
     "wdth" 100;
-  color: #06004a;
 
   color-scheme: light dark;
 
@@ -18,6 +17,15 @@
   -moz-osx-font-smoothing: grayscale;
 
   --max-content-width: 840px;
+
+  --purple: #7c78f0;
+  --dark-purple: #423559;
+  --aqua: #7ff0d4;
+  --teal: #78def0;
+  --blue: #5b85f0;
+  --light-blue: #c2dbff;
+
+  color: var(--dark-purple);
 }
 
 a {
@@ -32,6 +40,14 @@ a:hover {
 body {
   margin: 0;
   overflow: hidden;
+}
+
+p {
+  margin: 0;
+}
+
+p + p {
+  margin: 1em 0 0;
 }
 
 h1 {
@@ -59,6 +75,20 @@ button:hover {
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
+}
+
+blockquote {
+  padding: 4px 0 6px 12px;
+  margin: 0;
+  border-left: 24px groove #97ace7b9;
+  background-image: linear-gradient(to right, #aab0d846 50%, #ffffff00);
+}
+
+blockquote p {
+  margin: 0;
+}
+blockquote + p {
+  margin: 1em 0 0;
 }
 
 @media (prefers-color-scheme: light) {
