@@ -94,15 +94,9 @@ export default function Search({ collapsed, onFocus, onBlur }) {
 
     const pulseSearchBar = () => {
         if (searchBar.current) {
-            searchBar.current.removeEventListener("animationend", resetAnimation);
-            searchBar.current.addEventListener("animationend", resetAnimation);
-            searchBar.current.style.animation = 'pulse 0.6s forwards ease-out';
-        }
-    }
-    function resetAnimation() {
-        if (searchBar.current) {
-            searchBar.current.style.animation = '';
-            searchBar.current.removeEventListener("animationend", resetAnimation);
+            searchBar.current.style.animation = 'none';
+            searchBar.current.offsetHeight;
+            searchBar.current.style.animation = 'pulse 0.6s forwards ease-out'
         }
     }
 
@@ -117,7 +111,17 @@ export default function Search({ collapsed, onFocus, onBlur }) {
                         className="searchBar"
                         ref={searchBar}
                     />
-                    <button type="submit" className="searchButton"><img className="searchIcon" src={searchIcon}/></button>
+                    <button type="submit" className="searchButton">
+                        <svg className="searchIcon" viewBox="0 0 45 45">
+                            <g>
+                                <rect class="cls-1" x="18" width="18" height="9"/>
+                                <rect class="cls-1" x="18" y="27" width="18" height="9"/>
+                                <rect class="cls-1" x="9" y="9" width="9" height="18"/>
+                                <rect class="cls-1" x="36" y="9" width="9" height="18"/>
+                                <rect class="cls-1" y="36" width="9" height="9"/>
+                            </g>
+                        </svg>
+                    </button>
                 </div>
                 <div id="searchOptionsContainer" className={`${optionsOpen ? 'optionsOpen' : ''} ${options.subredditSearch ? 'subredditsType' : ''}`}>
                     <SearchOptions/>

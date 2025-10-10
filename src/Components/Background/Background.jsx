@@ -19,9 +19,7 @@ const daytimeColor = 0xa1e4ff;
 const sunsetColor = 0xffc669;
 const waterColor = 0xccd1ff;
 
-initThree();
-
-function initThree() {
+function init() {
     scene = new THREE.Scene();
     camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
 
@@ -33,7 +31,7 @@ function initThree() {
     const textureLoader = new THREE.TextureLoader();
 
     // SKYBOX
-    const r = 'src/assets/skybox_partlyCloudy/';
+    const r = '/src/assets/skybox_partlyCloudy/';
     const skyboxUrls = [
         r + 'px.png', r + 'nx.png',
         r + 'py.png', r + 'ny.png',
@@ -64,7 +62,7 @@ function initThree() {
     const waterPhysicalMaterial = new THREE.MeshPhysicalMaterial({ 
         color: waterColor, 
         envMap: skyBox,
-        envMapIntensity: 2.5,
+        envMapIntensity: 3,
         refractionRatio: 0.2, 
         reflectivity: 1, 
         ior: 2.3,
@@ -89,11 +87,11 @@ function initThree() {
         texture.repeat.x = 4;
         texture.repeat.y = 4;
     }
-    const groundTexture = textureLoader.load('src/assets/Rock057/Rock057_color.jpg', setRepeat);
-    const groundNormal = textureLoader.load('src/assets/Rock057/Rock057_normalGl.jpg', setRepeat);
-    const groundAO = textureLoader.load('src/assets/Rock057/Rock057_ao.jpg', setRepeat);
-    const groundDisplacement = textureLoader.load('src/assets/Rock057/Rock057_displacement.jpg', setRepeat);
-    const groundRoughness = textureLoader.load('src/assets/Rock057/Rock057_roughness.jpg', setRepeat);
+    const groundTexture = textureLoader.load('/src/assets/Rock057/Rock057_color.jpg', setRepeat);
+    const groundNormal = textureLoader.load('/src/assets/Rock057/Rock057_normalGl.jpg', setRepeat);
+    const groundAO = textureLoader.load('/src/assets/Rock057/Rock057_ao.jpg', setRepeat);
+    const groundDisplacement = textureLoader.load('/src/assets/Rock057/Rock057_displacement.jpg', setRepeat);
+    const groundRoughness = textureLoader.load('/src/assets/Rock057/Rock057_roughness.jpg', setRepeat);
     const groundMaterial = new THREE.MeshStandardMaterial({ 
         map: groundTexture,
         normalMap: groundNormal,
@@ -270,7 +268,6 @@ function setRippleTrail(x, y, width, height) {
         setTimeout(() => {
             const index = positionMatrix[getRandomInt(y, yMax)][getRandomInt(x, xMax)];
             const intensity = getRandomNumber(0.1, 0.5);
-            console.log(`${index}, ${intensity}`);
             setRipple(index, intensity);
         }, delay * i);
     }
@@ -313,19 +310,20 @@ function get2DArray(positions, width) {
     return arr;
 }
 
-export default function Background() {
+export default function Background({ initiated }) {
     let location = useLocation();
     const container = useRef(null);
     const [canvasMounted, setCanvasMounted] = useState(false);
 
     useEffect(() => {
-        if (container.current && !canvasMounted) {
+        if (initiated && container.current && !canvasMounted) {
+            init();
             container.current.appendChild( renderer.domElement );
             setCanvasMounted(true);
 
             document.getElementById("contentContainer").addEventListener('scroll', handleScroll, { passive: true });
         }
-    }, [container]);
+    }, [container, initiated]);
 
     useEffect(() => {
         if (canvasMounted) {

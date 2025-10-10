@@ -3,6 +3,7 @@ import { Link } from 'react-router';
 import { v4 as uuidv4 } from 'uuid';
 
 import CommentsList from './CommentsList';
+import PreviewButton from '../Features/PreviewButton';
 import { expandSection, collapseSection } from '../../utils/effects';
 import { getTimestamp, decodeHtml } from '../../utils/helpers';
 
@@ -11,8 +12,13 @@ export default function Comment({ comment, isUserPage }) {
     const [showReplies, setShowReplies] = useState(false);
     const repliesContainer = useRef(null);
     
-    const postTime = new Date(data.created_utc * 1000);
-    const timestamp = getTimestamp(postTime);
+    const timestamp = getTimestamp(data.created_utc);
+
+    const cleanLinkId = (dirty) => {
+        const clean = dirty.split('_')[1];
+        return clean;
+    }
+    const commentsPath = `/r/${data.subreddit}/comments/${cleanLinkId(data.link_id)}`;
     
     const parseFlair = () => {
         let items = [];
@@ -25,9 +31,9 @@ export default function Comment({ comment, isUserPage }) {
                     items.push(<span key={uuidv4()}>{obj.t}</span>);
                 }
             }
-            return <p className="flair commentFlair">{items}</p>
+            return <p className="flair commentFlair">{items}</p>;
         } else if (data.author_flair_type === "text" && data.author_flair_text) {
-            return <p className="flair commentFlair">{data.author_flair_text}</p>
+            return <p className="flair commentFlair">{data.author_flair_text}</p>;
         }
         return null;
     }
@@ -38,9 +44,7 @@ export default function Comment({ comment, isUserPage }) {
         replies = comment.data.replies.data.children;
     }
 
-    const toggleReplies = (e) => {
-        e.preventDefault();
-        
+    const toggleReplies = () => {
         if (showReplies || replies.length < 1) setShowReplies(false);
         else setShowReplies(true);
     }
@@ -54,10 +58,27 @@ export default function Comment({ comment, isUserPage }) {
         }
     }, [showReplies])
 
-    const cleanLinkId = (dirty) => {
-        const clean = dirty.split('_')[1];
-        return clean;
+    function getPreviewButton() {
+        if (isUserPage) {
+            return (
+                <Link className="previewButton" to={commentsPath}>
+                    <svg viewBox="0 0 90 81">
+                        <path d="M81,18v-9h-18V0H27v9H9v9H0v27h9v9h18v9h27v18h9v-9h9v-18h9v-9h9v-27h-9ZM27,36h-9v-9h9v9ZM45,36h-9v-9h9v9ZM63,36h-9v-9h9v9Z"/>
+                    </svg>
+                    View all comments
+                </Link>
+            );
+        } else {
+            return (
+                <PreviewButton 
+                    label={`${replies.length} ${replies.length === 1 ? 'reply' : 'replies'}`}
+                    onClick={toggleReplies}
+                    disabled={replies.length < 1}
+                />
+            );
+        }
     }
+    let previewButton = getPreviewButton();
 
     return (
         <div className="listingContainer commentContainer">
@@ -66,27 +87,31 @@ export default function Comment({ comment, isUserPage }) {
                     className="commentBody"
                     dangerouslySetInnerHTML={{__html: decodeHtml(data.body_html)}}
                 />
-                <div className="byLine">
-                    {!isUserPage && <>
-                        <Link to={`/user/${data.author}`}>{data.author}</Link>
-                        {flair && flair}
-                        &nbsp;&nbsp;|&nbsp;&nbsp;
-                    </>}
-                    <p>{timestamp}</p>
-                </div>
-                {isUserPage && <div className="commentLinkContainer">
-                    <em style={{fontWeight: 100, color: '#BBBBEE'}}>via:&nbsp;&nbsp;</em>
-                    <Link to={`/r/${data.subreddit}/comments/${cleanLinkId(data.link_id)}`} className="commentLinkTitle">{data.link_title}</Link>
-                </div>}
                 <div className="bottomContainer">
-                    <button className="previewButton" onClick={toggleReplies}>
-                        {replies.length} {replies.length === 1 ? 'reply' : 'replies'}
-                    </button>
+                    <div>
+                        <div className="byLine">
+                            {!isUserPage && <>
+                                <Link to={`/user/${data.author}`} className={data.is_submitter ? 'submitter' : ''}>{data.author}</Link>
+                                {data.is_submitter && <p className="flair commentFlair submitter">OP</p>}
+                                {flair && <>&nbsp;&nbsp;{flair}</>}
+                                &nbsp;&nbsp;|&nbsp;&nbsp;
+                            </>}
+                            <p>{timestamp}</p>
+                        </div>
+                        {isUserPage && 
+                            <div className="commentLinkContainer">
+                                <em style={{fontWeight: 100, color: '#7e6dc9ff', fontStyle: 'italic'}}>via:&nbsp;&nbsp;</em>
+                                <Link to={commentsPath} className="linkTitle">{data.link_title}</Link>
+                            </div>
+                        }
+                    </div>
                     <div className="linkScoreContainer">
                         <p className="linkScoreLabel">SCORE</p>
                         <p className="linkScore">{data.score}</p>
                     </div>
                 </div>
+                
+                {previewButton}
             </div>
             <div ref={repliesContainer} className={`repliesContainer previewContainer`}>
                 {<CommentsList comments={replies}/>}

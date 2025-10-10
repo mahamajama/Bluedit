@@ -25,7 +25,8 @@ export const commentsSamples = [
     'commentsSample_external_hiphopheads2.json',
     'commentsSample_image_kpop.json',
     'commentsSample_self_jungle.json',
-    'commentsSample_self_shoegaze.json'
+    'commentsSample_self_shoegaze.json',
+    'commentsSample_self_movies.json'
 ];
 export const getRandomCommentsSample = () => {
     return getRandomSampleData(commentsSamples);

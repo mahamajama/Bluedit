@@ -4,12 +4,17 @@ import { Outlet, Link, useLocation } from "react-router";
 import Search from './Components/Search/Search';
 import Background from "./Components/Background/Background";
 
+import { getScrollbarWidth } from "./utils/helpers";
+
 let searchFocusedBool = false;
 let lastScrollPosition = 0;
+
+const scrollbarWidth = getScrollbarWidth();
 
 export default function AppLayout() {
     const [headerCollapsed, setHeaderCollapsed] = useState(false);
     const [searchFocused, setSearchFocused] = useState(false);
+    const [backgroundInitiated, setBackgroundInitiated] = useState(false);
 
     let location = useLocation();
     
@@ -17,6 +22,16 @@ export default function AppLayout() {
     const header = useRef(null);
 
     const minHeaderScrollHeight = 20;
+
+    useEffect(() => {
+        setBackgroundInitiated(true);
+    }, [])
+
+    useEffect(() => {
+        if (contentContainer.current && scrollbarWidth) {
+            contentContainer.current.style.setProperty('--clip-right', `calc(100% - ${scrollbarWidth}px)`);
+        }
+    }, [contentContainer])
 
     useEffect(() => {
         if (contentContainer.current && header.current) {
@@ -77,7 +92,7 @@ export default function AppLayout() {
             <header id="header" ref={header}>
                 <div id="headerContent">
                     <div className={`logoContainer ${headerCollapsed ? 'collapsed' : ''}`}>
-                        <Link to='/' id="logo" className={headerCollapsed ? 'collapsed' : ''}>BLUEDIT</Link>
+                        <Link to='/' id="logo" className={headerCollapsed ? 'collapsed' : ''} draggable={false} >BLUEDIT</Link>
                     </div>
                     <Search collapsed={headerCollapsed} onFocus={handleSearchFocused} onBlur={handleSearchBlurred} />
                 </div>
@@ -85,7 +100,7 @@ export default function AppLayout() {
             <div id="contentContainer" className={`${headerCollapsed ? 'headerCollapsed' : ''}`} ref={contentContainer}>
                 <Outlet />
             </div>
-            <Background />
+            <Background initiated={backgroundInitiated} />
         </main>
     );
 }

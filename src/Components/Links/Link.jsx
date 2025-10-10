@@ -1,9 +1,10 @@
 import { useState, useRef } from 'react';
 import { Link, useParams } from 'react-router';
 
-import { decodeHtml, getTimestamp } from '../../utils/helpers';
+import { getTimestamp, isImage, decodeHtml } from '../../utils/helpers';
 import { expandSection, collapseSection } from '../../utils/effects';
-import commentsIcon from '../../assets/icon_comments.svg';
+
+import PreviewButton from '../Features/PreviewButton';
 
 export default function RLink({ link }) {
     const data = link.data;
@@ -11,17 +12,44 @@ export default function RLink({ link }) {
 
     const [previewOpen, setPreviewOpen] = useState(false);
     const previewContainer = useRef(null);
+    const previewButton = useRef(null);
 
     const linkToSelf = data.is_self;
-    const isImage = getIsImage();
+    const isImagePost = isImage(data.url);
     const fromOtherSubreddit = subreddit !== data.subreddit;
 
-    const postTime = new Date(data.created_utc * 1000);
-    const timestamp = getTimestamp(postTime);
+    const timestamp = getTimestamp(data.created_utc);
     const commentsPath = `/r/${data.subreddit}/comments/${data.id}`;
 
+    const getLinkTitle = () => {
+        const className = data.stickied ? 'linkTitle stickied' : 'linkTitle';
+
+        if (linkToSelf) {
+            return (
+                <Link 
+                    to={commentsPath} 
+                    className={className}
+                >
+                    {decodeHtml(data.title)}
+                </Link>
+            );
+        } else {
+            return (
+                <a 
+                    className={className}
+                    href={data.url} 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                >
+                    {decodeHtml(data.title)}
+                </a>
+            );
+        }
+    }
+    const linkTitle = getLinkTitle();
+
     const getThumbnail = () => {
-        if (getIsImage(data.thumbnail)) {
+        if (isImage(data.thumbnail)) {
             return data.thumbnail;
         } else if (data.domain === 'youtu.be') {
             const ytId = data.url.split('/').pop().split('?')[0];
@@ -35,7 +63,6 @@ export default function RLink({ link }) {
     const thumbnailSrc = getThumbnail();
 
     const handleClickPreview = (e) => {
-        e.preventDefault();
         if (previewOpen) {
             collapseSection(previewContainer.current);
             previewContainer.current.style.marginTop = 0;
@@ -45,14 +72,6 @@ export default function RLink({ link }) {
             previewContainer.current.style.marginTop = '14px';
             setPreviewOpen(true);
         }
-    }
-
-    function getIsImage() {
-        const url3 = data.url.slice(-4, data.url.length);
-        const url4 = data.url.slice(-5, data.url.length);
-        if (url3 === '.png' || url3 === '.jpg') return true;
-        if (url4 === '.jpeg' || url4 === '.webp') return true;
-        return false;
     }
 
     return (
@@ -69,15 +88,11 @@ export default function RLink({ link }) {
                         {fromOtherSubreddit && <li><Link to={`/r/${data.subreddit}`} className="linkSubreddit">{data.subreddit_name_prefixed}</Link></li>}
                     </ul>
                     <div className="linkTitleContainer">
-                        {linkToSelf ?
-                            <Link to={commentsPath} className={`linkTitle ${data.stickied ? 'stickied' : ''}`}>{data.title}</Link> 
-                            : <a href={data.url} target="_blank" rel="noopener noreferrer" className="linkTitle">{data.title}</a>
-                        }
+                        {linkTitle}
                         {data.link_flair_text && <p className="flair">{data.link_flair_text}</p>}
-                        <div className="byLine">by <Link to={`/user/${data.author}`}>{data.author}</Link>&nbsp;&nbsp;|&nbsp;&nbsp;{timestamp}</div>
                     </div>
                     <div className="bottomContainer">
-                        {isImage && <button className="previewButton" onClick={handleClickPreview}>PREVIEW</button>}
+                        <div className="byLine">by <Link to={`/user/${data.author}`}>{data.author}</Link>&nbsp;&nbsp;|&nbsp;&nbsp;{timestamp}</div>
                         <div className="linkScoreContainer">
                             <p className="linkScoreLabel">SCORE</p>
                             <p className="linkScore">{data.score}</p>
@@ -103,10 +118,11 @@ export default function RLink({ link }) {
                         via Reddit
                     </a>
                 </div>
-                
             </div>
+            
+            {isImagePost && <PreviewButton label='Preview' onClick={handleClickPreview} />}
             <div className="previewContainer" ref={previewContainer}>
-                {isImage && <img src={data.url} width="100%" />}
+                {isImagePost && <img src={data.url} width="100%" />}
                 {/*data.media_embed && <div dangerouslySetInnerHTML={{__html: decodeHtml(data.media_embed.content)}} />*/}
             </div>
         </div>

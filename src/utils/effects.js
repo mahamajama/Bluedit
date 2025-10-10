@@ -28,3 +28,18 @@ function onExpandEnd(e) {
   element.removeEventListener('transitionend', onExpandEnd);
   element.style.height = 'auto';
 }
+
+export const ignoreTransformTransition = (element, targetTransform, delay) => {
+  const elementTransition = element.style.transition;
+  const elementTransform = element.style.transform;
+
+  element.style.transition = 'none';
+  element.style.transform = targetTransform;
+
+  element.offsetHeight;
+  
+  setTimeout(() => {
+    element.style.transition = elementTransition;
+    element.style.transform = elementTransform;
+  }, delay * 1000);
+}

@@ -5,12 +5,13 @@ header {
   top: 0;
   left: 50%;
   width: 100%;
-  padding: 0 10px;
+  padding: 0 24px;
   z-index: 2;
   transform: translateX(-50%);
   overflow: hidden;
   scrollbar-gutter: stable;
 }
+
 header::after {
   display: block;
   position: relative;
@@ -20,6 +21,14 @@ header::after {
   margin: 0 auto;
   background: linear-gradient(to right, transparent 0, white 10%, white 90% , transparent 100%);
   content: linear-gradient(transparent);
+}
+
+@media (max-width: 1255px) {
+  header::after {
+    width: calc(100% + 160px);
+    left: 50%;
+    transform: translateX(-50%);
+  }
 }
 
 #headerContent {
@@ -35,6 +44,7 @@ header::after {
   letter-spacing: 0.4em;
   color: #7c78f0;
   transition: font-size 0.23s ease-in-out, font-variation-settings 0.23s ease-in-out, font-weight 0.23s ease-in-out, letter-spacing 0.23s ease-in-out;
+  user-select: none;
 
   &.collapsed {
     font-size: 0.8em;
@@ -88,7 +98,7 @@ header::after {
   z-index: 1;
   --clip-top: 183px;
   --clip-top-collapsed: 87px;
-  --clip-right: calc(100% - 20px);
+  --clip-right: calc(100% - 17px);
   clip-path: polygon(100% 0, 100% 100%, 0 100%, 0 var(--clip-top), var(--clip-right) var(--clip-top), var(--clip-right) 0);
   overflow-y: auto;
   transition: clip-path 0.24s ease-in-out;
@@ -107,7 +117,7 @@ header::after {
   width: 100%;
   max-width: var(--max-content-width);
   margin: 0 auto 24px;
-  padding: 24px;
+  padding: 36px;
   border-radius: 40px;
   background-color: #f1efffbb;
   color: #001135;
@@ -139,25 +149,37 @@ header::after {
 
 .linkContainerContainer {
   display: flex;
+  margin: 0;
 }
 
 .linkContainer {
+  display: flex;
+  flex-flow: column;
+  padding: 5px 0 0;
   width: 100%;
-  margin-right: 10px;
-}
-
-.linkTitleContainer {
-  margin: 10px 0;
-  padding: 0 20px 0 0;
+  margin-right: 16px;
 }
 
 .thumbnailContainer {
-  width: 72px;
-  margin-right: 10px;
+  padding: 12px 0 0;
+  width: 100px;
+  margin-right: 16px;
 }
+
+@media (max-width: 600px) {
+  .thumbnailContainer {
+    display: none;
+  }
+}
+
 .thumbnail {
   max-width: 100%;
   max-height: 100%;
+}
+
+.linkTitleContainer {
+  margin: 10px 0 4px;
+  padding: 0 20px 0 0;
 }
 
 .linkTitle {
@@ -175,16 +197,24 @@ header::after {
 }
 
 .flair {
-  display: inline;
-  padding: 2px 4px;
-  font-size: 0.7em;
-  background-color: rgb(33, 23, 51);
-  color: rgb(174, 160, 255);
-  border: 1px solid rgb(145, 130, 229);
+  position: relative;
+  display: inline-block;
+  padding: 2px 6px 2px;
+  font-size: 0.8em;
+  font-weight: 420;
+  letter-spacing: 0.03em;
+  background-color: var(--purple);
+  color: white;
+  border-radius: 20px;
   margin-left: 10px;
+  transform: translateY(-2px);
 }
 .commentFlair {
-  margin-left: 3px;
+  margin-left: 6px;
+
+  &.submitter {
+    background-color: #1471e8;
+  }
 }
 
 .flairImage {
@@ -197,20 +227,21 @@ header::after {
 }
 .byLine a {
   font-weight: 600;
+
+  &.submitter {
+    font-weight: 800;
+    color: #1471e8;
+  }
 }
 .byLine p {
   display: inline;
-}
-
-.linkDomain {
-  font-size: 0.9em;
 }
 
 .linkTag {
   padding: 2px 6px 3px;
   border-radius: 20px;
   color: white;
-  font-size: 0.7em;
+  font-size: 0.8em;
 }
 .nsfwTag {
   background-color: rgb(199, 77, 108);
@@ -220,7 +251,7 @@ header::after {
 }
 
 .linkDetailsContainer {
-  margin: 10px 0 0;
+  margin: 0;
   list-style: none;
   padding-inline-start: 0;
   font-size: 0.8em;
@@ -246,7 +277,9 @@ header::after {
 
 .bottomContainer {
   display: flex;
-  justify-content: end;
+  justify-content: space-between;
+  align-items: end;
+  flex-grow: 1;
 }
 
 .linkScoreContainer {
@@ -267,10 +300,77 @@ header::after {
 }
 
 .previewButton {
-  font-size: 12px;
+  display: flex;
+  position: relative;
+  font-size: 0.9em;
   width: 100%;
-  padding: 0 8px;
+  padding: 3px 12px 4px;
+  border-radius: 20px;
+  z-index: 2;
   text-align: left;
+  background-color: #0057ff12;
+  color: #313068;
+  box-shadow: 2px 2px 0 #0608203b, inset -3px -4px 11px -4px #c2fff9, inset 1px 3px 11px -4px #8faadde5;
+  transform: translate(0) scale(1);
+  transition: transform 0.4s cubic-bezier(0,.6,.14,.93), background-color 0.4s cubic-bezier(0,.6,.14,.93), box-shadow 0.6s cubic-bezier(0,.6,.14,.93);
+  animation: none;
+
+  &.disabled {
+    color: #31306898;
+    background-color: #364e8012;
+    box-shadow: 2px 2px 0 #06082031, inset -3px -4px 11px -4px #a9d3d0c0, inset 1px 3px 11px -4px #98bcffb0;
+    transition: none;
+  }
+}
+
+* + .previewButton {
+  margin: 12px 0 0;
+}
+
+.previewButton:hover {
+  color: #313068;
+  background-color: #dfe4ffe7;
+  box-shadow: 1px 3px 4px #06082034, inset -8px -10px 20px -5px #7afff26b, inset 3px 4px 8px -3px #b6d0ffb0;
+  transform: translate(0) scale(1.02);
+  animation: none;
+  
+  &.disabled {
+    color: #31306898;
+    background-color: #364e8012;
+    box-shadow: 2px 2px 0 #06082031, inset -3px -4px 11px -4px #a9d3d0c0, inset 1px 3px 11px -4px #98bcffb0;
+    transform: translateX(0);
+  }
+}
+
+.previewButton svg {
+  position: relative;
+  top: 2px;
+  margin-right: 8px;
+  width: 18px;
+}
+.previewButton path {
+  fill: rgba(52, 16, 255, 0.479);
+}
+
+@keyframes shake{
+  0% {
+    transform: translateX(0);
+  }
+  20% {
+    transform: translateX(-4px);
+  }
+  40% {
+    transform: translateX(4px);
+  }
+  60% {
+    transform: translateX(-2px);
+  }
+  80% {
+    transform: translateX(2px);
+  }
+  100% {
+    transform: translateX(0);
+  }
 }
 
 .previewContainer {
@@ -278,7 +378,7 @@ header::after {
   height: 0;
   margin-top: 0;
   overflow: hidden;
-  transition: height 0.25s ease-out, margin-top 0.17s ease-out;
+  transition: height 0.3s cubic-bezier(.08,.61,.18,.98), margin-top 0.35s cubic-bezier(.08,.61,.18,.98);
 }
 
 .commentsButtonContainer {
@@ -293,7 +393,7 @@ header::after {
   text-align: center;
   box-shadow: 2px 2px 0 #0608203b, inset -4px -6px 10px -5px var(--light-blue);
   transform: translate(0) scale(1);
-  transition: transform 0.2s cubic-bezier(.19,1,.22,1), box-shadow 0.6s cubic-bezier(.08,.82,.17,1);
+  transition: transform 0.3s cubic-bezier(0,.6,.14,.93), box-shadow 0.6s cubic-bezier(0,.6,.14,.93), background-color 0.6s cubic-bezier(0,.6,.14,.93);
 }
 
 .commentsButtonContainer a:hover {
@@ -307,7 +407,7 @@ header::after {
   color: white;
 }
 .commentsButton:hover {
-  box-shadow: 4px 4px 4px #06082021, inset -3px -5px 20px -1px var(--aqua);
+  box-shadow: 4px 4px 4px #06082025, inset -3px -5px 20px -1px var(--aqua), inset 3px 2px 16px -2px #202458a6;
   color: white;
 }
 
@@ -318,7 +418,8 @@ header::after {
   color: var(--purple);
 }
 .redditCommentsButton:hover {
-  box-shadow: 4px 4px 4px #06082021, inset -4px -3px 16px -2px #d4fff9;
+  background-color: #c8deffe1;
+  box-shadow: 4px 4px 4px #06082025, inset -4px -3px 16px -2px #d4fff9, inset 3px 2px 16px -2px #78a8e7a6;
   color: var(--purple);
 }
 
@@ -333,19 +434,89 @@ header::after {
   fill: white;
 }
 
-.commentsPostInfo {
-  width: 100%;
-  max-width: var(--max-content-width);
-  margin: 0 auto;
+.commentsPostContainer {
+  position: relative;
+  left: 50%;
+  width: calc(100% + 20px);
+  max-width: calc(var(--max-content-width) + 160px);
+  margin: 0 0 20px;
+  padding: 30px;
+  border-radius: 100px;
+  background-color: #f1efffbb;
+  box-shadow: inset 0 0 100px -10px white;
   text-align: left;
+  transform: translateX(-50%);
 }
 
-.commentContentContainer .bottomContainer {
-  margin-top: 14px;
+.commentsDivider {
+  display: block;
+  position: relative;
+  height: 1px;
+  margin: 0 auto 20px;
+  max-width: var(--max-content-width);
+  background-image: linear-gradient(to right, transparent 0, white 10%, white 90% , transparent 100%);
+}
+
+.commentsPostDetailsContainer {
+  position: relative;
+  width: 100%;
+  margin: 0;
+  padding: 60px;
+}
+
+.commentsPostDetailsContainer::before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  border-radius: 80px;
+  background-color: #ffffffc4;
+  filter: blur(40px);
+  transform: scale(0.95, 0.8);
 }
 
 .commentsTitle {
+  margin: 20px 0 24px;
+}
 
+.commentsPostDetailsContainer .linkDetailsContainer {
+  margin: 0 0 10px;
+}
+
+.commentsPostDetailsContainer .byLine {
+  margin: 10px 0 0;
+}
+
+.selfTextContainer {
+  position: relative;
+  width: 100%;
+  margin: -60px 0 0;
+  padding: 60px;
+}
+
+.selfTextContainer img {
+  width: 100%;
+}
+
+.selfTextContainer::before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  border-radius: 80px;
+  background-color: #ffffffc4;
+  filter: blur(40px);
+  transform: scale(0.98, 1);
+}
+
+.selfText {
+  font-size: 1.2em;
 }
 
 .commentContainer {
@@ -354,6 +525,10 @@ header::after {
 
 .commentContentContainer {
   padding: 0 34px 0 0;
+}
+
+.commentContentContainer .bottomContainer {
+  margin-top: 14px;
 }
 
 .commentBody {
@@ -365,14 +540,8 @@ header::after {
     font-size: 0.7em;
 }
 
-.commentLinkTitle {
-  color: rgb(186, 233, 255);
+.commentLinkContainer .linkTitle {
   font-size: 1.1em;
-  font-weight: 600;
-
-  &.stickied {
-    color: rgb(237, 205, 255);
-  }
 }
 
 .toggleRepliesButton {
@@ -403,11 +572,13 @@ header::after {
   content: linear-gradient(transparent);
   display: block;
   height: 1px;
-  margin: 0 0 20px;
+  margin: 0 -40px 20px;
   background-color: rgba(131, 141, 172, 0.5);
 }
 
-.selfText {
-  margin: 0 0 40px;
-  font-size: 1.2em;
-}
+
+
+
+
+/*  ANIMATIONS  */
+
