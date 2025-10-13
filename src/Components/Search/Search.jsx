@@ -6,8 +6,6 @@ import { selectQuery, selectOptions, setQuery } from '../Search/searchSlice';
 import './Search.css';
 import SearchOptions from './SearchOptions';
 
-import searchIcon from '../../assets/icon_search.svg';
-
 export default function Search({ collapsed, onFocus, onBlur }) {
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -114,16 +112,16 @@ export default function Search({ collapsed, onFocus, onBlur }) {
                     <button type="submit" className="searchButton">
                         <svg className="searchIcon" viewBox="0 0 45 45">
                             <g>
-                                <rect class="cls-1" x="18" width="18" height="9"/>
-                                <rect class="cls-1" x="18" y="27" width="18" height="9"/>
-                                <rect class="cls-1" x="9" y="9" width="9" height="18"/>
-                                <rect class="cls-1" x="36" y="9" width="9" height="18"/>
-                                <rect class="cls-1" y="36" width="9" height="9"/>
+                                <rect x="18" width="18" height="9"/>
+                                <rect x="18" y="27" width="18" height="9"/>
+                                <rect x="9" y="9" width="9" height="18"/>
+                                <rect x="36" y="9" width="9" height="18"/>
+                                <rect y="36" width="9" height="9"/>
                             </g>
                         </svg>
                     </button>
                 </div>
-                <div id="searchOptionsContainer" className={`${optionsOpen ? 'optionsOpen' : ''} ${options.subredditSearch ? 'subredditsType' : ''}`}>
+                <div id="searchOptionsContainer" className={`${optionsOpen ? 'optionsOpen' : ''} ${options.subredditSearch ? 'subredditsType' : ''} ${collapsed ? 'collapsed' : ''}`}>
                     <SearchOptions/>
                 </div>
             </form>

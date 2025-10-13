@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router';
 import { v4 as uuidv4 } from 'uuid';
 
-import CommentsList from './CommentsList';
+import List from '../Lists/List';
 import PreviewButton from '../Features/PreviewButton';
 import { expandSection, collapseSection } from '../../utils/effects';
 import { getTimestamp, decodeHtml } from '../../utils/helpers';
@@ -13,6 +13,8 @@ export default function Comment({ comment, isUserPage }) {
     const repliesContainer = useRef(null);
     
     const timestamp = getTimestamp(data.created_utc);
+    const isSubmitter = data.is_submitter;
+    const isMod = data.distinguished === 'moderator';
 
     const cleanLinkId = (dirty) => {
         const clean = dirty.split('_')[1];
@@ -91,8 +93,9 @@ export default function Comment({ comment, isUserPage }) {
                     <div>
                         <div className="byLine">
                             {!isUserPage && <>
-                                <Link to={`/user/${data.author}`} className={data.is_submitter ? 'submitter' : ''}>{data.author}</Link>
-                                {data.is_submitter && <p className="flair commentFlair submitter">OP</p>}
+                                <Link to={`/user/${data.author}`} className={`${isSubmitter ? 'submitter' : ''} ${isMod ? 'mod' : ''}`}>{data.author}</Link>
+                                {isSubmitter && <p className="flair commentFlair submitter">OP</p>}
+                                {isMod && <p className="flair commentFlair mod">Mod</p>}
                                 {flair && <>&nbsp;&nbsp;{flair}</>}
                                 &nbsp;&nbsp;|&nbsp;&nbsp;
                             </>}
@@ -101,20 +104,20 @@ export default function Comment({ comment, isUserPage }) {
                         {isUserPage && 
                             <div className="commentLinkContainer">
                                 <em style={{fontWeight: 100, color: '#7e6dc9ff', fontStyle: 'italic'}}>via:&nbsp;&nbsp;</em>
-                                <Link to={commentsPath} className="linkTitle">{data.link_title}</Link>
+                                <Link to={commentsPath} className="linkTitle" viewTransition>{data.link_title}</Link>
                             </div>
                         }
                     </div>
                     <div className="linkScoreContainer">
                         <p className="linkScoreLabel">SCORE</p>
-                        <p className="linkScore">{data.score}</p>
+                        <p className="linkScore">{data.score.toLocaleString()}</p>
                     </div>
                 </div>
                 
                 {previewButton}
             </div>
             <div ref={repliesContainer} className={`repliesContainer previewContainer`}>
-                {<CommentsList comments={replies}/>}
+                {<List list={replies}/>}
             </div>
         </div>
     );

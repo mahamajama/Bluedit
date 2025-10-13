@@ -113,6 +113,11 @@
             background-color: #d7a67bb4;
         }
     }
+
+    &.collapsed {
+        padding-top: 0;
+        transform: translate(-50%, -50px);
+    }
 }
 
 .detailsTab {

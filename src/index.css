@@ -40,10 +40,13 @@ a:hover {
 body {
   margin: 0;
   overflow: hidden;
+
+  --scroll-width: 17px;
 }
 
 p {
   margin: 0;
+  font-size: 1.2em;
 }
 
 p + p {
@@ -78,16 +81,21 @@ button:focus-visible {
 }
 
 blockquote {
-  padding: 4px 0 6px 12px;
+  padding: 8px 0 10px 16px;
   margin: 0;
-  border-left: 24px groove #97ace7b9;
+  border-left: 24px groove #aac0ffba;
   background-image: linear-gradient(to right, #aab0d846 50%, #ffffff00);
+  font-weight: 350;
+  line-height: 1.5;
 }
 
 blockquote p {
   margin: 0;
 }
 blockquote + p {
+  margin: 1em 0 0;
+}
+p + blockquote {
   margin: 1em 0 0;
 }
 

@@ -1,33 +1,31 @@
 import { useEffect, useState } from 'react';
-import { useParams, NavLink } from 'react-router';
+import { useParams } from 'react-router';
 import { useSelector, useDispatch } from 'react-redux';
 
-import Loading from '../Loading/Loading';
-import LinksList from './LinksList';
 import Details from '../Details/Details';
-import { selectLinks, getLinks, linksLoading } from './linksSlice';
+import List from '../Lists/List';
+import { fetchList, selectList } from '../Lists/listsSlice';
 
-export default function Links() {
+export default function Subreddit() {
     const dispatch = useDispatch();
-    const links = useSelector(selectLinks);
+    
+    const links = useSelector(selectList);
     const { subreddit, tab } = useParams();
     const [showTime, setShowTime] = useState(false);
 
     let subredditName = subreddit ? subreddit : 'popular';
-    let tabName = tab ? tab : 'hot';
-    let loading = useSelector(linksLoading);
 
     useEffect(() => {
         subredditName = subreddit ? subreddit : 'popular';
-        tabName = tab ? tab : 'hot';
-        setTabOptions(tabName);
-        dispatch(getLinks({
-            subreddit: subredditName, 
-            tab: tabName,
-        }));
+        setTabOptions();
+
+        const path = `r/${subredditName}${tab ? `/${tab}` : ''}.json`;
+        dispatch(
+            fetchList({path: path, type: 'subreddit'})
+        );
     }, [subreddit, tab]);
 
-    function setTabOptions(currentTab) {
+    function setTabOptions() {
         if (tab === 'controversial' || tab === 'top') {
             setShowTime(true);
         } else {
@@ -51,7 +49,7 @@ export default function Links() {
                 sort={null}
                 time={showTime}
             />
-            {loading ? <Loading/> : <LinksList links={links}/>}
+            
         </>
     );
 }

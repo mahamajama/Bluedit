@@ -12,7 +12,6 @@ export default function RLink({ link }) {
 
     const [previewOpen, setPreviewOpen] = useState(false);
     const previewContainer = useRef(null);
-    const previewButton = useRef(null);
 
     const linkToSelf = data.is_self;
     const isImagePost = isImage(data.url);
@@ -94,8 +93,8 @@ export default function RLink({ link }) {
                     <div className="bottomContainer">
                         <div className="byLine">by <Link to={`/user/${data.author}`}>{data.author}</Link>&nbsp;&nbsp;|&nbsp;&nbsp;{timestamp}</div>
                         <div className="linkScoreContainer">
-                            <p className="linkScoreLabel">SCORE</p>
-                            <p className="linkScore">{data.score}</p>
+                            <p className="linkScoreLabel">SCORE|</p>
+                            <p className="linkScore">{data.score.toLocaleString()}</p>
                         </div>
                     </div>
                 </div>
@@ -107,7 +106,7 @@ export default function RLink({ link }) {
                         <svg className='commentsIcon' viewBox="0 0 90 81">
                                 <path d="M81,18v-9h-18V0H27v9H9v9H0v27h9v9h18v9h27v18h9v-9h9v-18h9v-9h9v-27h-9ZM27,36h-9v-9h9v9ZM45,36h-9v-9h9v9ZM63,36h-9v-9h9v9Z"/>
                         </svg>
-                        {data.num_comments}
+                        {data.num_comments.toLocaleString()}
                     </Link>
                     <a 
                         className="redditCommentsButton" 

@@ -1,8 +1,12 @@
 import { useState, useEffect, useRef } from "react";
-import { Outlet, Link, useLocation } from "react-router";
+import { Outlet, useLocation } from "react-router";
+import { useSelector } from "react-redux";
 
-import Search from './Components/Search/Search';
+import Header from "./Components/Header/Header";
 import Background from "./Components/Background/Background";
+import Post from "./Components/Posts/Post";
+import List from "./Components/Lists/List";
+import { selectList, selectPost, selectIsLoading } from './Components/Lists/listsSlice';
 
 import { getScrollbarWidth } from "./utils/helpers";
 
@@ -15,11 +19,18 @@ export default function AppLayout() {
     const [headerCollapsed, setHeaderCollapsed] = useState(false);
     const [searchFocused, setSearchFocused] = useState(false);
     const [backgroundInitiated, setBackgroundInitiated] = useState(false);
+    const [postToRender, setPostToRender] = useState([]);
+    const [listToRender, setListToRender] = useState([]);
+    const [isReady, setIsReady] = useState(false);
 
     let location = useLocation();
     
     const contentContainer = useRef(null);
     const header = useRef(null);
+
+    const isLoading = useSelector(selectIsLoading);
+    const currentPost = useSelector(selectPost);
+    const currentList = useSelector(selectList);
 
     const minHeaderScrollHeight = 20;
 
@@ -28,10 +39,10 @@ export default function AppLayout() {
     }, [])
 
     useEffect(() => {
-        if (contentContainer.current && scrollbarWidth) {
-            contentContainer.current.style.setProperty('--clip-right', `calc(100% - ${scrollbarWidth}px)`);
+        if (contentContainer.current && header.current && scrollbarWidth) {
+            document.body.style.setProperty('--scroll-width', `${scrollbarWidth}px`);
         }
-    }, [contentContainer])
+    }, [contentContainer, header, scrollbarWidth])
 
     useEffect(() => {
         if (contentContainer.current && header.current) {
@@ -53,14 +64,14 @@ export default function AppLayout() {
     }, [searchFocused]);
 
     useEffect(() => {
-        if (contentContainer.current && (!location.pathname || location.pathname === '/')) {
-            contentContainer.current.scrollTo(0, 0);
+        if (contentContainer.current) {
+            contentContainer.current.scrollTo({top: 0, behavior: 'smooth'});
         }
     }, [location])
 
     const handleScrollWithinHeader = (e) => {
         if (contentContainer.current) {
-            contentContainer.current.scrollBy(0, e.deltaY);
+            contentContainer.current.scrollBy({top: e.deltaY, behavior: 'smooth'});
         }
     }
 
@@ -87,18 +98,59 @@ export default function AppLayout() {
         searchFocusedBool = false;
     }
 
+    useEffect(() => {
+        if (contentContainer.current?.childElementCount > 0) {
+            unloadItems();
+        } else {
+            loadItems();
+        }
+    }, [isLoading]);
+
+    function unloadItems() {
+        if (contentContainer.current) {
+            const unloadTime = 1;
+            setIsReady(false);
+            const items = contentContainer.current.children;
+            const delta =  unloadTime / items.length;
+            for (let i = 0; i < items.length; i++) {
+                let delay = delta * i;
+                items[i].style.animation = `unloadItem 1s ${delay}s forwards ease-out`;
+                if (i === items.length - 1) {
+                    items[i].addEventListener('animationend', onUnloadComplete);
+                }
+            }
+        }
+    }
+
+    function onUnloadComplete() {
+        const items = contentContainer.current.children;
+        for (let i = 0; i < items.length; i++) {
+            items[i].style.animation = null;
+        }
+        setIsReady(true);
+    }
+
+    function loadItems() {
+        const post = { ...currentPost };
+        setPostToRender(post);
+
+        const list = [ ...currentList ];
+        setListToRender(list);
+    }
+
+    useEffect(() => {
+        if (isReady) loadItems();
+    }, [isReady]);
+
     return (
         <main>
             <header id="header" ref={header}>
-                <div id="headerContent">
-                    <div className={`logoContainer ${headerCollapsed ? 'collapsed' : ''}`}>
-                        <Link to='/' id="logo" className={headerCollapsed ? 'collapsed' : ''} draggable={false} >BLUEDIT</Link>
-                    </div>
-                    <Search collapsed={headerCollapsed} onFocus={handleSearchFocused} onBlur={handleSearchBlurred} />
-                </div>
+                <Header collapsed={headerCollapsed} onSearchFocused={handleSearchFocused} onSearchBlurred={handleSearchBlurred} />
             </header>
             <div id="contentContainer" className={`${headerCollapsed ? 'headerCollapsed' : ''}`} ref={contentContainer}>
                 <Outlet />
+                <Post post={postToRender} />
+                <List list={listToRender} />
             </div>
             <Background initiated={backgroundInitiated} />
         </main>

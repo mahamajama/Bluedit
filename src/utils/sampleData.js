@@ -1,5 +1,23 @@
 
-export default function getRandomSampleData(arr) {
+export default function getRandomSampleOfType(type) {
+    switch (type) {
+        case 'subreddit':
+            return getRandomSubredditSample();
+        case 'comments':
+            return getRandomCommentsSample();
+        case 'search':
+            return getRandomSearchSample();
+        case 'subredditSearch':
+            return getRandomSubredditSearchSample();
+        case 'user':
+            return getRandomUserSample();
+        default:
+            console.log(`Couldn't find samples of type: ${type}.`);
+            break;
+    }
+}
+
+export function getRandomSampleFromList(arr) {
     const x = Math.floor(Math.random() * arr.length);
     return arr[x];
 }
@@ -15,7 +33,7 @@ export const subredditSamples = [
     'subredditSample_techno.json'
 ];
 export const getRandomSubredditSample = () => {
-    return getRandomSampleData(subredditSamples);
+    return getRandomSampleFromList(subredditSamples);
 }
 
 export const commentsSamples = [
@@ -29,7 +47,7 @@ export const commentsSamples = [
     'commentsSample_self_movies.json'
 ];
 export const getRandomCommentsSample = () => {
-    return getRandomSampleData(commentsSamples);
+    return getRandomSampleFromList(commentsSamples);
 }
 
 export const searchSamples = [
@@ -42,7 +60,7 @@ export const searchSamples = [
     'searchSample_kpop.json'
 ];
 export const getRandomSearchSample = () => {
-    return getRandomSampleData(searchSamples);
+    return getRandomSampleFromList(searchSamples);
 }
 
 export const subredditSearchSamples = [
@@ -55,5 +73,21 @@ export const subredditSearchSamples = [
     'searchSample_subreddits_kpop.json'
 ];
 export const getRandomSubredditSearchSample = () => {
-    return getRandomSampleData(subredditSearchSamples);
+    return getRandomSampleFromList(subredditSearchSamples);
 }
+
+export const userSamples = [
+    'searchSample_subreddits_house.json',
+    'searchSample_subreddits_hiphop.json',
+    'searchSample_subreddits_shoegaze.json',
+    'searchSample_subreddits_punk.json',
+    'searchSample_subreddits_funk.json',
+    'searchSample_subreddits_techno.json',
+    'searchSample_subreddits_kpop.json'
+];
+export const getRandomUserSample = () => {
+    return getRandomSampleFromList(subredditSearchSamples);
+}
+
+
+

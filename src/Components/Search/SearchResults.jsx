@@ -1,20 +1,17 @@
 import { useEffect } from "react";
 import { useSearchParams } from "react-router";
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
-import { search, selectResults, resultsLoading } from './searchSlice';
-import Loading from '../Loading/Loading';
-import LinksList from '../Links/LinksList';
+import { fetchList } from "../Lists/listsSlice";
 import Details from "../Details/Details";
 
 export default function SearchResults() {
     const dispatch = useDispatch();
     let [params] = useSearchParams();
-    const links = useSelector(selectResults);
-    let loading = useSelector(resultsLoading);
 
     useEffect(() => {
-        dispatch(search(params));
+        const path = `search.json?${params.toString()}`;
+        dispatch(fetchList({ path: path, type: 'search' }));
     }, [params]);
 
     const tabs = [
@@ -38,7 +35,6 @@ export default function SearchResults() {
                 time={true}
                 safeSearch={true}
             />
-            {loading ? <Loading/> : <LinksList links={links} />}
         </>
     );
 }

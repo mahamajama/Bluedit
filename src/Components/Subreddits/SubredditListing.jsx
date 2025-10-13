@@ -1,17 +1,20 @@
-
+import { Link } from 'react-router';
 
 export default function SubredditListing({ data }) {
     return (
-        <div className="listingContainer">
-            <div>
+        <div className="listingContainer subredditListing">
+            <Link className="subredditName">
                 {data.display_name_prefixed}
-            </div>
-            <div>
+            </Link>
+            <p className="subredditDescription">
                 {data.public_description}
-            </div>
-            <div>
-                {data.subscribers && data.subscribers.toLocaleString()}
-            </div>
+            </p>
+            {data.subscribers && 
+                <p>
+                    <span className="subredditSubscribers">{data.subscribers.toLocaleString()}</span>
+                    &nbsp;{data.subscribers === 1 ? 'subscriber' : 'subscribers'}
+                </p>
+            }
         </div>
     );
 }

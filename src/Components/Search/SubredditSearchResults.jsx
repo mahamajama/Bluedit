@@ -1,23 +1,20 @@
 import { useEffect } from "react";
 import { useSearchParams } from "react-router";
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
-import { searchSubreddits, selectSubredditResults, resultsLoading } from './searchSlice';
-import Loading from '../Loading/Loading';
-import SubredditsList from '../Subreddits/SubredditsList';
+import { fetchList } from "../Lists/listsSlice";
 import Details from "../Details/Details";
 
 export default function SubredditSearchResults() {
     const dispatch = useDispatch();
     let [params] = useSearchParams();
-    const subreddits = useSelector(selectSubredditResults);
-    let loading = useSelector(resultsLoading);
 
     useEffect(() => {
         if (params.size < 1 || params.get("q") === '') {
-            
+            return;
         } else {
-            dispatch(searchSubreddits(params));
+            const path = `subreddits/search.json?${params.toString()}`;
+            dispatch(fetchList({ path: path, type: 'subredditSearch' }));
         }
     }, [params]);
 
@@ -35,7 +32,6 @@ export default function SubredditSearchResults() {
                 time={false}
                 safeSearch={true}
             />
-            {loading ? <Loading/> : <SubredditsList subreddits={subreddits} />}
         </>
     );
 }

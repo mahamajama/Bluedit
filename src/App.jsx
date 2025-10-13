@@ -1,8 +1,8 @@
-import { Route, BrowserRouter, Routes } from "react-router";
+import { createBrowserRouter, RouterProvider } from "react-router";
 
 import './App.css';
 import AppLayout from './AppLayout';
-import Links from './Components/Links/Links';
+import Subreddit from "./Components/Subreddits/Subreddit";
 import Comments from './Components/Comments/Comments';
 import SubredditSearchResults from './Components/Search/SubredditSearchResults';
 import SearchResults from './Components/Search/SearchResults';
@@ -10,25 +10,33 @@ import User from './Components/User/User';
 import Loading from "./Components/Loading/Loading";
 import Background from "./Components/Background/Background";
 
-function App() {
+export default function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<AppLayout/>}>
-          <Route index element={<Links/>}/>
-          <Route path="r/:subreddit" element={<Links/>}/>
-          <Route path="r/:subreddit/:tab" element={<Links/>}/>
-          <Route path="r/:subreddit/comments/:id/*" element={<Comments/>}/>
-          <Route path="search" element={<SearchResults/>}/>
-          <Route path="subreddits/search" element={<SubredditSearchResults/>}/>
-          <Route path="user/:user" element={<User/>}/>
-          <Route path="user/:user/:tab" element={<User/>}/>
-          <Route path="loading" element={<Loading/>}/>
-          <Route path="three" element={<Background/>}/>
-        </Route>
-      </Routes>
-    </BrowserRouter>
+    <RouterProvider router={router} />
   )
 }
 
-export default App;
+let router = createBrowserRouter([
+  {
+    path: '/',
+    Component: AppLayout,
+    children: [
+      { index: true, Component: Subreddit },
+      {
+        path: 'r',
+        children: [
+          { path: ':subreddit/:tab?', Component: Subreddit },
+          { path: ':subreddit/comments/:id/*', Component: Comments },
+        ],
+      },
+      {
+        path: 'user',
+        children: [
+          { path: ':user/:tab?', Component: User },
+        ],
+      },
+      { path: 'search', Component: SearchResults },
+      { path: 'subreddits/search', Component: SubredditSearchResults },
+    ],
+  }
+]);

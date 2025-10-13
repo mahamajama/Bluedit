@@ -1,17 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useParams, useSearchParams } from 'react-router';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
-import UserActivityList from './UserActivityList';
-import { selectActivity, activityLoading, loadUserActivity, loadUserComments, loadUserSubmitted } from './userSlice';
-import Loading from '../Loading/Loading';
+import { fetchList } from '../Lists/listsSlice';
 import Details from '../Details/Details';
 
 export default function User() {
     const dispatch = useDispatch();
     const [params] = useSearchParams();
-    const activity = useSelector(selectActivity);
-    const loading = useSelector(activityLoading);
     const { user, tab } = useParams();
 
     const defaultSort = {
@@ -30,16 +26,21 @@ export default function User() {
     const [showTime, setShowTime] = useState(false);
     
     useEffect(() => {
+        const paramString = params.size > 0 ? `?${params.toString()}` : '';
+        let tabString = '';
+
         if (tab === 'comments') {
             setSort(defaultSort);
-            dispatch(loadUserComments({user: user, params: params}));
+            tabString = '/comments';
         } else if (tab === 'submitted') {
             setSort(submittedSort);
-            dispatch(loadUserSubmitted({user: user, params: params}));
+            tabString = '/submitted';
         } else {
             setSort(defaultSort);
-            dispatch(loadUserActivity({user: user, params: params}));
         }
+
+        const path = `user/${user}${tabString}.json${paramString}`;
+        dispatch(fetchList({ path: path, type: 'user' }));
     }, [user, tab, params]);
 
     useEffect(() => {
@@ -60,12 +61,11 @@ export default function User() {
     return (
         <>
             <Details
-                title={user} 
+                title={`u/${user}`} 
                 tabs={tabs}
                 sort={sort}
                 time={showTime}
             />
-            {loading ? <Loading/> : <UserActivityList activity={activity}/>}
         </>
     );
 }
