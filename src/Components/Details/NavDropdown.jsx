@@ -1,40 +1,19 @@
-import { useState, useEffect } from "react";
-import { useLocation, useSearchParams, useNavigate } from "react-router";
-import { v4 as uuidv4 } from 'uuid';
 
-export default function NavDropdown({ title, tabs }) {
+import { useSearchParams, useNavigate } from "react-router";
+
+import Dropdown from "../Features/Dropdown";
+
+export default function NavDropdown({ tabs }) {
     const navigate = useNavigate();
     
     const [params] = useSearchParams();
-    let location = useLocation();
 
-    const [optionsToDisplay, setOptionsToDisplay] = useState([]);
-    useEffect(() => {
-        setOptionsToDisplay(getOptionsToDisplay());
-    }, [tabs])
-
-    function getOptionsToDisplay() {
-        let arr = [];
-        for (let i = 0; i < tabs.length; i++) {
-            arr.push(<option value={tabs[i][0]} key={uuidv4()}>{tabs[i][1]}</option>);
-        }
-        return arr;
-    }
-
-    const handleChange = (e) => {
+    const handleOptionSelected = (value) => {
         const currentParams = params.size > 0 ? `?${params.toString()}` : '';
-        navigate(`${e.target.value}${currentParams}`);
+        navigate(`${value}${currentParams}`);
     }
+
     return (
-        <label className="detailsTab">
-            {title ? title : 'Type'}:&nbsp;
-            <select
-                name="tab"
-                value={location.pathname}
-                onChange={handleChange}
-            >
-                {optionsToDisplay}
-            </select>
-        </label>
+        <Dropdown options={tabs} onOptionSelected={handleOptionSelected} />
     );
 }

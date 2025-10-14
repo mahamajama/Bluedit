@@ -136,11 +136,13 @@ export default function AppLayout() {
 
         const list = [ ...currentList ];
         setListToRender(list);
+
+        setIsReady(false);
     }
 
     useEffect(() => {
-        if (isReady) loadItems();
-    }, [isReady]);
+        if (isReady && !isLoading) loadItems();
+    }, [isReady, isLoading]);
 
     return (
         <main>

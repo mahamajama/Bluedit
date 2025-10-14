@@ -13,7 +13,7 @@ export default function PreviewButton({ label, onClick, disabled }) {
             previewButton.current.offsetHeight;
             previewButton.current.style.animation = 'shake 0.8s forwards ease-out';
         } else {
-            ignoreTransformTransition(previewButton.current, 'translate(0, 2px) scale(0.99)', 0.05);
+            ignoreTransformTransition(previewButton.current, 'translate(0, 2px) scale(0.99)', 0.06);
         }
 
         onClick();

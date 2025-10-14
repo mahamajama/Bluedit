@@ -43,7 +43,7 @@ export default function Comment({ comment, isUserPage }) {
 
     let replies = [];
     if (comment.data.replies) {
-        replies = comment.data.replies.data.children;
+        replies = comment.data.replies.data.children.filter(reply => reply.kind != 'more');
     }
 
     const toggleReplies = () => {
@@ -116,8 +116,10 @@ export default function Comment({ comment, isUserPage }) {
                 
                 {previewButton}
             </div>
-            <div ref={repliesContainer} className={`repliesContainer previewContainer`}>
-                {<List list={replies}/>}
+            <div ref={repliesContainer} className={`previewContainer`}>
+                <div className='repliesContainer'>
+                    {<List list={replies}/>}
+                </div>
             </div>
         </div>
     );

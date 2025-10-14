@@ -3,7 +3,7 @@ import { useSearchParams } from "react-router";
 import { useDispatch } from 'react-redux';
 
 import { fetchList } from "../Lists/listsSlice";
-import Details from "../Details/Details";
+import { setTitle, setOptions } from '../Details/detailsSlice';
 
 export default function SearchResults() {
     const dispatch = useDispatch();
@@ -11,30 +11,32 @@ export default function SearchResults() {
 
     useEffect(() => {
         const path = `search.json?${params.toString()}`;
-        dispatch(fetchList({ path: path, type: 'search' }));
+        dispatch(
+            fetchList({ path: path, type: 'search' })
+        );
+        dispatch(
+            setTitle(`Search: ${params.get("q")}`)
+        );
+        dispatch(
+            setOptions({
+                tabs: {
+                    Posts: '/search',
+                    Subreddits: '/subreddits/search',
+                },
+                sort: {
+                    Relevance: 'relevance',
+                    Top: 'top',
+                    New: 'new',
+                    Comments: 'comments',
+                },
+                showTime: true,
+                showSafeSearch: true,
+            })
+        );
     }, [params]);
-
-    const tabs = [
-        ['/search', 'Posts'],
-        ['/subreddits/search', 'Subreddits'],
-    ]
-
-    const sort = {
-        relevance: 'Relevance',
-        top: 'Top',
-        new: 'New',
-        comments: 'Comments',
-    }
 
     return (
         <>
-            <Details
-                title={`Search: ${params.get("q")}`} 
-                tabs={tabs}
-                sort={sort}
-                time={true}
-                safeSearch={true}
-            />
         </>
     );
 }

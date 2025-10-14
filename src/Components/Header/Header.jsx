@@ -1,5 +1,6 @@
 import { Link } from 'react-router';
 import Search from '../Search/Search';
+import Details from '../Details/Details';
 
 export default function Header({ collapsed, onSearchFocused, onSearchBlurred }) {
 
@@ -9,6 +10,7 @@ export default function Header({ collapsed, onSearchFocused, onSearchBlurred }) 
                 <Link to='/' id="logo" className={collapsed ? 'collapsed' : ''} draggable={false} viewTransition>BLUEDIT</Link>
             </div>
             <Search collapsed={collapsed} onFocus={onSearchFocused} onBlur={onSearchBlurred} />
+            <Details />
         </div>
     );
 }

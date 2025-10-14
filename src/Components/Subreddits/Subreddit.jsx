@@ -1,15 +1,14 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router';
+import { useParams, useSearchParams } from 'react-router';
 import { useSelector, useDispatch } from 'react-redux';
 
-import Details from '../Details/Details';
-import List from '../Lists/List';
-import { fetchList, selectList } from '../Lists/listsSlice';
+import { fetchList } from '../Lists/listsSlice';
+import { setTitle, setOptions } from '../Details/detailsSlice';
 
 export default function Subreddit() {
     const dispatch = useDispatch();
-    
-    const links = useSelector(selectList);
+    const [params] = useSearchParams();
+
     const { subreddit, tab } = useParams();
     const [showTime, setShowTime] = useState(false);
 
@@ -19,11 +18,35 @@ export default function Subreddit() {
         subredditName = subreddit ? subreddit : 'popular';
         setTabOptions();
 
-        const path = `r/${subredditName}${tab ? `/${tab}` : ''}.json`;
+        const paramString = params.size > 0 ? `?${params.toString()}` : '';
+        const path = `r/${subredditName}${tab ? `/${tab}` : ''}.json${paramString}`;
         dispatch(
             fetchList({path: path, type: 'subreddit'})
         );
-    }, [subreddit, tab]);
+        dispatch(
+            setTitle(`r/${subredditName}`)
+        );
+        handleSetOptions();
+    }, [subreddit, tab, params]);
+
+    useEffect(() => {
+        handleSetOptions();
+    }, [showTime]);
+
+    function handleSetOptions() {
+        dispatch(
+            setOptions({
+                tabs: {
+                    Hot: `/r/${subredditName}`,
+                    New: `/r/${subredditName}/new`,
+                    Rising: `/r/${subredditName}/rising`,
+                    Controversial: `/r/${subredditName}/controversial`,
+                    Top: `/r/${subredditName}/top`,
+                },
+                showTime: showTime,
+            })
+        );
+    }
 
     function setTabOptions() {
         if (tab === 'controversial' || tab === 'top') {
@@ -33,23 +56,8 @@ export default function Subreddit() {
         }
     }
 
-    const tabs = [
-        [`/r/${subredditName}`, 'Hot'],
-        [`/r/${subredditName}/new`, 'New'],
-        [`/r/${subredditName}/rising`, 'Rising'],
-        [`/r/${subredditName}/controversial`, 'Controversial'],
-        [`/r/${subredditName}/top`, 'Top'],
-    ];
-
     return (
         <>
-            <Details
-                title={`r/${subredditName}`} 
-                tabs={tabs}
-                sort={null}
-                time={showTime}
-            />
-            
         </>
     );
 }

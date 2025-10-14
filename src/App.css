@@ -17,7 +17,8 @@ header::after {
   height: 4px;
   margin: 0 auto;
   background: linear-gradient(to right, transparent 0, white 10%, white 90% , transparent 100%);
-  content: linear-gradient(transparent);
+  content: '';
+  z-index: -1;
 }
 
 @media (max-width: 1255px) {
@@ -97,7 +98,7 @@ header::after {
   --clip-top-collapsed: 87px;
   --clip-right: calc(100% - var(--scroll-width));
   clip-path: polygon(100% 0, 100% 100%, 0 100%, 0 var(--clip-top), var(--clip-right) var(--clip-top), var(--clip-right) 0);
-  overflow-y: auto;
+  overflow-y: scroll;
   transition: clip-path 0.24s ease-in-out;
 
   --load-animation: loadItem 0.5s forwards cubic-bezier(0,.6,.14,.93);
@@ -161,6 +162,7 @@ header::after {
   margin: 6px auto;
   text-align: left;
   align-items: center;
+  justify-content: space-between;
 }
 
 .detailsTitle {
@@ -319,10 +321,17 @@ header::after {
 }
 
 .linkScoreContainer {
-  margin-left: 14px;
+  margin-left: 24px;
+  text-align: end;
+  background-color: #9aaaff00;
+  border-radius: 30px;
+  padding: 11px 10px 9px 16px;
+  position: relative;
+  transform: translateY(3px);
+  box-shadow: inset 4px -12px 20px #c4e4ff85, inset -2px 6px 16px #acc9e182, inset -2px 2px 4px #678eae21;
 }
 .linkScoreContainer p {
-  display: inline;
+  display: inline-block;
 }
 .linkScoreLabel {
   margin-right: 4px;
@@ -331,13 +340,51 @@ header::after {
   letter-spacing: 0.4em;
   font-variation-settings: "wdth" 120;
 }
+
 .linkScore {
+  position: relative;
+  margin: 0 4px 0 0;
   font-size: 1em;
   font-weight: 600;
-  margin-right: 4px;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.1em;
   font-variation-settings: "wdth" 120;
-  color: #609fa8;
+  -webkit-text-fill-color: #609fa8;
+  text-fill-color: #609fa8;
+  transform: scale(1);
+  transition: -webkit-text-fill-color 0.5s ease-in-out, text-fill-color 0.5s ease-in-out, transform 0.7s cubic-bezier(.04,.7,.23,.95);
+}
+
+.linkScore:hover {
+    background: linear-gradient(
+        to right,
+        #ff0000 0%,
+        #ff00ff 10%,
+        #0000ff 20%,
+        #00ff00 30%,
+        #ffff00 40%,
+        #ff0000 50%,
+        #ff00ff 60%,
+        #0000ff 70%,
+        #00ff00 80%,
+        #ffff00 90%,
+        #ff0000 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-fill-color: transparent;
+    background-size: 900% auto;
+    transform: scale(1.1);
+    animation: textShine 1s ease-in-out infinite forwards;
+}
+
+@keyframes textShine {
+    0% {
+        background-position: 0% 50%;
+    }
+    100% {
+        background-position: 50% 50%;
+    }
 }
 
 .previewButton {
@@ -432,7 +479,7 @@ header::after {
   padding: 10px;
   border-radius: 36px;
   text-align: center;
-  box-shadow: 2px 2px 0 #0608203b, inset -4px -6px 10px -5px var(--light-blue);
+  box-shadow: 2px 2px 0 #0608203b, inset -4px -7px 20px -2px var(--light-blue);
   transform: translate(0) scale(1);
   transition: transform 0.3s cubic-bezier(0,.6,.14,.93), box-shadow 0.6s cubic-bezier(0,.6,.14,.93), background-color 0.6s cubic-bezier(0,.6,.14,.93);
 }
@@ -454,7 +501,7 @@ header::after {
 
 .redditCommentsButton {
   padding: 14px;
-  background-color: var(--light-blue);
+  background-color: #cfe9ffdb;
   font-size: 11px;
   color: var(--purple);
 }
@@ -592,9 +639,6 @@ header::after {
 
 .repliesContainer {
   overflow: hidden;
-}
-
-.repliesContainer .listContainer {
   border-radius: 40px;
   background-color: #f1efffd6;
   padding: 24px 2px 10px 24px;
@@ -640,3 +684,5 @@ header::after {
 .subredditSubscribers {
   font-weight: 500;
 }
+
+

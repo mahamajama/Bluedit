@@ -227,8 +227,9 @@ function ripple(time) {
     for (let i = 0; i < queue.length; i++) {
         const index = queue[i][0];
         const intensity = queue[i][1];
+        const delay = queue[i][2] + time;
 
-        deformVertex(index, intensity, queue[i][2]);
+        deformVertex(index, intensity, delay);
 
         let damper = damping;
         if (intensity < 0.01) {
@@ -246,17 +247,44 @@ function ripple(time) {
     positionAttribute.needsUpdate = true;
     //waterPlane.geometry.computeVertexNormals(); // needed if flat shading is off
 
-    queue = queue.filter(animation => animation[1] > 0);
+    arrayShiftFilter();
+    //queue = queue.filter(animation => animation[1] > 0);
+}
 
-    function deformVertex(index, intensity, delay) {
-        const vertex = new THREE.Vector3();
-        const x = positionAttribute.getX(index);
-        const y = positionAttribute.getY(index);
-        const z = originalPosition[index].z;
-        vertex.fromBufferAttribute(positionAttribute, index);
-        vertex.set(x, y, z - Math.cos((time + delay) * rippleSpeed) * intensity); // update vertex
-        positionAttribute.setXYZ(index, vertex.x, vertex.y, vertex.z);
+function arrayShiftFilter () {
+    let newQueue = [];
+
+    for (let i = 0; i < queue.length; i++) {
+        if (queue[i][1] > 0) {
+            newQueue.push(queue[i]);
+        }
     }
+
+    queue = newQueue;
+}
+Array.prototype.shiftFilter = function aarrayShiftFilter (predicate) {
+    let i, j;
+
+    for (i = 0, j = 0; i < this.length; ++i) {
+        if (predicate(this[i])) {
+            this[j] = this[i];
+            ++j;
+        }
+    }
+
+    while (j < this.length) {
+        this.pop();
+    }
+}
+
+function deformVertex(index, intensity, delay) {
+    const vertex = new THREE.Vector3();
+    const x = positionAttribute.getX(index);
+    const y = positionAttribute.getY(index);
+    const z = originalPosition[index].z;
+    vertex.fromBufferAttribute(positionAttribute, index);
+    vertex.set(x, y, z - Math.cos(delay * rippleSpeed) * intensity); // update vertex
+    positionAttribute.setXYZ(index, vertex.x, vertex.y, vertex.z);
 }
 
 function setRippleTrail(x, y, width, height) {

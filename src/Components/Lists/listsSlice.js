@@ -28,14 +28,7 @@ export const listsSlice = createSlice({
         isLoading: false,
         hasError: false,
     },
-    reducers: {
-        setPostUnloading: (state, action) => {
-            state.postUnloading = action.payload;
-        },
-        setListUnloading: (state, action) => {
-            state.listUnloading = action.payload;
-        },
-    },
+    reducers: {},
     extraReducers: (builder) => {
         builder
             .addMatcher(
@@ -75,5 +68,4 @@ export const selectList = (state) => state.lists.list;
 export const selectPost = (state) => state.lists.post;
 export const selectType = (state) => state.lists.type;
 export const selectIsLoading = (state) => state.lists.isLoading;
-export const { setPostUnloading, setListUnloading } = listsSlice.actions;
 export default listsSlice.reducer;

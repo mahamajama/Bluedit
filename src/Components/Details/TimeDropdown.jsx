@@ -1,19 +1,16 @@
-import { useState, useEffect } from "react";
-import { useSearchParams } from "react-router";
-
 import SortDropdown from "./SortDropdown";
 
 export default function TimeDropdown() {
 
     const options = {
-        all: 'All Time',
-        day: '24 Hours',
-        week: 'Past Week',
-        month: 'Past Month',
-        year: 'Past Year',
+        'All Time': 'all',
+        '24 Hours': 'day',
+        'Past Week': 'week',
+        'Past Month': 'month',
+        'Past Year': 'year',
     }
 
     return (
-        <SortDropdown name="Time" param="t" options={options} />
+        <SortDropdown param='t' options={options} />
     );
 }

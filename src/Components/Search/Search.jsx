@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate, useSearchParams, useLocation } from 'react-router';
 
 import { selectQuery, selectOptions, setQuery } from '../Search/searchSlice';
+
 import './Search.css';
 import SearchOptions from './SearchOptions';
 
@@ -45,11 +46,9 @@ export default function Search({ collapsed, onFocus, onBlur }) {
             return params;
         }
         const params = getSearchParams();
-        let path = '';
+        let path = `/search?${params.toString()}`;
         if (options.subredditSearch) {
             path = `/subreddits/search?${params.toString()}`;
-        } else {
-            path = `/search?${params.toString()}`;
         }
 
         navigate(path);

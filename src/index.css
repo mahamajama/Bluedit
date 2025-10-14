@@ -99,6 +99,17 @@ p + blockquote {
   margin: 1em 0 0;
 }
 
+select {
+  background-color: #535bf2;
+  border: none;
+  padding: 4px 8px;
+  border-radius: 8px;
+}
+
+option:active {
+  background-color:#0078bd;
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;

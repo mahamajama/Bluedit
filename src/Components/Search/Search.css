@@ -95,11 +95,11 @@
     overflow: hidden;
     z-index: 2;
     transform: translate(-50%, 0);
-    opacity: 0;
     background-image: radial-gradient(90% 170% ellipse at 30% 0%, rgb(81, 164, 238) 40%,rgba(97, 230, 230, 0.59) 70%,rgba(49, 206, 191, 0.24) 85%,rgba(41, 219, 186, 0) 100%);
     text-align: left;
     align-items: first baseline;
-    transition: height 0.2s ease-out, padding-top 0.2s ease-out, padding-bottom 0.25s ease-out, background-color 0.2s ease-out, transform 0.2s ease-out, opacity 0.2s ease-out;
+    filter: opacity(0) blur(10px);
+    transition: height 0.2s ease-out, padding-top 0.2s ease-out, padding-bottom 0.25s ease-out, background-color 0.2s ease-out, transform 0.2s ease-out, filter 0.35s ease-out;
 
     &.optionsOpen {
         height: 106px;
@@ -107,7 +107,7 @@
         padding-bottom: 20px;
         background-color: #89cbcec4;
         transform: translate(-50%, 0);
-        opacity: 1;
+        filter: opacity(1) blur(0);
 
         &.subredditsType {
             background-color: #d7a67bb4;

@@ -1,31 +1,36 @@
-import { useState, useEffect } from "react";
-import { createPortal } from 'react-dom';
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
+
+import { selectTitle, selectOptions } from './detailsSlice';
 
 import SortDropdown from "./SortDropdown";
 import TimeDropdown from "./TimeDropdown";
 import NavDropdown from "./NavDropdown";
 import SafeSearchToggle from "./SafeSearchToggle";
+import Dropdown from "../Features/Dropdown";
 
-export default function Details({ title, tabs, sort, time, safeSearch }) {
-    const [domReady, setDomReady] = useState(false);
+export default function Details() {
+    const title = useSelector(selectTitle);
+    const options = useSelector(selectOptions);
+
     useEffect(() => {
-        setDomReady(true);
-    }, []);
+    }, [options])
+
+    const handleOptionSelected = (value) => {
+        console.log(value);
+    }
 
     return (
         <>
-            {domReady && createPortal(
-                <>
-                    <div className="detailsContainer">
-                        {title && <p className="detailsTitle">{`${title}`}</p>}
-                        {tabs && <NavDropdown tabs={tabs} />}
-                        {sort && <SortDropdown param="sort" options={sort}/>}
-                        {time && <TimeDropdown />}
-                        {safeSearch && <SafeSearchToggle />}
-                    </div>
-                </>
-                , header
-            )}
+            <div className="detailsContainer">
+                {title && <p className="detailsTitle">{`${title}`}</p>}
+                <div>
+                    {options.tabs && <NavDropdown tabs={options.tabs} />}
+                    {options.sort && <SortDropdown param="sort" options={options.sort}/>}
+                    {options.showTime && <TimeDropdown />}
+                    {options.showSafeSearch && <SafeSearchToggle />}
+                </div>
+            </div>
         </>
     );
 }

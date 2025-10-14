@@ -3,6 +3,7 @@ import { useSearchParams } from "react-router";
 import { useDispatch } from 'react-redux';
 
 import { fetchList } from "../Lists/listsSlice";
+import { setTitle, setOptions } from '../Details/detailsSlice';
 import Details from "../Details/Details";
 
 export default function SubredditSearchResults() {
@@ -14,24 +15,26 @@ export default function SubredditSearchResults() {
             return;
         } else {
             const path = `subreddits/search.json?${params.toString()}`;
-            dispatch(fetchList({ path: path, type: 'subredditSearch' }));
+            dispatch(
+                fetchList({ path: path, type: 'subredditSearch' })
+            );
+            dispatch(
+                setTitle(`Sub Search: ${params.get("q")}`)
+            );
+            dispatch(
+                setOptions({
+                    tabs: {
+                        Posts: '/search',
+                        Subreddits: '/subreddits/search',
+                    },
+                    showSafeSearch: true,
+                })
+            );
         }
     }, [params]);
 
-    const tabs = [
-        ['/search', 'Posts'],
-        ['/subreddits/search', 'Subreddits'],
-    ]
-
     return (
         <>
-            <Details
-                title={`Sub Search: ${params.get("q")}`} 
-                tabs={tabs}
-                sort={null}
-                time={false}
-                safeSearch={true}
-            />
         </>
     );
 }

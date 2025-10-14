@@ -2,6 +2,8 @@ import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useParams, useSearchParams, Link } from 'react-router';
 
+import { setTitle, setOptions } from '../Details/detailsSlice';
+
 import Details from '../Details/Details';
 import { fetchList } from '../Lists/listsSlice';
 
@@ -12,24 +14,29 @@ export default function Comments() {
 
     useEffect(() => {
         const path = `r/${subreddit}/comments/${id}.json?${params.toString()}`;
-        dispatch(fetchList({ path: path, type: 'comments' }));
+        dispatch(
+            fetchList({ path: path, type: 'comments' })
+        );
+        dispatch(
+            setTitle(`r/${subreddit}`)
+        );
+        dispatch(
+            setOptions({
+                sort: {
+                    Top: 'top',
+                    Best: 'confidence',
+                    New: 'new',
+                    Controversial: 'controversial',
+                    Old: 'old',
+                    'Q&A': 'qa',
+                },
+            })
+        );
+        
     }, [params]);
-
-    const sort = {
-        top: 'Top',
-        confidence: 'Best',
-        new: 'New',
-        controversial: 'Controversial',
-        old: 'Old',
-        qa: 'Q&A',
-    }
 
     return (
         <>
-            <Details
-                title={`r/${subreddit}`}
-                sort={sort}
-            />
         </>
     );
 }
