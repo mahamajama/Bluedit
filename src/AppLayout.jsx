@@ -113,6 +113,9 @@ export default function AppLayout() {
             const items = contentContainer.current.children;
             const delta =  unloadTime / items.length;
             for (let i = 0; i < items.length; i++) {
+                if (i === 0) {
+                    if (postToRender === currentPost) continue;
+                }
                 let delay = delta * i;
                 items[i].style.animation = `unloadItem 1s ${delay}s forwards ease-out`;
                 if (i === items.length - 1) {

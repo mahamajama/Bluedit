@@ -6,6 +6,7 @@ import List from '../Lists/List';
 import PreviewButton from '../Features/PreviewButton';
 import { expandSection, collapseSection } from '../../utils/effects';
 import { getTimestamp, decodeHtml } from '../../utils/helpers';
+import Preview from '../Features/Preview';
 
 export default function Comment({ comment, isUserPage }) {
     const data = comment.data;
@@ -76,6 +77,7 @@ export default function Comment({ comment, isUserPage }) {
                     label={`${replies.length} ${replies.length === 1 ? 'reply' : 'replies'}`}
                     onClick={toggleReplies}
                     disabled={replies.length < 1}
+                    open={showReplies}
                 />
             );
         }
@@ -84,41 +86,40 @@ export default function Comment({ comment, isUserPage }) {
 
     return (
         <div className="listingContainer commentContainer">
-            <div className="commentContentContainer">
-                <div
-                    className="commentBody"
-                    dangerouslySetInnerHTML={{__html: decodeHtml(data.body_html)}}
-                />
-                <div className="bottomContainer">
-                    <div>
-                        <div className="byLine">
-                            {!isUserPage && <>
-                                <Link to={`/user/${data.author}`} className={`${isSubmitter ? 'submitter' : ''} ${isMod ? 'mod' : ''}`}>{data.author}</Link>
-                                {isSubmitter && <p className="flair commentFlair submitter">OP</p>}
-                                {isMod && <p className="flair commentFlair mod">Mod</p>}
-                                {flair && <>&nbsp;&nbsp;{flair}</>}
-                                &nbsp;&nbsp;|&nbsp;&nbsp;
-                            </>}
-                            <p>{timestamp}</p>
+            <div
+                className="commentBody"
+                dangerouslySetInnerHTML={{__html: decodeHtml(data.body_html)}}
+            />
+            <div className="bottomContainer">
+                <div>
+                    <div className="byLine">
+                        {!isUserPage && <>
+                            <Link to={`/user/${data.author}`} className={`${isSubmitter ? 'submitter' : ''} ${isMod ? 'mod' : ''}`}>{data.author}</Link>
+                            {isSubmitter && <p className="flair commentFlair submitter">OP</p>}
+                            {isMod && <p className="flair commentFlair mod">Mod</p>}
+                            {flair && <>&nbsp;&nbsp;{flair}</>}
+                            &nbsp;&nbsp;|&nbsp;&nbsp;
+                        </>}
+                        <p>{timestamp}</p>
+                    </div>
+                    {isUserPage && 
+                        <div className="commentLinkContainer">
+                            <em style={{fontWeight: 100, color: '#7e6dc9ff', fontStyle: 'italic'}}>via:&nbsp;&nbsp;</em>
+                            <Link to={commentsPath} className="linkTitle" viewTransition>{data.link_title}</Link>
                         </div>
-                        {isUserPage && 
-                            <div className="commentLinkContainer">
-                                <em style={{fontWeight: 100, color: '#7e6dc9ff', fontStyle: 'italic'}}>via:&nbsp;&nbsp;</em>
-                                <Link to={commentsPath} className="linkTitle" viewTransition>{data.link_title}</Link>
-                            </div>
-                        }
-                    </div>
-                    <div className="linkScoreContainer">
-                        <p className="linkScoreLabel">SCORE</p>
-                        <p className="linkScore">{data.score.toLocaleString()}</p>
-                    </div>
+                    }
                 </div>
-                
-                {previewButton}
+                <div className="linkScoreContainer">
+                    <p className="linkScoreLabel">SCORE</p>
+                    <p className="linkScore">{data.score.toLocaleString()}</p>
+                </div>
             </div>
-            <div ref={repliesContainer} className={`previewContainer`}>
-                <div className='repliesContainer'>
-                    {<List list={replies}/>}
+            <div className={`previewContainerContainer ${showReplies ? 'open' : ''}`} >
+                {previewButton}
+                <div ref={repliesContainer} className={`previewContainer`}>
+                    <div className='repliesContainer'>
+                        {<List list={replies}/>}
+                    </div>
                 </div>
             </div>
         </div>

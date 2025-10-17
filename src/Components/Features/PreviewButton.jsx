@@ -1,8 +1,8 @@
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 
 import { ignoreTransformTransition } from "../../utils/effects";
 
-export default function PreviewButton({ label, onClick, disabled }) {
+export default function PreviewButton({ label, onClick, disabled, open }) {
     const previewButton = useRef(null);
 
     const handleClick = (e) => {
@@ -16,8 +16,12 @@ export default function PreviewButton({ label, onClick, disabled }) {
             ignoreTransformTransition(previewButton.current, 'translate(0, 2px) scale(0.99)', 0.06);
         }
 
-        onClick();
+        onClick(e);
     }
+
+    useEffect(() => {
+        previewButton.current.setAttribute("aria-expanded", open);
+    }, [open]);
 
     return (
         <>
@@ -25,8 +29,9 @@ export default function PreviewButton({ label, onClick, disabled }) {
                 className={`previewButton ${disabled ? 'disabled' : ''}`}
                 onClick={handleClick} 
                 ref={previewButton}
+                type="button"
             >
-                {label}
+                {label}<span className={`select-arrow ${open ? 'open' : ''}`}></span>
             </button>
         </>
     );

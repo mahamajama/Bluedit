@@ -2,6 +2,8 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { selectOptions, setSafeSearch, setSubredditSearch, setSortMode, setTime } from './searchSlice';
 
+import Dropdown from '../Features/Dropdown';
+
 export default function SearchOptions() {
     const dispatch = useDispatch();
     const options = useSelector(selectOptions);
@@ -18,44 +20,36 @@ export default function SearchOptions() {
     return (
         <>
             <div className="detailsTab">
-                Type:&nbsp;
-                <div className="searchTypeSwitch">
-                    <button
-                        onClick={handlePostsTypeClicked}
-                        className={`searchTypeButton postsTypeButton ${!options.subredditSearch ? 'active' : ''}`}
-                    >Posts</button>
-                    <button
-                        onClick={handleSubredditsTypeClicked}
-                        className={`searchTypeButton subredditsTypeButton  ${options.subredditSearch ? 'active' : ''}`}
-                    >Subreddits</button>
-                </div>
+                <Dropdown 
+                    options={{
+                        Posts: null,
+                        Subreddits: true,
+                    }}
+                    onOptionSelected={(value) => dispatch(setSubredditSearch(value))}
+                />
             </div>
             <label className="detailsTab">
-                Sort:&nbsp;
-                <select
-                    name="sortBy"
-                    value={options.sort}
-                    onChange={(e) => dispatch(setSortMode(e.target.value))}
-                >
-                    <option value="relevance">Relevance</option>
-                    <option value="top">Top</option>
-                    <option value="new">New</option>
-                    <option value="comments">Comments</option>
-                </select>
+                <Dropdown 
+                    options={{
+                        Relevance: 'relevance',
+                        Top: 'top',
+                        New: 'new',
+                        Comments: 'comments',
+                    }}
+                    onOptionSelected={(value) => dispatch(setSortMode(value))}
+                />
             </label>
             <label className="detailsTab">
-                Time:&nbsp;
-                <select 
-                    name="linksFrom"
-                    value={options.t}
-                    onChange={(e) => dispatch(setTime(e.target.value))}
-                >
-                    <option value="all">All time</option>
-                    <option value="day">24 hours</option>
-                    <option value="week">Past week</option>
-                    <option value="month">Past month</option>
-                    <option value="year">Past year</option>
-                </select>
+                <Dropdown 
+                    options={{
+                        'All Time': 'all',
+                        '24 Hours': 'day',
+                        'Past Week': 'week',
+                        'Past Month': 'month',
+                        'Past Year': 'year',
+                    }}
+                    onOptionSelected={(value) => dispatch(setTime(value))}
+                />
             </label>
             <label className="detailsTab">
                 Safe Search:&nbsp;

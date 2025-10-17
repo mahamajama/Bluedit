@@ -7,6 +7,7 @@ import Comments from './Components/Comments/Comments';
 import SubredditSearchResults from './Components/Search/SubredditSearchResults';
 import SearchResults from './Components/Search/SearchResults';
 import User from './Components/User/User';
+import U from './Components/User/U';
 import Loading from "./Components/Loading/Loading";
 import Background from "./Components/Background/Background";
 
@@ -35,6 +36,7 @@ let router = createBrowserRouter([
           { path: ':user/:tab?', Component: User },
         ],
       },
+      { path: 'u/*', Component: U },
       { path: 'search', Component: SearchResults },
       { path: 'subreddits/search', Component: SubredditSearchResults },
     ],

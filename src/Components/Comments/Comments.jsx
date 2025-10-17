@@ -4,7 +4,6 @@ import { useParams, useSearchParams, Link } from 'react-router';
 
 import { setTitle, setOptions } from '../Details/detailsSlice';
 
-import Details from '../Details/Details';
 import { fetchList } from '../Lists/listsSlice';
 
 export default function Comments() {
@@ -35,8 +34,5 @@ export default function Comments() {
         
     }, [params]);
 
-    return (
-        <>
-        </>
-    );
+    return null;
 }

@@ -2,16 +2,12 @@ import { useState, useRef } from 'react';
 import { Link, useParams } from 'react-router';
 
 import { getTimestamp, isImage, decodeHtml } from '../../utils/helpers';
-import { expandSection, collapseSection } from '../../utils/effects';
 
-import PreviewButton from '../Features/PreviewButton';
+import Preview from '../Features/Preview';
 
 export default function RLink({ link }) {
     const data = link.data;
     const { subreddit } = useParams();
-
-    const [previewOpen, setPreviewOpen] = useState(false);
-    const previewContainer = useRef(null);
 
     const linkToSelf = data.is_self;
     const isImagePost = isImage(data.url);
@@ -61,18 +57,6 @@ export default function RLink({ link }) {
     }
     const thumbnailSrc = getThumbnail();
 
-    const handleClickPreview = (e) => {
-        if (previewOpen) {
-            collapseSection(previewContainer.current);
-            previewContainer.current.style.marginTop = 0;
-            setPreviewOpen(false);
-        } else {
-            expandSection(previewContainer.current);
-            previewContainer.current.style.marginTop = '14px';
-            setPreviewOpen(true);
-        }
-    }
-
     return (
         <div className="listingContainer">
             <div className="linkContainerContainer">
@@ -119,11 +103,12 @@ export default function RLink({ link }) {
                 </div>
             </div>
             
-            {isImagePost && <PreviewButton label='Preview' onClick={handleClickPreview} />}
-            <div className="previewContainer" ref={previewContainer}>
-                {isImagePost && <img src={data.url} width="100%" />}
-                {/*data.media_embed && <div dangerouslySetInnerHTML={{__html: decodeHtml(data.media_embed.content)}} />*/}
-            </div>
+            {isImagePost && 
+                <Preview label='Preview' disabled={false} >
+                    {isImagePost && <img src={data.url} width="100%" />}
+                    {/*data.media_embed && <div dangerouslySetInnerHTML={{__html: decodeHtml(data.media_embed.content)}} />*/}
+                </Preview>
+            }
         </div>
     );
 }

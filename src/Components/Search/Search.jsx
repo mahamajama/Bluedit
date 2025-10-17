@@ -37,7 +37,7 @@ export default function Search({ collapsed, onFocus, onBlur }) {
     function navigateToSearch() {
         function getSearchParams() {
             const params = new URLSearchParams();
-            params.append("q", encodeURIComponent(query));
+            params.append("q", query);
             params.append("sort", options.sort);
             params.append("t", options.t);
             if (!options.safeSearch) {

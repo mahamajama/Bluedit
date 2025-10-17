@@ -54,7 +54,7 @@ header::after {
 
 .logoContainer {
   margin-top: 20px;
-  margin-bottom: 20px;
+  margin-bottom: 12px;
   transform: scaleX(1);
   transition: margin-top 0.23s ease-in-out, margin-bottom 0.23s ease-in-out, transform 0.23s linear;
   text-align: center;
@@ -94,8 +94,8 @@ header::after {
   height: 100%;
   padding: 200px 10px 100px;
   z-index: 1;
-  --clip-top: 183px;
-  --clip-top-collapsed: 87px;
+  --clip-top: 188px;
+  --clip-top-collapsed: 98px;
   --clip-right: calc(100% - var(--scroll-width));
   clip-path: polygon(100% 0, 100% 100%, 0 100%, 0 var(--clip-top), var(--clip-right) var(--clip-top), var(--clip-right) 0);
   overflow-y: scroll;
@@ -123,7 +123,7 @@ header::after {
   border-radius: 40px;
   background-color: #f1efffbb;
   color: #001135;
-  box-shadow: inset 0 0 100px -10px white;
+  box-shadow: inset 0 0 100px -10px white, 2px 5px 10px -2px #2a4f625c;
   text-align: left;
   animation: var(--load-animation);
 }
@@ -159,7 +159,7 @@ header::after {
   width: 100%;
   height: 36px;
   max-width: var(--max-content-width);
-  margin: 6px auto;
+  margin: 12px auto;
   text-align: left;
   align-items: center;
   justify-content: space-between;
@@ -168,13 +168,79 @@ header::after {
 .detailsTitle {
   margin: -2px 30px 0 0;
   font-size: 1.5em;
-  font-weight: 420;
-  font-variation-settings: "wdth" 106;
-  letter-spacing: 0.03em;
+  font-weight: 520;
+  font-variation-settings: "wdth" 120;
+  letter-spacing: 0.06em;
+  color: transparent;
+  filter: blur(0.8px);
+  background-clip: text;
+  background-image: radial-gradient(300px 180% at 2% 20%, #2fbdbd9e 4%, #4367bdcf 20%, #1e008aa1 50%, #4b326b96 100%);
+  background-position: center;
+  animation: loadTitle 1s cubic-bezier(0,.6,.14,.93);
+
+  &.unload {
+    animation: unloadTitle 1s cubic-bezier(0,.6,.14,.93);
+    pointer-events: none;
+  }
+}
+
+@keyframes loadTitle {
+  0% {
+    transform: scale(0.8, 0.6) translate(-10px, -3px);
+    filter: blur(10px) opacity(0);
+  }
+  100% {
+    transform: scale(1) translate(0);
+    filter: blur(0.8px) opacity(1);
+  }
+}
+
+@keyframes unloadTitle {
+  0% {
+    transform: scale(1);
+    filter: blur(0.8px) opacity(1);
+  }
+  80% {
+    transform: scale(1.08);
+    filter: blur(18px) opacity(0.2);
+  }
+  100% {
+    transform: scale(1.1);
+    filter: blur(24px) opacity(0);
+  }
+}
+
+.detailsTabContainer {
+  display: flex;
+  align-items: center;
 }
 
 .detailsTab {
-  margin: 0 14px 0 0;
+  position: relative;
+  display: inline-block;
+  width: 120px;
+  margin-left: 14px;
+  filter: blur(0) opacity(1);
+  transition: width 0.4s ease-out, margin-left 0.4s ease-out, filter 0.4s ease-out;
+
+  &.hidden {
+    width: 0px;
+    margin-left: 0;
+    filter: blur(4px) opacity(0);
+  }
+}
+
+@keyframes activateTab {
+  0% {
+    margin-left: 0;
+    filter: blur(4px) opacity(0);
+  }
+  100% {
+    min-width: 120px;
+    max-width: 300px;
+    margin-left: 14px;
+    filter: blur(0) opacity(1);
+  }
 }
 
 .linkContainerContainer {
@@ -213,9 +279,11 @@ header::after {
 }
 
 .linkTitle {
-  color: #5892dd;;
-  font-size: 1.3em;
+  margin-right: 10px;
+  color: #5b87cc;
+  font-size: 1.35em;
   font-weight: 600;
+  transition: color 0.2s cubic-bezier(0,.6,.14,.93);
 
   &.stickied {
     color: #009789;
@@ -236,7 +304,6 @@ header::after {
   background-color: var(--purple);
   color: white;
   border-radius: 20px;
-  margin-left: 10px;
   transform: translateY(-2px);
 }
 .commentFlair {
@@ -292,7 +359,6 @@ header::after {
   margin: 0;
   list-style: none;
   padding-inline-start: 0;
-  font-size: 0.8em;
 }
 .linkDetailsContainer li {
   display: inline-block;
@@ -311,6 +377,10 @@ header::after {
 .linkDetailsContainer p {
   display: inline;
   margin: 0;
+  font-size: 0.9em;
+}
+.linkDetailsContainer a {
+  font-size: 0.9em;
 }
 
 .bottomContainer {
@@ -325,9 +395,10 @@ header::after {
   text-align: end;
   background-color: #9aaaff00;
   border-radius: 30px;
-  padding: 11px 10px 9px 16px;
+  padding: 8px 10px 8px 16px;
   position: relative;
   transform: translateY(3px);
+  cursor: default;
   box-shadow: inset 4px -12px 20px #c4e4ff85, inset -2px 6px 16px #acc9e182, inset -2px 2px 4px #678eae21;
 }
 .linkScoreContainer p {
@@ -389,15 +460,16 @@ header::after {
 
 .previewButton {
   display: flex;
+  align-items: center;
   position: relative;
-  font-size: 0.9em;
   width: 100%;
   padding: 3px 12px 4px;
   border-radius: 20px;
   z-index: 2;
+  font-size: 0.9em;
   text-align: left;
   background-color: #0057ff12;
-  color: #313068;
+  color: #605dc8;
   box-shadow: 2px 2px 0 #0608203b, inset -3px -4px 11px -4px #c2fff9, inset 1px 3px 11px -4px #8faadde5;
   transform: translate(0) scale(1);
   transition: transform 0.4s cubic-bezier(0,.6,.14,.93), background-color 0.4s cubic-bezier(0,.6,.14,.93), box-shadow 0.6s cubic-bezier(0,.6,.14,.93);
@@ -411,12 +483,8 @@ header::after {
   }
 }
 
-* + .previewButton {
-  margin: 12px 0 0;
-}
-
 .previewButton:hover {
-  color: #313068;
+  color: #605dc8;
   background-color: #dfe4ffe7;
   box-shadow: 1px 3px 4px #06082034, inset -8px -10px 20px -5px #7afff26b, inset 3px 4px 8px -3px #b6d0ffb0;
   transform: translate(0) scale(1.02);
@@ -440,6 +508,19 @@ header::after {
   fill: rgba(52, 16, 255, 0.479);
 }
 
+.select-arrow {
+  margin-left: 8px;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 6px solid #605dc8;
+  transform: rotateZ(-90deg);
+  transition: transform 0.4s ease-out;
+
+  &.open {
+    transform: rotateZ(0deg);
+  }
+}
+
 @keyframes shake{
   0% {
     transform: translateX(0);
@@ -461,12 +542,30 @@ header::after {
   }
 }
 
+.previewContainerContainer {
+  position: relative;
+  margin: 12px -10px -10px;
+  padding: 10px;
+  background-color: transparent;
+  border-radius: 25px;
+  transition: background-color 0.3s ease-out, box-shadow 0.3s ease-out;
+
+  &.open {
+    background-color: #f1efff15;
+    box-shadow: inset 0 0 50px 10px white, inset 0 1px 10px 2px #022b3eb8;
+  }
+}
+
 .previewContainer {
   width: 100%;
-  height: 0;
+  height: 0px;
   margin-top: 0;
   overflow: hidden;
   transition: height 0.3s cubic-bezier(.08,.61,.18,.98), margin-top 0.35s cubic-bezier(.08,.61,.18,.98);
+}
+
+.previewContainer img {
+  margin: 20px;
 }
 
 .commentsButtonContainer {
@@ -584,8 +683,8 @@ header::after {
   padding: 60px;
 }
 
-.selfTextContainer img {
-  width: 100%;
+.selfTextContainer img, video {
+  max-width: 100%;
 }
 
 .selfTextContainer::before {
@@ -607,11 +706,7 @@ header::after {
 }
 
 .commentContainer {
-    padding: 36px 2px 36px 36px;
-}
-
-.commentContentContainer {
-  padding: 0 34px 0 0;
+    padding: 36px 36px 36px 36px;
 }
 
 .commentContentContainer .bottomContainer {
@@ -637,12 +732,24 @@ header::after {
   font-size: 0.7em;
 }
 
+.commentContainer .previewContainerContainer {
+  &.open {
+    background-color: #f1efff63;
+    box-shadow: inset 0 0 100px 10px white, inset 4px 1px 8px #022b3e7a;
+  }
+}
+
 .repliesContainer {
   overflow: hidden;
-  border-radius: 40px;
-  background-color: #f1efffd6;
-  padding: 24px 2px 10px 24px;
-  box-shadow: inset 0 0 100px -10px white, inset 1px 0 1px #5780bfab;
+  padding: 14px 2px 0 14px;
+}
+
+.repliesContainer .commentContainer {
+  padding: 36px 2px 36px 36px;
+}
+
+.repliesContainer .previewButton {
+  width: calc(100% - 10px)
 }
 
 .repliesContainer .listingContainer {
@@ -655,21 +762,49 @@ header::after {
   content: linear-gradient(transparent);
   display: block;
   height: 1px;
-  margin: 0 -40px 20px;
+  margin: 0 -50px 20px;
   background-color: rgba(131, 141, 172, 0.5);
 }
 
 .subredditListing {
   padding: 54px;
+  background-color: #f1efff7a;
+  overflow: hidden;
+  box-shadow: inset 0 -100px 100px #ffffffa2, 2px 5px 10px -2px #2a4f625c, inset 0 120px 100px 10px white;
 }
 
-.subredditListing a {
-  display: block;
-  margin: 0 0 18px;
+.subredditListingBackground {
+  position: absolute;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  mix-blend-mode: color;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+
+  &.loaded {
+    opacity: 1;
+  }
+}
+
+.subredditNameContainer {
+  display: flex;
+  align-items: center;
+  height: 64px;
+  margin-bottom: 14px;
+}
+
+.subredditNameContainer a {
   font-weight: 500;
-  font-size: 1.6em;
+  font-size: 1.7em;
   font-variation-settings:
     "wdth" 105;
+}
+
+.subredditIcon {
+  margin-right: 14px;
+  height: 100%;
 }
 
 .subredditDescription {
@@ -677,7 +812,7 @@ header::after {
   left: -16px;
   padding: 12px 24px;
   border-radius: 24px;
-  background-color: #c7c7ff60;
+  background-color: #e6e6ffdb;
   box-shadow: inset 3px 5px 12px -2px #9090d36c;
 }
 

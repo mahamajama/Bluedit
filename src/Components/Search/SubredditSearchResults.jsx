@@ -4,7 +4,6 @@ import { useDispatch } from 'react-redux';
 
 import { fetchList } from "../Lists/listsSlice";
 import { setTitle, setOptions } from '../Details/detailsSlice';
-import Details from "../Details/Details";
 
 export default function SubredditSearchResults() {
     const dispatch = useDispatch();
@@ -33,8 +32,5 @@ export default function SubredditSearchResults() {
         }
     }, [params]);
 
-    return (
-        <>
-        </>
-    );
+    return null;
 }

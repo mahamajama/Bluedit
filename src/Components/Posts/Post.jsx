@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router';
 
-import { decodeHtml, isImage, getTimestamp } from '../../utils/helpers';
+import { decodeHtml, isImage, isVideo, getTimestamp, isEmpty } from '../../utils/helpers';
 
 export default function Post({ post }) {
     const [toRender, setToRender] = useState([]);
@@ -12,7 +12,8 @@ export default function Post({ post }) {
         const timestamp = getTimestamp(post.created_utc);
         const isSelf = post.is_self;
         const isImg = isImage(post.url);
-        const showSelf = isImg || post.selftext;
+        const isVid = post.media && post.media.reddit_video && isVideo(post.media.reddit_video.fallback_url);
+        const showSelf = isImg || post.selftext || isVid;
 
         let newPost = (
             <div className="postContainer" key='boobies'>
@@ -28,11 +29,19 @@ export default function Post({ post }) {
                 </div>
                 {showSelf && 
                     <div className="selfTextContainer">
+                        {isImg && <img src={post.url} />}
+                        {isVid && 
+                            <video controls >
+                                <source 
+                                    src={post.media.reddit_video.fallback_url} 
+                                    type={`video/${post.media.reddit_video.fallback_url.split('.')[3].split('?')[0]}`} 
+                                />
+                            </video>
+                        }
                         <div
                             className="selfText"
                             dangerouslySetInnerHTML={{__html: decodeHtml(post.selftext_html)}}
                         />
-                        {isImg && <img src={post.url} />}
                     </div>
                 }
             </div>

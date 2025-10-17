@@ -24,7 +24,7 @@ export const listsSlice = createSlice({
     initialState: {
         post: {},
         list: [],
-        type: 'subreddit',
+        type: 'subreddit', // subreddit, comments, search, subredditSearch, user
         isLoading: false,
         hasError: false,
     },

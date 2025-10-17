@@ -50,6 +50,20 @@ export function isImage(url) {
     return false;
 }
 
+export function isVideo(url) {
+    if (!url) return false;
+    const clean = url.split("?", 1)[0];
+    if (clean.slice(-16) === 'reddit.com/media') return false;
+
+    const url3 = clean.slice(-4);
+    if (url3 === '.mp4') return true;
+
+    const url4 = clean.slice(-5);
+    if (url4 === '.webm') return true;
+
+    return false;
+}
+
 
 export function decodeHtml(html) {
     var txt = document.createElement("textarea");
@@ -122,6 +136,15 @@ export function getScrollbarWidth() {
     document.body.removeChild(scrollDiv);
 
     return scrollbarWidth;
+}
+
+export function isEmpty(object) {
+    for (const prop in object) {
+        if (Object.hasOwn(object, prop)) {
+            return false;
+        }
+    }
+    return true;
 }
 
 

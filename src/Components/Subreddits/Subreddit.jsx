@@ -56,8 +56,5 @@ export default function Subreddit() {
         }
     }
 
-    return (
-        <>
-        </>
-    );
+    return null;
 }

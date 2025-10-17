@@ -1,16 +1,17 @@
-import { useRef, useState, useEffect, createRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 import './dropdown.css';
-import { expandSection, collapseSection, ignoreTransformTransition } from '../../utils/effects';
+import { expandSection, collapseSection } from '../../utils/effects';
+import { isEmpty } from '../../utils/helpers';
+import PreviewButton from './PreviewButton';
 
-export default function Dropdown({ onOptionSelected, options }) {
+export default function Dropdown({ onOptionSelected, options, currentSelection }) {
     const [selection, setSelection] = useState('');
     const [isOpen, setIsOpen] = useState(false);
     const [optionsToRender, setOptionsToRender] = useState([]);
 
     const container = useRef(null);
-    const selectButton = useRef(null);
     const dropdown = useRef(null);
 
     function getOptionsToRender() {
@@ -43,16 +44,24 @@ export default function Dropdown({ onOptionSelected, options }) {
     }, [options]);
 
     useEffect(() => {
-        dropdown.current.classList.toggle("hidden", !isOpen);
-        selectButton.current.setAttribute("aria-expanded", isOpen);
-
         if (isOpen) {
+            dropdown.current.classList.remove('hidden');
             expandSection(dropdown.current);
             window.addEventListener("click", handleOutsideClick);
         } else {
-            collapseSection(dropdown.current);
+            collapseSection(dropdown.current, (element) => {
+                element.classList.add('hidden');
+            });
         }
     }, [isOpen])
+
+    useEffect(() => {
+        if (currentSelection) {
+            setSelection(currentSelection);
+        } else if (!isEmpty(options)) {
+            setSelection(Object.keys(options)[0])
+        }
+    }, [currentSelection]);
 
     const toggleDropdown = () => {
         setIsOpen(!isOpen);
@@ -63,7 +72,6 @@ export default function Dropdown({ onOptionSelected, options }) {
         setSelection(e.target.textContent);
         onOptionSelected(value);
         setIsOpen(false);
-        ignoreTransformTransition(selectButton.current, 'translate(0, 2px) scale(0.99)', 0.06);
     }
 
     const handleOutsideClick = (e) => {
@@ -79,10 +87,12 @@ export default function Dropdown({ onOptionSelected, options }) {
     return (
         <>
         <div className="custom-select" ref={container}>
-            <button className="select-button" onClick={toggleDropdown} ref={selectButton}>
-                {selection}
-                <span className="arrow"></span>
-            </button>
+            <PreviewButton
+                label={selection}
+                onClick={toggleDropdown}
+                disabled={false}
+                open={isOpen}
+            />
             <menu className="select-dropdown hidden" ref={dropdown}>
                 {optionsToRender}
             </menu>

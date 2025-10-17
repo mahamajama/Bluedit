@@ -35,8 +35,5 @@ export default function SearchResults() {
         );
     }, [params]);
 
-    return (
-        <>
-        </>
-    );
+    return null;
 }
