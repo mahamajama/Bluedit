@@ -8,8 +8,9 @@ import Preview from '../Features/Preview';
 export default function RLink({ link }) {
     const data = link.data;
     const { subreddit } = useParams();
+    const thumbnailHolder = useRef(null);
 
-    const linkToSelf = data.is_self;
+    const isSelfPost = data.is_self;
     const isImagePost = isImage(data.url);
     const fromOtherSubreddit = subreddit !== data.subreddit;
 
@@ -19,7 +20,7 @@ export default function RLink({ link }) {
     const getLinkTitle = () => {
         const className = data.stickied ? 'linkTitle stickied' : 'linkTitle';
 
-        if (linkToSelf) {
+        if (isSelfPost) {
             return (
                 <Link 
                     to={commentsPath} 
@@ -43,7 +44,7 @@ export default function RLink({ link }) {
     }
     const linkTitle = getLinkTitle();
 
-    const getThumbnail = () => {
+    const getThumbnailSrc = () => {
         if (isImage(data.thumbnail)) {
             return data.thumbnail;
         } else if (data.domain === 'youtu.be') {
@@ -55,13 +56,57 @@ export default function RLink({ link }) {
         }
         return '';
     }
-    const thumbnailSrc = getThumbnail();
+
+    const getThumbnail = () => {
+        let thumbnailSrc = '';
+        let iconClass = '';
+
+        if (data.is_video) {
+            iconClass = 'videoIcon';
+        } else {
+            switch (data.thumbnail) {
+                case "default":
+                    break;
+                case "self":
+                    iconClass = 'selfIcon';
+                    break;
+                case "image":
+                    iconClass = 'imageIcon';
+                    break;
+                case "nsfw":
+                    iconClass = 'nsfwIcon';
+                    break;
+                default:
+                    thumbnailSrc = getThumbnailSrc();
+                    break;
+            }
+        }
+
+        if (thumbnailSrc) {
+            return (
+                <img src={thumbnailSrc} onError={onThumbnailImageError} />
+            );
+        } else {
+            return <div className={`defaultThumbnail ${iconClass}`}><div /></div>;
+        }
+    }
+    const thumbnail = getThumbnail();
+
+    function onThumbnailImageError(e) {
+        const img = e.target;
+        img.onerror = null;
+        img.src = 'src/assets/icon_image.svg';
+    }
 
     return (
         <div className="listingContainer">
             <div className="linkContainerContainer">
                 <div className="thumbnailContainer">
-                    {thumbnailSrc && <a href={data.url} target="_blank" rel="noopener noreferrer"><img src={thumbnailSrc} className="thumbnail"/></a>}
+                    <div className="thumbnailHolder" ref={thumbnailHolder} >
+                        <a href={data.url} target="_blank" rel="noopener noreferrer">
+                            {thumbnail}
+                        </a>
+                    </div>
                 </div>
                 <div className='linkContainer'>
                     <ul className='linkDetailsContainer'>

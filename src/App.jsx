@@ -39,6 +39,7 @@ let router = createBrowserRouter([
       { path: 'u/*', Component: U },
       { path: 'search', Component: SearchResults },
       { path: 'subreddits/search', Component: SubredditSearchResults },
+      { path: 'calm', Component: Background },
     ],
   }
 ]);
