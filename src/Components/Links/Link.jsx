@@ -1,17 +1,21 @@
 import { useState, useRef } from 'react';
 import { Link, useParams } from 'react-router';
 
-import { getTimestamp, isImage, decodeHtml } from '../../utils/helpers';
+import { getTimestamp, isImage, decodeHtml, isEmpty } from '../../utils/helpers';
 
 import Preview from '../Features/Preview';
 
 export default function RLink({ link }) {
     const data = link.data;
+
+    const [previewContentToRender, setPreviewContentToRender] = useState(null);
+
     const { subreddit } = useParams();
+
     const thumbnailHolder = useRef(null);
+    const container = useRef(null);
 
     const isSelfPost = data.is_self;
-    const isImagePost = isImage(data.url);
     const fromOtherSubreddit = subreddit !== data.subreddit;
 
     const timestamp = getTimestamp(data.created_utc);
@@ -66,6 +70,7 @@ export default function RLink({ link }) {
         } else {
             switch (data.thumbnail) {
                 case "default":
+                    iconClass = 'linkIcon';
                     break;
                 case "self":
                     iconClass = 'selfIcon';
@@ -78,6 +83,7 @@ export default function RLink({ link }) {
                     break;
                 default:
                     thumbnailSrc = getThumbnailSrc();
+                    if (!thumbnailSrc) iconClass = 'linkIcon';
                     break;
             }
         }
@@ -98,8 +104,45 @@ export default function RLink({ link }) {
         img.src = 'src/assets/icon_image.svg';
     }
 
+    function getPreviewContent() {
+        if (isImage(data.url)) {
+            let width = '100%';
+            let height = 'auto';
+            if (data.preview && data.preview.images && data.preview.images[0].source) {
+                width = data.preview.images[0].source.width;
+                height = data.preview.images[0].source.height;
+            }
+            const embedStyle = {
+                maxWidth: width,
+                maxHeight: height,
+                height: 'auto',
+            }
+            return (
+                <img src={data.url} width='100%' height={height} style={embedStyle} />
+            );
+        }
+
+        if (data.secure_media && data.secure_media.type === 'redgifs.com') {
+            const embed = data.secure_media.oembed;
+            const embedStyle = {
+                width: `${embed.width}px`,
+                height: `${embed.height}px`,
+            }
+            return (
+                <div 
+                    className="mediaEmbed" 
+                    dangerouslySetInnerHTML={{__html: decodeHtml(embed.html)}} 
+                    style={embedStyle}
+                />
+            );
+        }
+
+        return null;
+    }
+    const previewContent = getPreviewContent();
+
     return (
-        <div className="listingContainer">
+        <div className="listingContainer" ref={container}>
             <div className="linkContainerContainer">
                 <div className="thumbnailContainer">
                     <div className="thumbnailHolder" ref={thumbnailHolder} >
@@ -147,11 +190,9 @@ export default function RLink({ link }) {
                     </a>
                 </div>
             </div>
-            
-            {isImagePost && 
-                <Preview label='Preview' disabled={false} >
-                    {isImagePost && <img src={data.url} width="100%" />}
-                    {/*data.media_embed && <div dangerouslySetInnerHTML={{__html: decodeHtml(data.media_embed.content)}} />*/}
+            {previewContent && 
+                <Preview label='Preview' disabled={false} onClickPreviewButton={() => setPreviewContentToRender(previewContent)} >
+                    {previewContentToRender}
                 </Preview>
             }
         </div>

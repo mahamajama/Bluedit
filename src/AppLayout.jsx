@@ -99,10 +99,12 @@ export default function AppLayout() {
     }
 
     useEffect(() => {
-        if (contentContainer.current?.childElementCount > 0) {
+        if (!isLoading) {
+            if (contentContainer.current?.childElementCount > 0) {
             unloadItems();
         } else {
             loadItems();
+        }
         }
     }, [isLoading]);
 

@@ -25,10 +25,15 @@ export const listsSlice = createSlice({
         post: {},
         list: [],
         type: 'subreddit', // subreddit, comments, search, subredditSearch, user
+        tab: '',
         isLoading: false,
         hasError: false,
     },
-    reducers: {},
+    reducers: {
+        setTab: (state, action) => {
+            state.tab = action.payload;
+        },
+    },
     extraReducers: (builder) => {
         builder
             .addMatcher(
@@ -67,5 +72,7 @@ export const listsSlice = createSlice({
 export const selectList = (state) => state.lists.list;
 export const selectPost = (state) => state.lists.post;
 export const selectType = (state) => state.lists.type;
+export const selectTab = (state) => state.lists.tab;
 export const selectIsLoading = (state) => state.lists.isLoading;
+export const { setTab } = listsSlice.actions;
 export default listsSlice.reducer;

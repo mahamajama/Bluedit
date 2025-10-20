@@ -1,16 +1,16 @@
 import { useEffect, useState, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useNavigate, useSearchParams, useLocation } from 'react-router';
+import { useNavigate, useLocation } from 'react-router';
 
 import { selectQuery, selectOptions, setQuery } from '../Search/searchSlice';
+import { setTab } from '../Lists/listsSlice';
 
-import './Search.css';
+import './search.css';
 import SearchOptions from './SearchOptions';
 
 export default function Search({ collapsed, onFocus, onBlur }) {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const [params, setParams] = useSearchParams();
     let location = useLocation();
 
     const searchContainer = useRef(null);
@@ -47,10 +47,13 @@ export default function Search({ collapsed, onFocus, onBlur }) {
         }
         const params = getSearchParams();
         let path = `/search?${params.toString()}`;
+        let tab = 'Posts';
         if (options.subredditSearch) {
             path = `/subreddits/search?${params.toString()}`;
+            tab = 'Subreddits';
         }
 
+        dispatch(setTab(tab));
         navigate(path);
     }
 

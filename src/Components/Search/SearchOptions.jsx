@@ -8,15 +8,6 @@ export default function SearchOptions() {
     const dispatch = useDispatch();
     const options = useSelector(selectOptions);
 
-    const handlePostsTypeClicked = (e) => {
-        e.preventDefault();
-        dispatch(setSubredditSearch(false));
-    }
-    const handleSubredditsTypeClicked = (e) => {
-        e.preventDefault();
-        dispatch(setSubredditSearch(true));
-    }
-
     return (
         <>
             <div className="detailsTab">
@@ -25,7 +16,7 @@ export default function SearchOptions() {
                         Posts: null,
                         Subreddits: true,
                     }}
-                    onOptionSelected={(value) => dispatch(setSubredditSearch(value))}
+                    onOptionSelected={(e) => dispatch(setSubredditSearch(e.target.getAttribute('data-value')))}
                 />
             </div>
             <label className="detailsTab">
@@ -36,7 +27,7 @@ export default function SearchOptions() {
                         New: 'new',
                         Comments: 'comments',
                     }}
-                    onOptionSelected={(value) => dispatch(setSortMode(value))}
+                    onOptionSelected={(e) => dispatch(setSortMode(e.target.getAttribute('data-value')))}
                 />
             </label>
             <label className="detailsTab">
@@ -48,7 +39,7 @@ export default function SearchOptions() {
                         'Past Month': 'month',
                         'Past Year': 'year',
                     }}
-                    onOptionSelected={(value) => dispatch(setTime(value))}
+                    onOptionSelected={(e) => dispatch(setTime(e.target.getAttribute('data-value')))}
                 />
             </label>
             <label className="detailsTab">

@@ -14,12 +14,13 @@ export default function SortDropdown({ param, options }) {
         if (options && !isEmpty(options)) {
             const value = params.get(param);
             let key = Object.keys(options).find(key => options[key] === value);
-            if (!key || !value) key = null;
+            if (!key || !value) key = 'default';
             setSelection(key);
         }
     }, [location])
 
-    function handleOptionSelected(value) {
+    function handleOptionSelected(e) {
+        const value = e.target.getAttribute('data-value');
         setParams(params => {
             params.set(param, value);
             return params;

@@ -56,21 +56,22 @@ export default function Dropdown({ onOptionSelected, options, currentSelection }
     }, [isOpen])
 
     useEffect(() => {
-        if (currentSelection) {
-            setSelection(currentSelection);
-        } else if (!isEmpty(options)) {
-            setSelection(Object.keys(options)[0])
+        if (options && !isEmpty(options) && currentSelection) {
+            if (currentSelection === 'default') {
+                setSelection(Object.keys(options)[0]);
+            } else {
+                setSelection(currentSelection);
+            }
         }
-    }, [currentSelection]);
+    }, [currentSelection, options]);
 
     const toggleDropdown = () => {
         setIsOpen(!isOpen);
     };
 
     const handleClickOption = (e) => {
-        const value = e.target.getAttribute('data-value');
         setSelection(e.target.textContent);
-        onOptionSelected(value);
+        onOptionSelected(e);
         setIsOpen(false);
     }
 

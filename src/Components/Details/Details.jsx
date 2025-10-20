@@ -68,7 +68,10 @@ export default function Details() {
         <>
             <div className="detailsContainer">
                 {title && 
-                    <Link className="detailsTitle" to={titleDestination} ref={titleRef} >{`${titleToRender}`}</Link>
+                    <Link className="detailsTitleContainer" to={titleDestination} ref={titleRef} >
+                        <span className="detailsTitle">{titleToRender}</span>
+                        <span className="detailsTitleClone">{titleToRender}</span>
+                    </Link>
                 }
                 <div className="detailsTabContainer">
                     <div className={`detailsTab ${showTabs ? '' : 'hidden'}`}>

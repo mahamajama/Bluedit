@@ -3,11 +3,12 @@ import { useState, useEffect, useRef } from "react";
 import { expandSection, collapseSection } from '../../utils/effects';
 import PreviewButton from "./PreviewButton";
 
-export default function Preview({ children, label, disabled }) {
+export default function Preview({ children, label, disabled, onClickPreviewButton }) {
     const [isOpen, setIsOpen] = useState(false);
     const previewContainer = useRef(null);
 
-    const handleClickPreview = () => {
+    const handleClickPreview = (e) => {
+        if (onClickPreviewButton) onClickPreviewButton(e);
         setIsOpen(!isOpen);
     }
 
@@ -15,7 +16,6 @@ export default function Preview({ children, label, disabled }) {
         if (isOpen) {
             previewContainer.current.classList.remove('collapsed');
             expandSection(previewContainer.current);
-            //window.addEventListener("click", handleOutsideClick);
         } else {
             collapseSection(previewContainer.current, (element) => {
                 element.classList.add('collapsed');
@@ -32,7 +32,9 @@ export default function Preview({ children, label, disabled }) {
                 open={isOpen}
             />
             <div className={`previewContainer`} ref={previewContainer}>
-                {children}
+                <div className="previewContent">
+                    {children}
+                </div>
             </div>
         </div>
     );

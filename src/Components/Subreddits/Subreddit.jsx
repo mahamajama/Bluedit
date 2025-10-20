@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useParams, useSearchParams } from 'react-router';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
-import { fetchList } from '../Lists/listsSlice';
+import { fetchList, setTab } from '../Lists/listsSlice';
 import { setTitle, setOptions } from '../Details/detailsSlice';
 
 export default function Subreddit() {
@@ -27,6 +27,7 @@ export default function Subreddit() {
             setTitle(`r/${subredditName}`)
         );
         handleSetOptions();
+        if (!tab) dispatch(setTab('default'));
     }, [subreddit, tab, params]);
 
     useEffect(() => {
