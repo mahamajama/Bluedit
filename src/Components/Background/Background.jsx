@@ -17,7 +17,7 @@ const rippleRadius = 16;
 
 const daytimeColor = 0xa1e4ff;
 const sunsetColor = 0xffc669;
-const waterColor = 0xccd1ff;
+const waterColor = 0xb7fff3;
 
 function init() {
     scene = new THREE.Scene();
@@ -31,7 +31,7 @@ function init() {
     const textureLoader = new THREE.TextureLoader();
 
     // SKYBOX
-    const r = '/src/assets/skybox_partlyCloudy/';
+    const r = '/skybox_partlyCloudy/';
     const skyboxUrls = [
         r + 'px.png', r + 'nx.png',
         r + 'py.png', r + 'ny.png',
@@ -62,14 +62,14 @@ function init() {
     const waterPhysicalMaterial = new THREE.MeshPhysicalMaterial({ 
         color: waterColor, 
         envMap: skyBox,
-        envMapIntensity: 3,
-        refractionRatio: 0.2, 
+        envMapIntensity: 4,
+        refractionRatio: 0.1, 
         reflectivity: 1, 
         ior: 2.3,
         transmission: 1,
         roughness: 0,
-        specular: daytimeColor,
-        iridescence: 0.3,
+        specular: sunsetColor,
+        iridescence: 0.2,
         flatShading: true,
         thickness: 1,
     });
@@ -84,18 +84,21 @@ function init() {
     function setRepeat(texture) {
         texture.wrapS = THREE.RepeatWrapping;
         texture.wrapT = THREE.RepeatWrapping;
-        texture.repeat.x = 4;
+        texture.repeat.x = 8;
         texture.repeat.y = 4;
+        texture.magFilter = THREE.NearestFilter;
     }
-    const groundTexture = textureLoader.load('/src/assets/Rock057/Rock057_color.jpg', setRepeat);
-    const groundNormal = textureLoader.load('/src/assets/Rock057/Rock057_normalGl.jpg', setRepeat);
-    const groundAO = textureLoader.load('/src/assets/Rock057/Rock057_ao.jpg', setRepeat);
-    const groundDisplacement = textureLoader.load('/src/assets/Rock057/Rock057_displacement.jpg', setRepeat);
-    const groundRoughness = textureLoader.load('/src/assets/Rock057/Rock057_roughness.jpg', setRepeat);
+    const groundTexture = textureLoader.load('/RiverRocks/river_small_rocks_diff_sm.jpg', setRepeat);
+    const groundNormal = textureLoader.load('/RiverRocks/river_small_rocks_nor_gl_2k.jpg', setRepeat);
+    const groundAO = textureLoader.load('/RiverRocks/river_small_rocks_ao_sm.jpg', setRepeat);
+    const groundDisplacement = textureLoader.load('/RiverRocks/river_small_rocks_disp_sm.jpg', setRepeat);
+    const groundRoughness = textureLoader.load('/RiverRocks/river_small_rocks_rough_sm.jpg', setRepeat);
     const groundMaterial = new THREE.MeshStandardMaterial({ 
+        color: 0xb3977f,
         map: groundTexture,
         normalMap: groundNormal,
         aoMap: groundAO,
+        displacementScale: 1.3,
         displacementMap: groundDisplacement,
         roughness: 0.3,
         roughnessMap: groundRoughness,
@@ -104,13 +107,13 @@ function init() {
     waterPlane.add(groundPlane);
     
     // LIGHTS
-    const skyColor = daytimeColor;  // light blue
+    const skyColor = sunsetColor;  // light blue
     const groundColor = 0x56c7b4;
     const lightIntensity = 2;
     light = new THREE.HemisphereLight(skyColor, groundColor, lightIntensity);
     scene.add(light);
 
-    const dirLight = new THREE.DirectionalLight(daytimeColor, 3);
+    const dirLight = new THREE.DirectionalLight(0xffffff, 3);
     dirLight.position.set(-2, 6, -3);
     dirLight.target.position.set(2, -3, 3);
     scene.add(dirLight);

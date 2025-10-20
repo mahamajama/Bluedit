@@ -26,14 +26,7 @@ dist-ssr
 **/*.backup.*
 
 ### Images ###
-*.jpg
-*.jpeg
-*.gif
 *.raw
-*.webp
-*.png
-*.svg
-*.bmp
 *.tiff
 *.tif
 

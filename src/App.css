@@ -327,23 +327,23 @@ header::after {
   position: absolute;
   width: 100%;
   height: 100%;
-  --current-icon:  url('/src/assets/icon_link.svg');
+  --current-icon:  url('/icon_link.svg');
 }
 
 .selfIcon {
-  --current-icon:  url('/src/assets/icon_self.svg');
+  --current-icon:  url('/icon_self.svg');
 }
 .imageIcon {
-  --current-icon:  url('/src/assets/icon_image.svg');
+  --current-icon:  url('/icon_image.svg');
 }
 .videoIcon {
-  --current-icon:  url('/src/assets/icon_video.svg');
+  --current-icon:  url('/icon_video.svg');
 }
 .linkIcon {
-  --current-icon:  url('/src/assets/icon_link.svg');
+  --current-icon:  url('/icon_link.svg');
 }
 .nsfwIcon {
-  --current-icon:  url('/src/assets/icon_nsfw.svg');
+  --current-icon:  url('/icon_nsfw.svg');
 }
 
 .defaultThumbnail div {
