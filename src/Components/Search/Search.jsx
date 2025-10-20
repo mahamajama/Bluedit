@@ -5,7 +5,7 @@ import { useNavigate, useLocation } from 'react-router';
 import { selectQuery, selectOptions, setQuery } from '../Search/searchSlice';
 import { setTab } from '../Lists/listsSlice';
 
-import './search.css';
+import './Search.css';
 import SearchOptions from './SearchOptions';
 
 export default function Search({ collapsed, onFocus, onBlur }) {
