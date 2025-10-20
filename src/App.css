@@ -125,7 +125,12 @@ header::after {
   color: #001135;
   box-shadow: inset 0 0 100px -10px white, 2px 5px 10px -2px #2a4f625c;
   text-align: left;
-  animation: var(--load-animation);
+  filter: blur(10px) opacity(0);
+
+  &.load {
+    filter: blur(0) opacity(1);
+    animation: var(--load-animation);
+  }
 }
 
 @keyframes loadItem {
@@ -732,7 +737,12 @@ header::after {
   background-color: #f1efffbb;
   box-shadow: inset 0 0 100px -10px white;
   text-align: left;
-  animation: var(--load-animation);
+  filter: blur(10px) opacity(0);
+
+  &.load {
+    filter: blur(0) opacity(1);
+    animation: var(--load-animation);
+  }
 }
 
 .commentsDivider {
@@ -742,6 +752,12 @@ header::after {
   margin: 0 auto 20px;
   max-width: var(--max-content-width);
   background-image: linear-gradient(to right, transparent 0, white 10%, white 90% , transparent 100%);
+  filter: blur(10px) opacity(0);
+
+  &.load {
+    filter: blur(0) opacity(1);
+    animation: var(--load-animation);
+  }
 }
 
 .postDetailsContainer {

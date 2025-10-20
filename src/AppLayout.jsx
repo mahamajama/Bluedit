@@ -19,8 +19,10 @@ export default function AppLayout() {
     const [headerCollapsed, setHeaderCollapsed] = useState(false);
     const [searchFocused, setSearchFocused] = useState(false);
     const [backgroundInitiated, setBackgroundInitiated] = useState(false);
+    const [contentInitiated, setContentInitiated] = useState(false);
     const [postToRender, setPostToRender] = useState([]);
     const [listToRender, setListToRender] = useState([]);
+    const [isUnloaded, setIsUnloaded] = useState(false);
     const [isReady, setIsReady] = useState(false);
 
     let location = useLocation();
@@ -37,6 +39,14 @@ export default function AppLayout() {
     useEffect(() => {
         setBackgroundInitiated(true);
     }, [])
+
+    useEffect(() => {
+        if (!contentInitiated && currentList.length > 0) {
+            console.log("initiating content: " + currentList);
+            loadItems();
+            setContentInitiated(true);
+        }
+    }, [currentList])
 
     useEffect(() => {
         if (contentContainer.current && header.current && scrollbarWidth) {
@@ -99,12 +109,10 @@ export default function AppLayout() {
     }
 
     useEffect(() => {
-        if (!isLoading) {
+        if (isLoading && !isReady) {
             if (contentContainer.current?.childElementCount > 0) {
-            unloadItems();
-        } else {
-            loadItems();
-        }
+                unloadItems();
+            }
         }
     }, [isLoading]);
 
@@ -118,8 +126,10 @@ export default function AppLayout() {
                 if (i === 0) {
                     if (postToRender === currentPost) continue;
                 }
+
                 let delay = delta * i;
                 items[i].style.animation = `unloadItem 1s ${delay}s forwards ease-out`;
+
                 if (i === items.length - 1) {
                     items[i].addEventListener('animationend', onUnloadComplete);
                 }
@@ -131,6 +141,7 @@ export default function AppLayout() {
         const items = contentContainer.current.children;
         for (let i = 0; i < items.length; i++) {
             items[i].style.animation = null;
+            items[i].classList.remove('load');
         }
         setIsReady(true);
     }
@@ -146,8 +157,28 @@ export default function AppLayout() {
     }
 
     useEffect(() => {
-        if (isReady && !isLoading) loadItems();
+        if (isReady && !isLoading) {
+            loadItems();
+        }
     }, [isReady, isLoading]);
+
+    useEffect(() => {
+        const onPageLoad = () => {
+            setTimeout(() => {
+                const items = contentContainer.current.children;
+                for (let i = 0; i < items.length; i++) {
+                    items[i].classList.add('load');
+                }
+            }, 500);
+        };
+
+        if (document.readyState === 'complete') {
+            onPageLoad();
+        } else {
+            window.addEventListener('load', onPageLoad, false);
+            return () => window.removeEventListener('load', onPageLoad);
+        }
+    }, [listToRender, postToRender])
 
     return (
         <main>
