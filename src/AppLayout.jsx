@@ -41,7 +41,6 @@ export default function AppLayout() {
 
     useEffect(() => {
         if (!contentInitiated && currentList.length > 0) {
-            console.log("initiating content: " + currentList);
             loadItems();
             setContentInitiated(true);
         }
@@ -108,15 +107,12 @@ export default function AppLayout() {
     }
 
     useEffect(() => {
-        if (isLoading && !isReady) {
-            if (contentContainer.current?.childElementCount > 0) {
-                unloadItems();
-            }
+        if (isLoading && !isReady && contentContainer.current?.childElementCount > 0) {
+            unloadItems();
         }
     }, [isLoading]);
 
     function unloadItems() {
-        console.log('unloading');
         if (contentContainer.current) {
             const unloadTime = 1;
             setIsReady(false);
@@ -140,7 +136,6 @@ export default function AppLayout() {
     function onUnloadComplete(e) {
         e.target.removeEventListener('animationend', onUnloadComplete);
         const items = contentContainer.current.children;
-        console.log('unload complete');
         for (let i = 0; i < items.length; i++) {
             items[i].style.animation = null;
             items[i].classList.remove('load');
@@ -180,10 +175,6 @@ export default function AppLayout() {
             loadItems();
         }
     }, [isReady, isLoading]);
-
-    useEffect(() => {
-        
-    }, [listToRender, postToRender])
 
     return (
         <main>

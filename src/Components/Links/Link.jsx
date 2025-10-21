@@ -115,7 +115,7 @@ export default function RLink({ link }) {
                 width = data.preview.images[0].source.width;
             }
             return (
-                <img src={data.url} loading="lazy" style={{maxWidth: `${width}px`}} />
+                <img src={data.url} style={{maxWidth: `${width}px`}} />
             );
         }
 
@@ -160,13 +160,6 @@ export default function RLink({ link }) {
                         {linkTitle}
                         {data.link_flair_text && <p className="flair">{data.link_flair_text}</p>}
                     </div>
-                    <div className="bottomContainer">
-                        <div className="byLine">by <Link to={`/user/${data.author}`}>{data.author}</Link>&nbsp;&nbsp;|&nbsp;&nbsp;{timestamp}</div>
-                        <div className="linkScoreContainer">
-                            <p className="linkScoreLabel">SCORE|</p>
-                            <p className="linkScore">{data.score.toLocaleString()}</p>
-                        </div>
-                    </div>
                 </div>
                 <div className="commentsButtonContainer">
                     <Link 
@@ -187,6 +180,12 @@ export default function RLink({ link }) {
                         via Reddit
                     </a>
                 </div>
+                <div className="byLine">by <Link to={`/user/${data.author}`}>{data.author}</Link>&nbsp;&nbsp;|&nbsp;&nbsp;{timestamp}</div>
+                <div className="linkScoreContainer">
+                    <p className="linkScoreLabel">SCORE|</p>
+                    <p className="linkScore">{data.score.toLocaleString()}</p>
+                </div>
+                
             </div>
             {previewContent && 
                 <Preview label='Preview' disabled={false} >

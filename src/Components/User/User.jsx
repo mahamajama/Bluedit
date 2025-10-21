@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams, useSearchParams } from 'react-router';
 import { useDispatch } from 'react-redux';
 
-import { fetchList } from '../Lists/listsSlice';
+import { fetchList, setTab } from '../Lists/listsSlice';
 import { setTitle, setOptions } from '../Details/detailsSlice';
 
 export default function User() {
@@ -14,9 +14,13 @@ export default function User() {
         const paramString = params.size > 0 ? `?${params.toString()}` : '';
         let tabString = '';
         if (tab === 'comments') {
+            dispatch(setTab('Comments'));
             tabString = '/comments';
         } else if (tab === 'submitted') {
+            dispatch(setTab('Submitted'));
             tabString = '/submitted';
+        } else {
+            dispatch(setTab('default'));
         }
         const path = `user/${user}${tabString}.json${paramString}`;
 
