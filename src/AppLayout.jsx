@@ -22,7 +22,6 @@ export default function AppLayout() {
     const [contentInitiated, setContentInitiated] = useState(false);
     const [postToRender, setPostToRender] = useState([]);
     const [listToRender, setListToRender] = useState([]);
-    const [isUnloaded, setIsUnloaded] = useState(false);
     const [isReady, setIsReady] = useState(false);
 
     let location = useLocation();

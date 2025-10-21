@@ -12,7 +12,7 @@ let pointerHits = [];
 let targetScroll = 0;
 
 const clickIntensity = 1;
-const rippleSpeed = 10;
+const rippleSpeed = 8.5;
 const rippleRadius = 16;
 
 const daytimeColor = 0xa1e4ff;

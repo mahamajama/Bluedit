@@ -667,7 +667,17 @@ header::after {
 }
 
 .previewContent {
+  display: none;
   padding: 20px;
+
+  &.open {
+    display: block;
+  }
+}
+
+.previewContent img {
+  width: 100%;
+  height: auto;
 }
 
 .mediaEmbed {
@@ -883,6 +893,7 @@ header::after {
   background-color: transparent;
   padding: 0;
   box-shadow: none;
+  filter: none;
 }
 
 .repliesContainer .listingContainer + .listingContainer::before {

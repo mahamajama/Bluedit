@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Link, useParams } from 'react-router';
 
 import { getTimestamp, isImage, decodeHtml, isEmpty } from '../../utils/helpers';
@@ -9,6 +9,7 @@ export default function RLink({ link }) {
     const data = link.data;
 
     const [previewContentToRender, setPreviewContentToRender] = useState(null);
+    const [previewLoaded, setPreviewLoaded] = useState(false);
 
     const { subreddit } = useParams();
 
@@ -104,25 +105,22 @@ export default function RLink({ link }) {
         img.src = 'src/assets/icon_image.svg';
     }
 
+    let isImagePost = false;
+    let isEmbed = false;
     function getPreviewContent() {
         if (isImage(data.url)) {
+            isImagePost = true;
             let width = '100%';
-            let height = 'auto';
             if (data.preview && data.preview.images && data.preview.images[0].source) {
                 width = data.preview.images[0].source.width;
-                height = data.preview.images[0].source.height;
-            }
-            const embedStyle = {
-                maxWidth: width,
-                maxHeight: height,
-                height: 'auto',
             }
             return (
-                <img src={data.url} width='100%' height={height} style={embedStyle} />
+                <img src={data.url} loading="lazy" style={{maxWidth: `${width}px`}} />
             );
         }
 
         if (data.secure_media && data.secure_media.type === 'redgifs.com') {
+            isEmbed = true;
             const embed = data.secure_media.oembed;
             const embedStyle = {
                 width: `${embed.width}px`,
@@ -191,8 +189,8 @@ export default function RLink({ link }) {
                 </div>
             </div>
             {previewContent && 
-                <Preview label='Preview' disabled={false} onClickPreviewButton={() => setPreviewContentToRender(previewContent)} >
-                    {previewContentToRender}
+                <Preview label='Preview' disabled={false} >
+                    {previewContent}
                 </Preview>
             }
         </div>
