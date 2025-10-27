@@ -6,7 +6,12 @@ import './index.css';
 import App from './App.jsx';
 import store from './store';
 
-createRoot(document.getElementById('root')).render(
+import { mobileCheck } from './utils/helpers';
+
+const root = document.getElementById('root');
+if (mobileCheck()) root.classList.add('mobile');
+
+createRoot(root).render(
   <StrictMode>
     <Provider store={store}>
        <App/>

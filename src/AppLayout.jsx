@@ -6,14 +6,14 @@ import Header from "./Components/Header/Header";
 import Background from "./Components/Background/Background";
 import Post from "./Components/Posts/Post";
 import List from "./Components/Lists/List";
-import { selectList, selectPost, selectIsLoading } from './Components/Lists/listsSlice';
+import { selectList, selectPost, selectIsLoading, selectIsMobile } from './Components/Lists/listsSlice';
 
 import { getScrollbarWidth } from "./utils/helpers";
 
 let searchFocusedBool = false;
 let lastScrollPosition = 0;
 
-const scrollbarWidth = getScrollbarWidth();
+const scrollbarWidth =  getScrollbarWidth();
 
 export default function AppLayout() {
     const [headerCollapsed, setHeaderCollapsed] = useState(false);
@@ -32,6 +32,7 @@ export default function AppLayout() {
     const isLoading = useSelector(selectIsLoading);
     const currentPost = useSelector(selectPost);
     const currentList = useSelector(selectList);
+    const isMobile = useSelector(selectIsMobile);
 
     const minHeaderScrollHeight = 20;
 
@@ -114,6 +115,7 @@ export default function AppLayout() {
 
     function unloadItems() {
         if (contentContainer.current) {
+            const animation = isMobile ? 'unloadItemMobile' : 'unloadItem';
             const unloadTime = 1;
             setIsReady(false);
             const items = contentContainer.current.children;
@@ -124,7 +126,7 @@ export default function AppLayout() {
                 }
 
                 let delay = delta * i;
-                items[i].style.animation = `unloadItem 1s ${delay}s forwards ease-out`;
+                items[i].style.animation = `${animation} 1s ${delay}s forwards ease-out`;
 
                 if (i === items.length - 1) {
                     items[i].addEventListener('animationend', onUnloadComplete);

@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk, isRejected, isFulfilled, isPending } from '@reduxjs/toolkit';
 import getRandomSampleOfType from '../../utils/sampleData';
+import { mobileCheck } from '../../utils/helpers';
 
 export const fetchList = createAsyncThunk(
     'lists/fetchList',
@@ -28,6 +29,7 @@ export const listsSlice = createSlice({
         tab: '',
         isLoading: false,
         hasError: false,
+        isMobile: mobileCheck(),
     },
     reducers: {
         setTab: (state, action) => {
@@ -73,6 +75,7 @@ export const selectList = (state) => state.lists.list;
 export const selectPost = (state) => state.lists.post;
 export const selectType = (state) => state.lists.type;
 export const selectTab = (state) => state.lists.tab;
+export const selectIsMobile = (state) => state.lists.isMobile;
 export const selectIsLoading = (state) => state.lists.isLoading;
 export const { setTab } = listsSlice.actions;
 export default listsSlice.reducer;

@@ -5,10 +5,11 @@
 .custom-select {
   position: relative;
   display: inline-block;
-  min-width: 120px;
-  max-width: 100%;
+  width: 100%;
+  max-width: 120px;
   font-size: 0.9em;
   font-weight: 420;
+  text-wrap: nowrap;
 }
 
 .custom-select .previewButton {
