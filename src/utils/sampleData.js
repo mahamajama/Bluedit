@@ -1,9 +1,17 @@
 
-export default function getRandomSampleOfType(type) {
+export default function getRandomSampleOfType(type, subreddit = null) {
     switch (type) {
         case 'subreddit':
+            if (subreddit) {
+                const subSample = getFromIncludes(subredditSamples, subreddit);
+                if (subSample) return subSample;
+            }
             return getRandomSubredditSample();
         case 'comments':
+            if (subreddit) {
+                const subSample = getFromIncludes(commentsSamples, subreddit);
+                if (subSample) return subSample;
+            }
             return getRandomCommentsSample();
         case 'search':
             return getRandomSearchSample();
@@ -15,6 +23,13 @@ export default function getRandomSampleOfType(type) {
             console.log(`Couldn't find samples of type: ${type}.`);
             break;
     }
+}
+
+function getFromIncludes(list, string) {
+    for (let i = 0; i < list.length; i++) {
+        if (list[i].includes(string)) return list[i];
+    }
+    return null;
 }
 
 export function getRandomSampleFromList(arr) {

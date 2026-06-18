@@ -4,14 +4,14 @@ import { mobileCheck } from '../../utils/helpers';
 
 export const fetchList = createAsyncThunk(
     'lists/fetchList',
-    async ({ path, type }) => {
+    async ({ path, type, subreddit }) => {
         const basePath = 'https://www.reddit.com/';
         try {
             const response = await fetch(basePath + path);
             const json = await response.json();
             return { type: type, json: json };
         } catch(error) { // if you run out of requests, use archived data as a placeholder
-            const sampleData = getRandomSampleOfType(type);
+            const sampleData = getRandomSampleOfType(type, subreddit);
             console.log(`Out of requests. Loading sample data: ${sampleData}`);
             const response = await fetch(`/SampleData/${sampleData}`);
             const json = await response.json();

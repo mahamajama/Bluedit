@@ -291,7 +291,7 @@ function deformVertex(index, intensity, delay) {
 }
 
 function setRippleTrail(x, y, width, height) {
-    const n = 6;
+    const n = 4;
     const delay = 0.15 * 1000;
     const xMax = clamp(x + width, x, waterWidth);
     const yMax = clamp(y + height, y, waterHeight);

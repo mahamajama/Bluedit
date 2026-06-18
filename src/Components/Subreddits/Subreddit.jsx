@@ -21,7 +21,7 @@ export default function Subreddit() {
         const paramString = params.size > 0 ? `?${params.toString()}` : '';
         const path = `r/${subredditName}${tab ? `/${tab}` : ''}.json${paramString}`;
         dispatch(
-            fetchList({path: path, type: 'subreddit'})
+            fetchList({ path: path, type: 'subreddit', subreddit: subredditName })
         );
         dispatch(
             setTitle(`r/${subredditName}`)

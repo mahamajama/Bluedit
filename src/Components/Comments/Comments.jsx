@@ -14,7 +14,7 @@ export default function Comments() {
     useEffect(() => {
         const path = `r/${subreddit}/comments/${id}.json?${params.toString()}`;
         dispatch(
-            fetchList({ path: path, type: 'comments' })
+            fetchList({ path: path, type: 'comments', subreddit: subreddit })
         );
         dispatch(
             setTitle(`r/${subreddit}`)
